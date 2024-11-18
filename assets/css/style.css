@@ -2,6 +2,15 @@ body {
     background-color: #5FACD3;
     margin: 0;
 }
+
+p{
+    font-size: 1.5em;
+}
+h3{
+    font-size: 1.8em;
+}
+
+/* navbar */
 header{
     display: flex;
     flex-direction: row;
@@ -41,3 +50,69 @@ header>nav>ul>li>img{
     width: 2vw;
     margin: 0 0.5vw;
 }
+
+/* footer*/
+footer{
+    background-color:#BEE9E7;
+    text-align: center;
+}
+
+footer>section{
+    display: flex;
+    flex-direction: row;
+    margin: 1vw 5vw;
+}
+
+footer img{
+    width: 2.5vw;
+}
+footer>section.info>div:nth-child(3)>div>p>img{
+    width: 2vw;
+    margin-right: 0.5vw;
+}
+
+footer>section:first-child>div>div, footer>section:last-child>div:last-child{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 0 20vw;
+}
+footer>section:first-child>div>div>p, footer>section:last-child>div:last-child>p{
+    margin: 1vw 2vw;
+}
+
+footer>section.info>div{
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    align-content: space-around;
+    
+}
+footer>section.info>div>div>p{
+    margin: 0.5vw 0;
+    text-decoration: underline;
+}
+.info>div:nth-child(3)>div>p:nth-child(4),.info>div:nth-child(3)>div>p:nth-child(5){
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.info>div:last-child div{
+    margin: 0 7vw;
+}
+.legal-mentions{
+    border-top: 1px solid black;
+    display: flex;
+    justify-content: center;
+}
+.legal-mentions>div>p{
+    text-decoration: underline;
+}
+
+/*home*/ 
+
+
