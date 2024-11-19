@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+<main class='flex-row' id='carpoolPage'>
+    <section id='search-show'>
+        <section class='block' id='search-bar'>
+            <h1>Itinéraire</h1>
+            <div>
+                <div class="search">
+                    <img src="img/loupe.png" alt='loupe'/>
+                    <input type='search' class='input-place' placeholder='Lieu de départ'/>
+                </div>
+                <div class="search">
+                    <img src="img/loupe.png" alt='loupe'/>
+                    <input type='search' class='input-place' placeholder="Lieu d'arrivée"/>
+                </div>
+                <div class="date">
+                    <img src="img/calendar.png" alt='canlendrier'/>
+                    <input type='datetime-local' class='input-place' placeholder="Date"/>
+                </div>
+            </div>
+            <button class="standard-btn">Rechercher</button>
+        </section>
+        <section class='block' id="show-carpool">
+            <div>
+                <div class='flex-row'>
+                    <h2>Pseudo</h2>  
+                    <img src='img/userPicture.jpg' alt="phote de profil"/>
+                    <h3>4/5</h3>
+                </div>
+                <div class='flex-row'>
+                    <h2>9,00€</h2>
+                    <p>2 places restantes</p>
+                </div>
+                <div class='flex-row'>
+                    <div>
+                        <p>Départ: 10/11/2024 à 9h00</p>
+                        <p>Arrivée: 10/11/2024 à 10h30</p>
+                    </div>
+                    <p>Ecologique: oui</p>
+                </div>
+                <button class='standard-btn'>Détails</button>
+            </div>
+        </section>
+    </section>
+    <section class="block" id='filter'>
+        <h1>Filter</h1>
+        <div>
+            <div class='flex-row'>
+                <input type="checkbox" id="ecologie"  value="ecologie"/>
+                <label for="ecologie"><p>Ecologique</p></label>
+            </div>
+            <label for='maxPrices'><p>Prix maximum (crédits):</p></label>
+            <input type='number' placeholder='100' id='maxPrices'/>
+            <label for='maxTimes'><p>Durée maximum:</p></label>
+            <input type='time' id='maxTimes'/>
+            <p>Note minimal:</p>
+            <div class='flex-row'>
+                <input type='text' placeholder='2'>
+                <p>/5</p>
+            </div>
+        </div>
+    </section>
+</main>
+
+{% endblock %}
