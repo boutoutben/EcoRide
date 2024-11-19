@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello CarpoopDetailController!
+{% endblock %}
+
+{% block body %}
+	<main>
+		<section class='block' id='carpool-detail'>
+			<div class='flex-row'>
+				<h1>Pseudo</h1>
+				<img src='img/userPicture.jpg' alt="phote de profil"/>
+				<h3>4/5</h3>
+			</div>
+			<div>
+				<p>Départ: 9h00 à Lille</p>
+				<p>Arrivée: 10h30 à Valencienne</p>
+				<h2>9,00€</h2>
+				<p>2 places restantes</p>
+				<p>Ecologique:oui</p>
+			</div>
+			<div class="flex-row">
+				<div>
+					<p>Avis du conducteur:</p>
+				</div>
+				<div>
+					<li>Lorem ipsum odor amet, consectetuer adipiscing elit. Cubilia nisl lorem potenti congue est est sapien.</li>
+				</br>
+				<li>Lorem ipsum odor amet, consectetuer adipiscing elit. Cubilia nisl lorem potenti congue est est sapien.</li>
+			</div>
+		</div>
+		<div>
+			<p>Marque de la voiture: Peugot 208</p>
+			<p>Energie utilisé: électricité</p>
+		</div>
+		<div>
+			<img src='img/no-smoking.png' alt="Interdit de fumer"/>
+			<img src='img/pets-allowed.png' alt='Animaux autorisé'/>
+		</div>
+        <button class='standard-btn'>participer</button>
+	</section>
+</main>{% endblock %}

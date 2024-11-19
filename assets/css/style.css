@@ -3,12 +3,15 @@ body {
     margin: 0;
 }
 
-p{
+p, li{
     font-size: 1.5em;
 }
 h1{
     text-align: center;
     font-size: 2.2em;
+}
+h2{
+    font-size: 2.0em;
 }
 h3{
     font-size: 1.8em;
@@ -123,6 +126,7 @@ footer>section.info>div>div>p{
     display: flex;
     flex-direction: column;
     margin:3vw auto;
+    align-items: center;
     padding: 2vw;
     max-width: 1200px;
     background-color: #CAEBFF;
@@ -202,9 +206,9 @@ footer>section.info>div>div>p{
     display: flex;
     flex-direction: row;
 }
-#show-carpool img{
-    width: 7vw;
-    height: 7vw;
+#show-carpool img, #carpool-detail img{
+    width: 9vw;
+    height: 9vw;
     object-fit: cover;
     border-radius: 50vw;
 }
@@ -214,12 +218,12 @@ footer>section.info>div>div>p{
     align-items: center;
     justify-content: center;
 }
-#show-carpool .flex-row{
+:is(#show-carpool,#carpool-detail) .flex-row{
     width: 60vw;
     margin: 0;  
     justify-content: space-around;
 }
-#show-carpool .flex-row:first-child{
+:is(#show-carpool, #carpool-detail) .flex-row:first-child{
     width: 60%;
     margin: 0 auto;
 }
@@ -277,4 +281,33 @@ input[type="checkbox"]:checked{
 }
 #carpoolPage{
     justify-content: center;
+}
+
+/*CarpoolDetail*/ 
+#carpool-detail>div{
+    margin: 1vw 0;
+}
+#carpool-detail div:nth-child(2){
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#carpool-detail div:nth-child(2)>:is(p,h2){
+    margin: 1vw 0;
+}
+#carpool-detail div:nth-child(3){
+    width: 70%;
+}
+#carpool-detail div:nth-child(3)>div:first-child {
+    text-align: center;
+    width: 50%;
+}
+#carpool-detail div:nth-child(3)>div:last-child{
+    width: 70%;
+}
+
+#carpool-detail>div:last-child{
+    display: flex;
+    justify-content: space-between;
+    width: 30%;
 }
