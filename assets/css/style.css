@@ -155,3 +155,30 @@ footer>section.info>div>div>p{
 .standard-btn:hover{
     box-shadow: 10px 5px 5px rgb(43, 41, 41);
 }
+
+/*home-search-bar*/
+
+#home-search-bar{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.search{
+    background-color: white;
+    display: flex;
+    width: 80%;
+    align-items: center;
+    padding: 2vw 1vw;
+    border-radius: 5vw;
+    margin: 0.5vw 0;
+}
+.input-place{
+    font-weight: 900;
+    margin-left: 1vw;
+    padding: 0 1vw;
+    color: #000000;
+    font-size: 1.2em;
+    width: 90%;
+    outline: none;
+    border: none;
+}
