@@ -6,6 +6,10 @@ body {
 p{
     font-size: 1.5em;
 }
+h1{
+    text-align: center;
+    font-size: 2.2em;
+}
 h3{
     font-size: 1.8em;
 }
@@ -115,4 +119,39 @@ footer>section.info>div>div>p{
 
 /*home*/ 
 
+.block{
+    display: flex;
+    flex-direction: column;
+    margin:2vw auto;
+    padding: 2vw;
+    max-width: 1200px;
+    background-color: #CAEBFF;
+    border-radius: 5vw;
+}
 
+.clear {
+    clear: both;
+}
+#presentation img{
+    border-radius: 3vw;
+    margin: 1vw 2vw;
+    float: right;
+    width: 25vw;
+    height: 12vw;
+    object-fit: cover;
+}
+#presentation>div:last-child img{
+    float: left;
+}
+
+.standard-btn{
+    background-color:#62B9CB;
+    border-radius: 1.5vw;
+    display: flex;
+    margin: 0 auto;
+    padding: 1vw 2vw;
+    font-size: 1.6em;
+}
+.standard-btn:hover{
+    box-shadow: 10px 5px 5px rgb(43, 41, 41);
+}
