@@ -410,9 +410,12 @@ input[type='radio']{
     margin: auto;
 }
 :is(#rulesImgLeft,#rulesImgRight) img{
-    width: 15vw;
+    max-width: 300px;
+    width: max-content;
+    max-height: 200px;
     height: max-content;
-    margin: 1vw auto;
+    justify-content: center;
+    margin: 1vw 1vw;
     object-fit: cover;
 }
 .flex-column{
