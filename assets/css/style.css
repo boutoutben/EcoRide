@@ -170,6 +170,10 @@ button:hover{
     width: 80%;
     margin: 1vw 0;
 }
+input{
+    padding: 2vw 0;
+    border-radius: 5vw;
+}
 
 .searchSolo{
     width: 100vw;
@@ -189,11 +193,8 @@ button:hover{
     width: 50%;
     align-self: flex-start;
 }
-.inputBackground img:first-child{
+.inputBackground img{
     width: 2vw;
-}
-.inputBackground img:last-child{
-    width: 3vw;
 }
 .input-place{
     font-weight: 900;
@@ -260,7 +261,7 @@ input[type="checkbox"] {
     border: 1px solid #333;
     cursor: pointer;
 }
-input[type="checkbox"]:checked{
+input[type='checkbox']:checked,input[type='checkbox']:checked{
     background-color: #5FACD3;
 }
 #filter div{
@@ -368,4 +369,40 @@ a{
 #connexion .flex-row:last-child{
     justify-content: space-between;
     width: 42%;
+}
+
+/*profile*/
+
+#profile {
+    width: 60%;
+    
+}
+#profile>div{
+    margin: 1vw 0;
+}
+#profile .flex-row{
+    justify-content: space-around;
+}
+#profile>div:first-child>img{
+    width: 8vw;
+    background-color: white;
+    border-radius: 50vw;
+    object-fit: cover;
+}
+#profile>div.flex-row:first-child{
+    align-self: flex-end;
+    width: 40vw;
+    align-items: center;
+}
+#profile>div.flex-row:nth-child(2) {
+    width: 40vw;
+}
+
+td:first-child{
+    font-size: 1.8em;
+    text-align: center;
+}
+
+input[type='radio']{
+    width: 1.5vw;
 }

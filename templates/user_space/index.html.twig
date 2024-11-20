@@ -1,0 +1,96 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello UserSpaceController!{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{{ encore_entry_script_tags('profile') }}
+{% endblock %}
+
+{% block body %}
+<main>
+    <section class='block' id='profile'>
+        <div class="flex-row">
+            <h1>Profile</h1>
+            <img src='img/user.png' alt="photo de profile"/>
+        </div>
+        <div class="flex-row">
+            <div class="flex-row">
+                <input type="radio" id='passenger' name='profile-type'>
+                <label for='passenger'><p>Passager</p></label>
+            </div>
+            <div class='flex-row'>
+                <input type="radio" id='driver' name='profile-type'>
+                <label for='driver'><p>Conducteur</label>
+            </div>
+            <div class='flex-row'>
+                <input type="radio" id='both' name='profile-type'>
+                <label for='both'><p>Les deux</p></label>
+            </div>
+        </div>
+        <div class="allInput">
+            <table>
+                <tr>
+                    <td>Nom:</td>
+                    <td>
+                        <div class='inputBackground'>
+                            <input type='text' class='input-place' placeholder='Boulanger'>
+                        </div>
+                    </td>
+                <tr>
+                <tr>
+                    <td>Prenom:</td>
+                    <td>
+                        <div class='inputBackground'>
+                            <input type='text' class='input-place' placeholder='Tom'>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Email:</td>
+                    <td>
+                        <div class='inputBackground'>
+                            <input type='email' class='input-place' placeholder='utilisateur@gmail.com'>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Email:</td>
+                    <td>
+                        <div class='inputBackground'>
+                            <input type='phone' class='input-place' placeholder='08 00 00 00 00'>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Pseudo:</td>
+                    <td>
+                        <div class='inputBackground'>
+                            <input type='text' class='input-place' placeholder='utilisateur'>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>mot de passe actuel:</td>
+                    <td>
+                        <div class='inputBackground'>
+                            <input type='password' id='passwordInput' class='input-place' placeholder='*************'/>
+                            <img id='password' src="img/hidden.png" alt="montrer et cacher mot de passe"/>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>nouveau mot de passe:</td>
+                    <td>
+                        <div class='inputBackground'>
+                            <input type='password' id='newPasswordInput'class='input-place' placeholder='*************'/>
+                            <img id='newPassword' src="img/hidden.png" alt="montrer et cacher mot de passe"/>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <button class="standard-btn">Enregistrer</button>
+    </section>
+</main>
+{% endblock %}
