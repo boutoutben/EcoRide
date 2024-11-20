@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello CreateAccountController!{% endblock %}
+{% block javascripts %}
+	{{ parent() }}
+	{{ encore_entry_script_tags('app') }}
+{% endblock %}
+
+
+
+{% block body %}
+<main>
+    <section id="welcome">
+        <img src="img/welcome.png" alt="bienvenue"/>
+    </section>
+    <section class="block" id="createAccount">
+        <h1>Créer un compte utilisateur</h1>
+        <div class="allInput">
+            <div class="inputBackground">
+                <img src="img/mail.png" alt="email">
+                <input type="text" class="input-place" placeholder="email"/>
+            </div>
+            <div class="inputBackground">
+                <img src="img/user.png" alt="username">
+                <input type="text" class="input-place" placeholder="username"/>
+            </div>
+            <div class="inputBackground">
+                <img src="img/key.png" alt="mot de passe">
+                <input type="password" id="passwordInput" class="input-place" placeholder="mot de passe sécurisé"/>
+                <img id='password' src="img/hidden.png" alt="montrer et cacher mot de passe"/>
+
+
+            </div>
+        </div>
+        <p>*Le mot de passe doit cotenir au moins 8 caractères, une majuscule, un chiffre et un caractère spécial</p>
+        <button class="standard-btn">Créer un compte</button>
+        <a href='#'><p>J'ai déjà un compte</p></a>
+    </section>
+{% endblock %}

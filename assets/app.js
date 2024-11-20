@@ -6,5 +6,10 @@
  */
 
 // any CSS you import will output into a single css file (app.css in this case)
-import '@fortawesome/fontawesome-free/css/all.min.css';
-import '@fortawesome/fontawesome-free/js/all.min.js';
+
+import { show_hide } from '../assets/js/show-hidePassword';
+
+// La fonction peut maintenant être utilisée directement
+document.getElementById('password').addEventListener('click', () => {
+    show_hide('password', 'passwordInput');
+});

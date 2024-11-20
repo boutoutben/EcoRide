@@ -163,17 +163,18 @@ button:hover{
 
 /*home-search-bar*/
 
-#search-bar>div,#home-search-bar>div{
+.allInput{
     display: flex;
     flex-direction: column;
     align-self: center;
     width: 80%;
     margin: 1vw 0;
 }
-#search-bar{
+
+.searchSolo{
     width: 100vw;
 }
-.search,.date{
+.inputBackground{
     background-color: white;
     display: flex;
     align-items: center;
@@ -185,15 +186,18 @@ button:hover{
     width: 100%;
 }
 .date{
-    width: 40%;
+    width: 50%;
     align-self: flex-start;
 }
-.search>img, .date>img{
+.inputBackground img:first-child{
     width: 2vw;
+}
+.inputBackground img:last-child{
+    width: 3vw;
 }
 .input-place{
     font-weight: 900;
-    margin-left: 1vw;
+    margin-left: 0.5vw;
     padding: 0 1vw;
     color: #000000;
     font-size: 1.2em;
@@ -201,7 +205,9 @@ button:hover{
     outline: none;
     border: none;
 }
-
+#passwordInput{
+    width: 85%;
+}
 /*carpool*/
 .flex-row{
     display: flex;
@@ -213,6 +219,7 @@ button:hover{
     object-fit: cover;
     border-radius: 50vw;
 }
+
 #show-carpool{
     display: flex;
     flex-direction: column;
@@ -256,9 +263,6 @@ input[type="checkbox"] {
 input[type="checkbox"]:checked{
     background-color: #5FACD3;
 }
-#filter{
-    align-content: center;
-}
 #filter div{
     align-items: center;
     justify-content: center;
@@ -279,6 +283,7 @@ input[type="checkbox"]:checked{
     display: flex;
     margin: 3vw 0 0 3vw;
     border-radius: 2vw;
+    align-content: center;
 }
 #carpoolPage{
     justify-content: center;
@@ -339,4 +344,18 @@ input[type="checkbox"]:checked{
 }
 .yes{
     background-color: #62CBAA;
+}
+/*create Account */ 
+
+#welcome img{
+    margin: 0;
+    background-color: #1790a8;
+    width: 100vw;
+    height: 20vw;
+    object-fit: cover;
+}
+
+#createAccount>p{
+    width: 70%;
+    text-align: center;
 }
