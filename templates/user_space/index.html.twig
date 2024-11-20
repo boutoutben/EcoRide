@@ -92,5 +92,55 @@
         </div>
         <button class="standard-btn">Enregistrer</button>
     </section>
+    <section class="flex-row">
+        <section class='flex-column' id="rulesImgLeft">
+            <img src="img/cleaning.png" alt="netoyer">
+            <img src="img/handshake.jpg" alt="respect">
+            <img src="img/quitting-time.png" alt="être à l'heure">
+            <img src="img/checklist.png" alt="être organiser">
+            <img src="img/brain.png" alt="travailler inteligament">
+        </section>
+        <section class='block' id='carpoolInfo'>
+            <h1>Information covoiturage</h1>
+            <div class='flex-row'>
+                <h3>Véhicule 1</h3>
+                <p style='text-decoration:underline;'>modifier<p>
+            </div>
+            <div>
+                <p>Plaque d'imatriculation: PL-123AK</p>
+                <p>Premiière immatriuclation: 01/05/2005</p>
+                <p>Modèle, marque, couleur</p>
+                <p>Nombre de place disponible: 3</p>
+                <p>Energie utilisé: électricité</p>
+                <img src="img/plus.png" alt='ajouter un élément'>
+                <h3>Préférence:</h3>
+                <div class="flex-row ref">
+                    <div class="flex-row">
+                        <input type="radio" id='smock'/>
+                        <label for='smock'><p>Fummeur</p></label>
+                    </div>
+                    <div class="flex-row">
+                        <input type="radio" id='animals'/>
+                        <label for='animals'><p>Animaux</p></label>
+                    </div>
+                </div>
+                <div class="flex-row">
+                    <p>Nouveaux:</p>
+                    <div class='inputBackground'>
+                        <input type='text' class='input-place' placeholder='préférence'/>
+                    </div>
+                    <button class="standard-btn">Ajouter</button>
+                </div>
+            </div>
+            <button class='standard-btn'>Enregistrer</button>
+        </section>
+        <section class='flex-column' id="rulesImgRight">
+            <img src="img/brain.png" alt="travailler inteligament">
+             <img src="img/checklist.png" alt="être organiser">
+            <img src="img/quitting-time.png" alt="être à l'heure">
+            <img src="img/handshake.jpg" alt="respect">
+            <img src="img/cleaning.png" alt="netoyer">
+        </section>
+    </section>
 </main>
 {% endblock %}

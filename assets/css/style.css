@@ -156,6 +156,7 @@ button{
 }
 .standard-btn{
     background-color:#62B9CB;
+    margin: 2vw auto;
 }
 button:hover{
     box-shadow: 10px 5px 5px rgb(43, 41, 41);
@@ -170,10 +171,6 @@ button:hover{
     width: 80%;
     margin: 1vw 0;
 }
-input{
-    padding: 2vw 0;
-    border-radius: 5vw;
-}
 
 .searchSolo{
     width: 100vw;
@@ -182,7 +179,7 @@ input{
     background-color: white;
     display: flex;
     align-items: center;
-    padding: 2vw 1vw;
+    padding: 1.5vw 1vw;
     border-radius: 5vw;
     margin: 0.5vw 0;
 }
@@ -406,3 +403,52 @@ td:first-child{
 input[type='radio']{
     width: 1.5vw;
 }
+
+/*carpool info*/ 
+:is(#rulesImgLeft, #rulesImgRight){
+    display: flex;
+    margin: auto;
+}
+:is(#rulesImgLeft,#rulesImgRight) img{
+    width: 15vw;
+    height: max-content;
+    margin: 1vw auto;
+    object-fit: cover;
+}
+.flex-column{
+    display: flex;
+    flex-direction: column;
+}
+
+#carpoolInfo{
+    width: 55vw;
+}
+#carpoolInfo div:nth-child(3){
+    text-align: center;
+    justify-content: space-between;
+}
+#carpoolInfo>div:nth-child(3) img{
+    width: 5vw;
+}
+#carpoolInfo .ref{
+    justify-content: space-between;
+    margin: 0 auto;
+    width: 50%;
+}
+#carpoolInfo>div:nth-child(2){
+    width: 60%;
+    justify-content: space-between;
+    align-items: center;
+}
+#carpoolInfo>div:nth-child(3)>div:last-child{
+    justify-content: center;
+}
+#carpoolInfo>div:nth-child(3)>div:last-child>:is(button,p){
+    margin: auto 2vw;
+}
+#carpoolInfo>div:nth-child(3)>div:last-child>div{
+    width: 30%;
+    height: 5vw;
+    padding: 1vw;
+}
+
