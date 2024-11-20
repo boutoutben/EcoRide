@@ -83,7 +83,7 @@ footer>section:first-child>div>div, footer>section:last-child>div:last-child{
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
-    margin: 0 20vw;
+    margin: 0 17vw;
 }
 footer>section:first-child>div>div>p, footer>section:last-child>div:last-child>p{
     margin: 1vw 2vw;
@@ -355,7 +355,17 @@ input[type="checkbox"]:checked{
     object-fit: cover;
 }
 
-#createAccount>p{
+:is(#createAccount,#connexion)>p{
     width: 70%;
     text-align: center;
+}
+a{
+    color: #004b70;
+}
+
+/*connexion*/
+
+#connexion .flex-row:last-child{
+    justify-content: space-between;
+    width: 42%;
 }
