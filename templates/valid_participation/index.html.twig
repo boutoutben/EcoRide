@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ValidParticipationController!{% endblock %}
+
+{% block body %}
+<main>
+    <section id='finalAction'>
+        <img src='img/finalAction.png' alt="Dernière action"/>
+    </section>
+    <section class='block' id="validParticipation">
+        <div class='flex-row'>
+            <p>Voyage de Lille à Valencienne</p>
+            <div>
+                <p>Départ 9h00</p>
+                <p>Arrivée:10h30</p>
+            </div>
+        </div>
+        <p>Il vous reste 20 crédit, êtes-vous sûre de vouloir payer 9 crédit pour le voyage</p>
+        <div class='flex-row'>
+            <button class='no'>Non</button>
+            <button class="yes">Oui</button>
+        </div>
+    </section>
+{% endblock %}

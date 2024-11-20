@@ -147,16 +147,17 @@ footer>section.info>div>div>p{
 #presentation>div:last-child img{
     float: left;
 }
-
-.standard-btn{
-    background-color:#62B9CB;
+button{
     border-radius: 1.5vw;
     display: flex;
     margin: 0 auto;
     padding: 1vw 2vw;
     font-size: 1.6em;
 }
-.standard-btn:hover{
+.standard-btn{
+    background-color:#62B9CB;
+}
+button:hover{
     box-shadow: 10px 5px 5px rgb(43, 41, 41);
 }
 
@@ -310,4 +311,32 @@ input[type="checkbox"]:checked{
     display: flex;
     justify-content: space-between;
     width: 30%;
+}
+
+/*Valid participation*/ 
+
+#finalAction img{
+    display: flex;
+    margin: 3vw auto;
+    width: 60vw;
+    height: 30vw;
+    object-fit: cover;
+}
+#validParticipation .flex-row{
+    justify-content: space-between;
+}
+#validParticipation .flex-row:first-child{
+    width: 50%;
+}
+
+#validParticipation .flex-row:last-child{
+    width: 25%;
+}
+
+
+.no{
+    background-color: #CB6B62;
+}
+.yes{
+    background-color: #62CBAA;
 }
