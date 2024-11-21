@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ContactController!{% endblock %}
+
+{% block body %}
+<main>
+    <section id='illustrationPage'>
+        <img src="img/network.jpg" alt="contact">
+    </section>
+    <section class="block" id="contact">
+        <h1>Contactez-nous</h1>
+        <div class="inputBackground">
+            <img src="img/mail.png" alt="username">
+            <input type="text" class="input-place" placeholder="email"/>
+        </div>
+        <div class="inputBackground">
+            <img src="img/resume.png" alt="username">
+            <input type="text" class="input-place" placeholder="sujet"/>
+        </div>
+        <div class="inputBackground">
+<a href="https://www.flaticon.com/free-icons/text" title="text icons"><img src="img/text.png" alt="username"></a>
+
+            <textarea name="message" class="input-place" rows=" 4" cols=" 50" placeholder=" message"></textarea>
+        </div>
+        <button class="standard-btn">Envoyer</button>
+    </section>
+</main>
+{% endblock %}

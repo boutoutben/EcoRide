@@ -179,7 +179,7 @@ button:hover{
     background-color: white;
     display: flex;
     align-items: center;
-    padding: 1.5vw 1vw;
+    padding: 1vw 1vw;
     border-radius: 5vw;
     margin: 0.5vw 0;
 }
@@ -345,7 +345,7 @@ input[type='checkbox']:checked,input[type='checkbox']:checked{
 }
 /*create Account */ 
 
-#welcome img{
+#illustrationPage img{
     margin: 0;
     background-color: #1790a8;
     width: 100vw;
@@ -564,4 +564,12 @@ select{
 :is(#nbCarpool,#nbCredit,#totalCredit){
     max-width: 800px;
     width: 60vw;
+}
+
+/*contact*/ 
+#contact .inputBackground{
+    width: 70%;
+}
+textarea{
+
 }
