@@ -16,7 +16,7 @@
         </div>
         <div class="flex-row">
             <div class="flex-row">
-                <input type="radio" id='passenger' name='profile-type'>
+                <input type="radio" id='passenger' name='profile-type' checked>
                 <label for='passenger'><p>Passager</p></label>
             </div>
             <div class='flex-row'>
@@ -172,6 +172,42 @@
                 <button class="standard-btn">Démarer</button>
             </div>
         </div>
+    </section>
+    <section class="block" id="travelOutpute">
+        <h1>Saisie d'un voyage</h1>
+        <div class='allInput'>
+            <div class="inputBackground search">
+                <img src="img/loupe.png" alt='loupe'/>
+                <input type='search' class='input-place' placeholder='Lieu de départ'/>
+            </div>
+            <div class="inputBackground search">
+                <img src="img/loupe.png" alt='loupe'/>
+                <input type='search' class='input-place' placeholder="Lieu d'arrivée"/>
+            </div>
+            <div class="flex-row">
+                <div class="inputBackground ">
+                    <img src="img/shuttle.png" alt='départ'/>
+                    <input type='time' class='input-place'/>
+                </div>
+                <div class="inputBackground">
+                    <img src="img/finish-flag.png" alt='arrivée'/>
+                    <input type='time' class='input-place'/>
+                </div>
+            </div>
+            <div class="flex-row">
+                <select>
+                    <option><p>Choisir un véhicule</p></option>
+                    <option><p>Véhicule 1</p></option>
+                    <option><p>autre</p></option>
+                </select>
+                <div class="inputBackground">
+                    <img src="img/price-tag.png" alt='horloge'/>
+                    <input type='text' class='input-place' placeholder="prix en crédits"/>
+                </div>
+            </div>
+            <p style="width:77vw;">* attention 2 crédits sont pris par la plateforme pour le bon fonctionnement de cette dernière</p>
+        </div>
+        <button class="standard-btn">Enregistrer</button>
     </section>
 </main>
 {% endblock %}

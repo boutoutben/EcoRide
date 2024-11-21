@@ -156,7 +156,7 @@ button{
 }
 .standard-btn{
     background-color:#62B9CB;
-    margin: 2vw auto;
+    margin: 1vw auto;
 }
 button:hover{
     box-shadow: 10px 5px 5px rgb(43, 41, 41);
@@ -482,4 +482,25 @@ input[type='radio']{
 }
 #histori>div>.flex-row:nth-child(2) button{
     margin: 1vw 0.5vw;
+}
+
+/*travelOutpute*/
+#travelOutpute .flex-row{
+    align-items: center;
+}
+#travelOutpute>div>div:nth-child(3)>.inputBackground:last-child{
+    margin:0 2vw;
+}
+select{
+    height: 4vw;
+    background-color: white;
+    text-align: center;
+    font-size:1.3em ;
+}
+#travelOutpute>div>div:last-child>.inputBackground{
+    margin: 0 5vw;
+}
+#travelOutpute>div>div:last-child>.inputBackground>img{
+    padding: 0.5vw auto;
+    width: 2.5vw;
 }
