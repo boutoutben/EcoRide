@@ -211,31 +211,29 @@ button:hover{
     display: flex;
     flex-direction: row;
 }
-#show-carpool img, #carpool-detail img{
+:is(#show-carpool, #resumeTravel) img, #carpool-detail img{
     width: 9vw;
     height: 9vw;
     object-fit: cover;
     border-radius: 50vw;
 }
 
-#show-carpool{
+:is(#show-carpool,#resumeTravel){
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
-:is(#show-carpool,#carpool-detail) .flex-row{
-    width: 60vw;
+:is(#show-carpool,#carpool-detail, #resumeTravel) .flex-row{
+    width: 50vw;
     margin: 0;  
     justify-content: space-around;
 }
-:is(#show-carpool, #carpool-detail) .flex-row:first-child{
-    width: 60%;
+:is(#show-carpool, #carpool-detail, #resumeTravel) .flex-row:first-child{
+    width: 50%;
     margin: 0 auto;
 }
-#show-carpool .flex-row:first-child>h2{
-    margin-left: 10%;
-}
+
 #show-carpool .flex-row:nth-child(2) {
     width: 50%;
     justify-content: space-between;
