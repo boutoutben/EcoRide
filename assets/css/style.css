@@ -467,7 +467,7 @@ input[type='radio']{
     background-color: #1B4B65;
     color: white;
     border-radius: 1.5vw;
-    padding:0 2vw;
+    padding:1vw 2vw;
     width: 80%;
 }
 #histori>div{
@@ -513,7 +513,7 @@ select{
 #validOpinion>div{
     margin: 1vw 0;
 }
-#validOpinion>div>div:first-child{
+:is(#validOpinion,#badTravel)>div>div:first-child{
     width: 100%;
     justify-content: space-between;
 }
@@ -525,4 +525,12 @@ select{
 #validOpinion>div>div:nth-child(2)>:last-child {
     width: 3vw;
     height: 3vw;
+}
+
+/*bad travel*/ 
+
+#badTravel>div>div:nth-child(2){
+    width: 90%;
+    justify-content: space-between;
+    margin: 0 auto;
 }
