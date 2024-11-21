@@ -104,7 +104,7 @@
             <h1>Information covoiturage</h1>
             <div class='flex-row'>
                 <h3>Véhicule 1</h3>
-                <p style='text-decoration:underline;'>modifier<p>
+                <p style='text-decoration:underline;'>modifier</p>
             </div>
             <div>
                 <p>Plaque d'imatriculation: PL-123AK</p>
@@ -116,11 +116,11 @@
                 <h3>Préférence:</h3>
                 <div class="flex-row ref">
                     <div class="flex-row">
-                        <input type="radio" id='smock'/>
+                        <input type="checkbox" id='smock'/>
                         <label for='smock'><p>Fummeur</p></label>
                     </div>
                     <div class="flex-row">
-                        <input type="radio" id='animals'/>
+                        <input type="checkbox" id='animals'/>
                         <label for='animals'><p>Animaux</p></label>
                     </div>
                 </div>
@@ -141,6 +141,37 @@
             <img src="img/handshake.jpg" alt="respect">
             <img src="img/cleaning.png" alt="netoyer">
         </section>
+    </section>
+    <section class="block" id="histori">
+        <h1>Historique</h1>
+        <div class="sub-block">
+            <div class="flex-row">
+                <div>
+                    <p>Départ: 9h00 à Lille</p>
+                    <p>Arrivée: 10h30 à Valencienne</p>
+                </div>
+                <p>9 crédits</p>
+            </div>
+            <div class='flex-row'>
+                <button class="standard-btn">Anuller</button>
+                <button class="standard-btn">Détails</button>
+                <button class="standard-btn">Démarer</button>
+            </div>
+        </div>
+        <div class="sub-block">
+            <div class="flex-row">
+                <div>
+                    <p>Départ: 9h00 à Lille</p>
+                    <p>Arrivée: 10h30 à Valencienne</p>
+                </div>
+                <p>9 crédits</p>
+            </div>
+            <div class='flex-row'>
+                <button class="standard-btn">Anuller</button>
+                <button class="standard-btn">Détails</button>
+                <button class="standard-btn">Démarer</button>
+            </div>
+        </div>
     </section>
 </main>
 {% endblock %}

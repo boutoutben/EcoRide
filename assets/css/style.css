@@ -411,7 +411,7 @@ input[type='radio']{
 }
 :is(#rulesImgLeft,#rulesImgRight) img{
     max-width: 300px;
-    width: max-content;
+    width: 80%;
     max-height: 200px;
     height: max-content;
     justify-content: center;
@@ -424,34 +424,62 @@ input[type='radio']{
 }
 
 #carpoolInfo{
-    width: 55vw;
+    width: 40vw;
 }
 #carpoolInfo div:nth-child(3){
     text-align: center;
     justify-content: space-between;
 }
 #carpoolInfo>div:nth-child(3) img{
-    width: 5vw;
+    width: 3vw;
 }
 #carpoolInfo .ref{
-    justify-content: space-between;
+    justify-content: space-between;   
     margin: 0 auto;
-    width: 50%;
+    width: fit-content;
 }
-#carpoolInfo>div:nth-child(2){
-    width: 60%;
+#carpoolInfo .ref>div{
+    align-items: center;
+    margin: auto 2vw;
+}
+#carpoolInfo>div:nth-child(2) {
     justify-content: space-between;
     align-items: center;
+}
+#carpoolInfo>div:nth-child(2)>:is(h3,p){
+    margin: 0 1vw;
 }
 #carpoolInfo>div:nth-child(3)>div:last-child{
     justify-content: center;
 }
 #carpoolInfo>div:nth-child(3)>div:last-child>:is(button,p){
-    margin: auto 2vw;
+    margin: auto 1vw;
 }
 #carpoolInfo>div:nth-child(3)>div:last-child>div{
     width: 30%;
-    height: 5vw;
+    height: 2vw;
     padding: 1vw;
 }
 
+/*Histori*/
+
+.sub-block{
+    background-color: #1B4B65;
+    color: white;
+    border-radius: 1.5vw;
+    width: 80%;
+}
+#histori>div{
+    margin: 1vw 0;
+}
+#histori>div>.flex-row{
+    justify-content: center;
+}
+#histori>div>.flex-row:first-child{
+    width: 80%;
+    justify-content: space-between;
+    margin: auto;
+}
+#histori>div>.flex-row:nth-child(2) button{
+    margin: 1vw 0.5vw;
+}
