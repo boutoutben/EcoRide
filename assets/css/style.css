@@ -467,7 +467,7 @@ input[type='radio']{
     background-color: #1B4B65;
     color: white;
     border-radius: 1.5vw;
-    padding:1vw 2vw;
+    padding: 2vw;
     width: 80%;
 }
 #histori>div{
@@ -532,5 +532,12 @@ select{
 #badTravel>div>div:nth-child(2){
     width: 90%;
     justify-content: space-between;
+    margin: 0 auto;
+}
+
+/*create employee*/ 
+
+#createEmployee>div>p{
+    display: flex;
     margin: 0 auto;
 }
