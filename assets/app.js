@@ -11,5 +11,5 @@ import { show_hide } from '../assets/js/show-hidePassword';
 
 // La fonction peut maintenant être utilisée directement
 document.getElementById('password').addEventListener('click', () => {
-    show_hide('password', 'passwordInput');
+            show_hide('password', 'passwordInput');
 });

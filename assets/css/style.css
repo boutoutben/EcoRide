@@ -541,3 +541,25 @@ select{
     display: flex;
     margin: 0 auto;
 }
+
+/*nb carpool*/ 
+
+#myChart{
+    width: 60vw;
+    height: 30vw;
+}
+#nbCarpool .flex-row{
+    align-items: center;
+}
+
+#nbCarpool img{
+    width: 3vw;
+    height: 4vw;
+    object-fit: cover;
+}
+#nbCarpool img:first-child{
+    transform: rotate(180deg);
+}
+#nbCarpool .flex-row>p{
+    margin: 0 1vw;
+}
