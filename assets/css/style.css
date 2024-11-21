@@ -544,22 +544,24 @@ select{
 
 /*nb carpool*/ 
 
-#myChart{
-    width: 60vw;
-    height: 30vw;
-}
-#nbCarpool .flex-row{
+
+:is(#nbCarpool, #nbCredit) .flex-row{
     align-items: center;
 }
 
-#nbCarpool img{
+:is(#nbCarpool, #nbCredit) img{
     width: 3vw;
     height: 4vw;
     object-fit: cover;
 }
-#nbCarpool img:first-child{
+:is(#nbCarpool,#nbCredit) img:first-child{
     transform: rotate(180deg);
 }
-#nbCarpool .flex-row>p{
+:is(#nbCarpool, #nbCredit).flex-row>p{
     margin: 0 1vw;
+}
+
+:is(#nbCarpool,#nbCredit,#totalCredit){
+    max-width: 800px;
+    width: 60vw;
 }
