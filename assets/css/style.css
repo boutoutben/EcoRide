@@ -127,7 +127,7 @@ footer>section.info>div>div>p{
     flex-direction: column;
     margin:3vw auto;
     align-items: center;
-    padding: 2vw;
+    padding: 3vw;
     max-width: 1200px;
     background-color: #CAEBFF;
     border-radius: 5vw;
@@ -598,4 +598,10 @@ select{
     margin: 0 2vw;
 }
 
-
+:is(#fullPresentation,#recrutment) li{
+    margin: 1vw 2vw;
+}
+:is(#fullPresentation, #recrutment) h3{
+    width: 100%;
+    text-align: left;
+}
