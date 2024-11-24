@@ -8,22 +8,40 @@
         {% block stylesheets %}
             {{ encore_entry_link_tags('style') }}
         {% endblock %}
-
+	    {{ encore_entry_script_tags('buggerMenu') }}
         {% block javascripts %}{% endblock %}
     </head>
     <body>
         <header>
-            <img src="img/eco.png">
-            <h1>EcoRide</h1>
-            <nav>
-                <ul>
-                    <li>Acceuil</li>
-                    <li>Covoiturage</li>
-                    <li>Connexion</li>
-                    <li>Contact</li>
-                    <li>20 crédits<img src="img/more.png"/></li>
-                </ul>
-            </nav>
+            <div id="screen-menu">
+                <div class="flex-row">
+                    <div class="flex-row">
+                        <img src="img/eco.png">
+                        <h1>EcoRide</h1>
+                    </div>
+                    <img id="burggerMenu" src="img/hamburger.png" alt="menu déroulant">
+                </div>
+                <nav>
+                    <ul>
+                        <li onclick="window.location = '/'">Acceuil</li>
+                        <li  onclick="window.location = '/carpool'">Covoiturage</li>
+                        <li  onclick="window.location = '/connexion'">Connexion</li>
+                        <li onclick="window.location = '/contact'" >Contact</li>
+                        <li>20 crédits<img src="img/more.png"/></li>
+                    </ul>
+                </nav>
+            </div>
+            <div id="off-screen-menu">
+                <img src="img/menu.png" id="burggerMenuClose" alt="fermer le menu déroulant"/>
+                <nav>
+                    <ul>
+                        <li onclick="window.location = '/'">Acceuil</li>
+                        <li  onclick="window.location = '/carpool'">Covoiturage</li>
+                        <li  onclick="window.location = '/connexion'">Connexion</li>
+                        <li onclick="window.location = '/contact'" >Contact</li>
+                        <li>20 crédits<img src="img/more.png"/></li>
+                    </ul>
+                </div>
         </header>
         {% block body %}{% endblock %}
         <footer>

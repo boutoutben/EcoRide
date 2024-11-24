@@ -17,45 +17,124 @@ h3{
     font-size: 1.8em;
 }
 
+@media screen and (max-width: 945px){
+    p,li{
+        font-size: 1em;
+    }
+    h1{
+        font-size: 1.7em;
+    }
+    h2{
+        font-size: 1.5em;
+    }
+    h3{
+        font-size: 1.2em;
+    }
+}
+
 /* navbar */
-header{
+#off-screen-menu {
+    position: fixed;
+    top: 0;
+    z-index: 10;
+    right: -100%;
+    height: 100vh;
+    background-color: #BEE9E7;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    text-align: center;
+    width: 80%;
+    transition: right 0.3s ease;
+}
+#off-screen-menu.active{
+    right: 0;
+}
+#screen-menu{
     display: flex;
     flex-direction: row;
     background-color: #BEE9E7;
     padding: 0.5vw;
     align-items: center;
 }
-header>img{
+#screen-menu div{
+    align-items: center;
+}
+#screen-menu>div{
+    width: 100%;
+    justify-content: space-between;
+}
+#burggerMenu{
+    display: none;
+}
+:is(#screen-menu) img{
     width: 3vw;
     height: 3vw;
     padding: 0 1vw;
 }
-header>nav{
-    width: 90vw;
+#screen-menu nav{
+    width: 80vw;
 }
-header>nav>ul{
+:is(#screen-menu) nav>ul{
     list-style: none;
     display: flex;
     justify-content: flex-end;
 }
-header>nav>ul>li{
-    margin: 0 2vw;
+:is(#screen-menu,#off-screen-menu) nav>ul>li{
+    margin: 0 1.5vw;
     font-size: 1.6em;
+    width: max-content;
     align-items: center;
     text-align: center;
 }
-header>nav>ul>li:not(:last-child):hover{
+#screen-menu nav>ul>li:not(:last-child):hover{
     font-size: 1.8em;
     color: #BFE000;
     margin: 0 1.5vw;
+    cursor: pointer;
 }
-header>nav>ul>li:last-child{
+#screen-menu nav>ul>li:last-child{
     display: flex;
+    justify-content: center;
 }
 
-header>nav>ul>li>img{
+#screen-menu nav>ul>li>img{
     width: 2vw;
-    margin: 0 0.5vw;
+    height: 2vw;
+    margin: 0;
+}
+@media screen and (max-width: 945px) {
+    #burggerMenu{
+        display:block;
+    }
+    #burggerMenuClose{
+        margin:  12.5px 1vw;
+        width: 50px;
+        height: 50px;
+    }
+    #screen-menu nav{
+        display: none;
+    }
+    :is(#screen-menu) img{
+        width: 40px;
+        height: 40px;
+    }
+    #off-screen-menu>nav{
+        margin:0 auto
+    }
+    #off-screen-menu nav>ul{
+        list-style: none;
+    }
+    #off-screen-menu nav>ul>li{
+        margin: 7vh;
+        font-size: 2em;
+        justify-content: center;
+    }
+    #off-screen-menu nav>ul>li>img{
+        width: 5vw;
+        height: 5vw;
+        margin: 0.5vw;
+    }
 }
 
 /* footer*/
@@ -82,6 +161,7 @@ footer>section:first-child>div>div, footer>section:last-child>div:last-child{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    align-items: center;
     justify-content: center;
     margin: 0 17vw;
 }
@@ -93,20 +173,13 @@ footer>section.info>div{
     display: flex;
     flex-direction: column;
     width: 100vw;
-    align-content: space-around;
-    
+    align-content: space-around;   
 }
 footer>section.info>div>div>p{
     margin: 0.5vw 0;
     text-decoration: underline;
 }
-.info>div:nth-child(3)>div>p:nth-child(4),.info>div:nth-child(3)>div>p:nth-child(5){
-    display: flex;
-    width: 100%;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-}
+
 
 .info>div:last-child div{
     margin: 0 7vw;
@@ -119,6 +192,29 @@ footer>section.info>div>div>p{
 .legal-mentions>div>p{
     text-decoration: underline;
 }
+@media screen and (max-width: 945px){
+    footer .flex-row{
+        flex-direction: column;
+    }
+    footer>section:first-child>div>div, footer>section:last-child>div:last-child{
+    flex-direction: column;
+    justify-content: center;
+}
+footer>section {
+    flex-direction: column;
+    margin: auto 0;
+}
+footer img {
+    width: 6vw;
+}
+.legal-mentions {
+    margin: auto 5vw;
+}
+footer>section.info>div:nth-child(3)>div>p>img {
+    width: 4vw;
+    margin-right: 1vw;
+}
+}
 
 /*home*/ 
 
@@ -128,6 +224,7 @@ footer>section.info>div>div>p{
     margin:3vw auto;
     align-items: center;
     padding: 3vw;
+    width: 80%;
     max-width: 1200px;
     background-color: #CAEBFF;
     border-radius: 5vw;
@@ -153,6 +250,7 @@ button{
     margin: 0 auto;
     padding: 1vw 2vw;
     font-size: 1.6em;
+    cursor: pointer;
 }
 .standard-btn{
     background-color:#62B9CB;
@@ -160,6 +258,17 @@ button{
 }
 button:hover{
     box-shadow: 10px 5px 5px rgb(43, 41, 41);
+}
+@media screen and (max-width: 945px){
+    button{
+        font-size: 1.2em;
+    }
+    #presentation p{
+        text-align: center;
+    }
+    #presentation img{
+        display: none;
+    }
 }
 
 /*home-search-bar*/
@@ -187,11 +296,13 @@ button:hover{
     width: 100%;
 }
 .date{
-    width: 50%;
     align-self: flex-start;
 }
 .inputBackground img{
     width: 2vw;
+}
+.inputBackground img:last-child {
+    cursor: pointer;
 }
 .input-place{
     font-weight: 900;
@@ -202,11 +313,34 @@ button:hover{
     width: 90%;
     outline: none;
     border: none;
+    cursor: pointer;
 }
 #passwordInput{
     width: 85%;
 }
+#search-show .block{
+    width: 55vw;
+}
+
+@media screen and (max-width: 945px){
+    #search-show .block{
+        width: 80vw;
+    }
+
+    .inputBackground{
+    padding: 2vw 1vw;
+    border-radius: 5vw;
+    margin: 0.5vw 0;
+}
+.inputBackground img {
+    width: 3vw;
+}
+}
 /*carpool*/
+#filter-btn{
+    display: none;
+}
+
 .flex-row{
     display: flex;
     flex-direction: row;
@@ -225,24 +359,38 @@ button:hover{
     justify-content: center;
 }
 :is(#show-carpool,#carpool-detail, #resumeTravel) .flex-row{
-    width: 50vw;
-    margin: 0;  
-    justify-content: space-around;
-}
-:is(#show-carpool, #carpool-detail, #resumeTravel) .flex-row:first-child{
-    width: 50%;
-    margin: 0 auto;
-}
-
-#show-carpool .flex-row:nth-child(2) {
-    width: 50%;
     justify-content: space-between;
     margin: 0 auto;
+    align-items: center;
 }
-
+:is(#show-carpool, #carpool-detail, #resumeTravel) .flex-row:first-child{
+    width: 60%;
+    margin: 0 auto;
+}
+#show-carpool .flex-row:nth-child(2){  
+    width: 60%;
+}
+:is(#show-carpool, #carpool-detail, #resumeTravel) .flex-row:nth-child(3){
+    width: 80%;
+}
 
 #show-carpool>div{
     width: 100%;
+}
+
+@media screen and (max-width: 945px){
+    :is(#show-carpool, #carpool-detail, #resumeTravel) .flex-row:not(.flex-row:first-child){
+        flex-direction: column;
+    }
+    #btnFilter{
+        display: flex;
+        justify-content: flex-end;
+    }
+    #filter-btn {
+        display: flex;
+        margin: 0;
+        padding: 2vw 3vw;
+    }
 }
 
 /*filter*/ 
@@ -256,7 +404,7 @@ input[type="checkbox"] {
     border: 1px solid #333;
     cursor: pointer;
 }
-input[type='checkbox']:checked,input[type='checkbox']:checked{
+input[type='checkbox']:checked{
     background-color: #5FACD3;
 }
 #filter div{
@@ -269,6 +417,7 @@ input[type='checkbox']:checked,input[type='checkbox']:checked{
 #filter input[type="text"]{
     width: 7%;
     font-size: 1.2em;
+    cursor: pointer;
 }
 #filter>div{
     display: flex;
@@ -277,12 +426,45 @@ input[type='checkbox']:checked,input[type='checkbox']:checked{
 }
 #filter{
     display: flex;
+    width: 25%;
     margin: 3vw 0 0 3vw;
     border-radius: 2vw;
     align-content: center;
 }
 #carpoolPage{
     justify-content: center;
+}
+@media screen and (max-width: 945px){
+    #filter{
+        position: fixed;
+        display: flex;
+        top: 0;
+        margin: 0;
+        right: -100%;
+        width: 40vw;
+        height: 100vh;
+        transition: right 0.3s ease;
+    }
+    #filter.active{
+        right: 0;
+    }
+    #filter p{
+        font-size: 1.2em;
+    }
+    .input-place{
+        font-size: 0.8em;
+    }
+    #filter .input-place {
+        font-size: 1.2em;
+    }
+    #filter input[type="text"] {
+        width: 5%;
+        font-size: 1.2em;
+    }
+    input[type="checkbox"] {
+            width: 3.5vw;
+            height: 3.5vw;
+        }
 }
 
 /*CarpoolDetail*/ 
@@ -313,6 +495,11 @@ input[type='checkbox']:checked,input[type='checkbox']:checked{
     justify-content: space-between;
     width: 30%;
 }
+@media screen and (max-width: 945px){
+    #carpool-detail li{
+        text-align: center;
+    }
+}
 
 /*Valid participation*/ 
 
@@ -341,6 +528,12 @@ input[type='checkbox']:checked,input[type='checkbox']:checked{
 .yes{
     background-color: #62CBAA;
 }
+
+@media screen and (max-width:945px) {
+    #validParticipation .flex-row:first-child {
+        width: 80%;
+    }
+}
 /*create Account */ 
 
 #illustrationPage img{
@@ -361,9 +554,8 @@ a{
 
 /*connexion*/
 
-#connexion .flex-row:last-child{
-    justify-content: space-between;
-    width: 42%;
+#connexion .flex-row:last-child>a{
+    margin: 0 2vw;
 }
 
 /*profile*/
@@ -401,6 +593,34 @@ td:first-child{
 input[type='radio']{
     width: 1.6vw;
 }
+
+@media screen and (max-width:945px) {
+    input[type='radio'] {
+            width: 4vw;
+    }
+    td:first-child{
+    font-size: 1.2em;
+    text-align: center;
+}
+#profile{
+    width: 80%;
+}
+#profile>div.flex-row:first-child {
+    align-self: flex-end;
+    width: 60vw;
+    align-items: center;
+}
+#profile>div.flex-row:nth-child(2) {
+    width: 50vw;
+}
+    .wrap{
+        flex-wrap: wrap;
+    }
+    #profile .allInput{
+        width: 90%;
+    }
+}
+
 
 /*carpool info*/ 
 :is(#rulesImgLeft, #rulesImgRight){
@@ -458,6 +678,15 @@ input[type='radio']{
     height: 2vw;
     padding: 1vw;
 }
+@media screen and (max-width:945px) {
+    :is(#rulesImgLeft, #rulesImgRight){
+    display: none;
+    margin: auto;
+    }
+    #carpoolInfo{
+        width: 70%;
+    }
+}
 
 /*Histori*/
 
@@ -482,6 +711,12 @@ input[type='radio']{
 #histori>div>.flex-row:nth-child(2) button{
     margin: 1vw 0.5vw;
 }
+@media screen and (max-width:945px) {
+    #histori>div>.flex-row:first-child {
+        flex-direction: column;
+        text-align: center;
+    }
+}
 
 /*travelOutpute*/
 #travelOutpute .flex-row{
@@ -491,22 +726,43 @@ input[type='radio']{
     margin:0 2vw;
 }
 select{
-    height: 4vw;
     background-color: white;
+    padding: 1vw .5vw;
+    margin-right: 4vw;
     text-align: center;
-    font-size:1.3em ;
+    font-size:1.3em;
 }
 #travelOutpute>div>div:last-child>.inputBackground{
-    margin: 0 5vw;
+    margin: 0 1.5vw;
+}
+#travelOutpute>div>div:nth-child(3)>.inputBackground {
+    font-size: 1.2em;
+    width: 25%;
+}
+#travelOutpute>div>div:nth-child(3)>.inputBackground>input{
+    margin: 0 auto;
+    padding: 0.5vw 1vw;
+    width: fit-content;
 }
 #travelOutpute>div>div:last-child>.inputBackground>img{
     padding: 0.5vw auto;
     width: 2.5vw;
 }
+#travelOutpute>div:nth-child(3){
+    width: 80%;
+    display: flex;
+    justify-content: center;
+}
+@media screen and (max-width:945px) {
+    select{
+        font-size: .8em;
+    }
+}
 
 /*valid opinion*/
 #validOpinion .flex-row{
     align-items: center;
+    text-align: center;
 }
 #validOpinion>div{
     margin: 1vw 0;
@@ -515,14 +771,28 @@ select{
     width: 100%;
     justify-content: space-between;
 }
-#validOpinion>div>div:nth-child(2)>:nth-child(2){
+#validOpinion>div>.flex-row>div>:first-child{
     width: 5vw;
     height: 5vw;
     margin: 0 0.5vw;
 }
-#validOpinion>div>div:nth-child(2)>:last-child {
+#validOpinion>div>.flex-row>div>:last-child {
     width: 3vw;
     height: 3vw;
+}
+@media screen and (max-width:945px){
+    #validOpinion>div>.flex-row{
+        flex-direction: column;
+    }
+    #validOpinion>div>.flex-row>div>:first-child{
+    width: 7vw;
+    height: 7vw;
+    margin: 0 1vw;
+    }
+    #validOpinion>div>.flex-row>div>:last-child {
+        width: 5vw;
+        height: 5vw;
+    }
 }
 
 /*bad travel*/ 
@@ -532,12 +802,18 @@ select{
     justify-content: space-between;
     margin: 0 auto;
 }
-
+@media screen and (max-width:945px) {
+    #badTravel .flex-row{
+        flex-direction: column;
+        align-items: center;
+    }
+}
 /*create employee*/ 
 
 #createEmployee>div>p{
     display: flex;
     margin: 0 auto;
+    width: 60vw;
 }
 
 /*nb carpool*/ 
@@ -563,7 +839,17 @@ select{
     max-width: 800px;
     width: 60vw;
 }
+canvas{
+    width:50%;
+    height: fit-content;
+}
 
+@media screen and(max-width:945px) {
+    canvas {
+            width: 1%;
+            height: fit-content;
+        }
+}
 /*contact*/ 
 #contact .inputBackground{
     width: 70%;
@@ -585,6 +871,14 @@ select{
     width: 3vw;
     height: 3vw;
     object-fit: cover;
+}
+
+@media screen and (max-width:945px) {
+    #blockAccount>.sub-block img {
+            width: 5vw;
+            height: 5vw;
+            object-fit: cover;
+        }
 }
 /*carpool option*/
 #carpoolOpinion label{
