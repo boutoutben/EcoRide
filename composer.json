@@ -52,7 +52,8 @@
     "scripts": {
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd"
+            "assets:install %PUBLIC_DIR%": "symfony-cmd",
+            "heroku-postbuild": "npm run build"
         },
         "post-install-cmd": [
             "@auto-scripts"
