@@ -50,10 +50,11 @@
         "symfony/polyfill-php82": "*"
     },
     "scripts": {
+        "build": "encore production",
+        "heroku-postbuild": "npm run build",
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd",
-            "heroku-postbuild": "npm run build"
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
         },
         "post-install-cmd": [
             "@auto-scripts"
