@@ -9,6 +9,7 @@
             {{ encore_entry_link_tags('style') }}
         {% endblock %}
 	    {{ encore_entry_script_tags('buggerMenu') }}
+        {{encore_entry_script_tags('redirection')}}
         {% block javascripts %}{% endblock %}
     </head>
     <body>
@@ -23,7 +24,7 @@
                 </div>
                 <nav>
                     <ul>
-                        <li onclick="window.location = '/'">Acceuil</li>
+                        <li onclick="redirection('homeLink','/')">Acceuil</li>
                         <li  onclick="window.location = '/carpool'">Covoiturage</li>
                         <li  onclick="window.location = '/connexion'">Connexion</li>
                         <li onclick="window.location = '/contact'" >Contact</li>
