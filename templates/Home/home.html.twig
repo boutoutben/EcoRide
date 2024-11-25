@@ -1,5 +1,13 @@
 {% extends "base.html.twig" %}
-
+{% block javascripts %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            redirection("fullPresentationBtn","/fullPresentation");
+            redirection("recrutmentBtn","/recrutment");
+        });
+    </script>
+{% endblock %}
+    
 {% block body %}
     <main>
         <section class='block' id="presentation">
@@ -7,13 +15,13 @@
                 <h1>Présentation d'EcoRide</h1>
                 <p><img src='img/presentationEcoRide.jpg'alt="présentation d'EcoRide">EcoRide est une plateforme de covoiturage pensée pour simplifier les trajets partagés tout en réduisant l'impact environnemental des déplacements. Ce site vise à connecter des conducteurs avec des passagers partageant le même itinéraire, permettant à chacun de voyager de manière plus économique, conviviale,  et durable. Voici les principaux aspects d'EcoRide.</p>           
                 <div class='clear'></div>
-                <button class='standard-btn' onclick="window.location ='/fullPresentation'">En savoir plus</button>
+                <button id="fullPresentationBtn" class='standard-btn'>En savoir plus</button>
             </div>
             <div>
                 <h1>Rejoindre l'équipe d'EcoRide</h1>
                 <p><img src="img/recrutment.jpg" alt="personne travaillant chez EcoRide">Vous êtes passionné(e) par l'innovation, la mobilité durable, et souhaitez participer activement à la réduction de l'empreinte carbone ? EcoRide est à la recherche de talents engagés pour développer notre plateforme de covoiturage écoresponsable !</p>
                 <div class='clear'></div>
-                <button class='standard-btn' onclick="window.location ='/recrutment'">Nous rejoindre</button>
+                <button id="recrutmentBtn" class='standard-btn'>Nous rejoindre</button>
             </div>
         </section>
         <section class='block' id='home-search-bar'>

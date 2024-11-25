@@ -1,105 +1,116 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        <script src="https://kit.fontawesome.com/7a9bfc4302.js" crossorigin="anonymous"></script>
-        {% block stylesheets %}
-            {{ encore_entry_link_tags('style') }}
-        {% endblock %}
-	    {{ encore_entry_script_tags('buggerMenu') }}
-        {{encore_entry_script_tags('redirection')}}
-        {% block javascripts %}{% endblock %}
-    </head>
-    <body>
-        <header>
-            <div id="screen-menu">
-                <div class="flex-row">
-                    <div class="flex-row">
-                        <img src="img/eco.png">
-                        <h1>EcoRide</h1>
-                    </div>
-                    <img id="burggerMenu" src="img/hamburger.png" alt="menu déroulant">
-                </div>
-                <nav>
-                    <ul>
-                        <li onclick="redirection('homeLink','/')">Acceuil</li>
-                        <li  onclick="window.location = '/carpool'">Covoiturage</li>
-                        <li  onclick="window.location = '/connexion'">Connexion</li>
-                        <li onclick="window.location = '/contact'" >Contact</li>
-                        <li>20 crédits<img src="img/more.png"/></li>
-                    </ul>
-                </nav>
-            </div>
-            <div id="off-screen-menu">
-                <img src="img/menu.png" id="burggerMenuClose" alt="fermer le menu déroulant"/>
-                <nav>
-                    <ul>
-                        <li onclick="window.location = '/'">Acceuil</li>
-                        <li  onclick="window.location = '/carpool'">Covoiturage</li>
-                        <li  onclick="window.location = '/connexion'">Connexion</li>
-                        <li onclick="window.location = '/contact'" >Contact</li>
-                        <li>20 crédits<img src="img/more.png"/></li>
-                    </ul>
-                </div>
-        </header>
-        {% block body %}{% endblock %}
-        <footer>
-            <section class='coordonate'>
-                <div>
-                    <h3>Coordonnées</h3>
-                    <div>
-                        <p>Email: EcoRide@gmail.com</p>
-                        <p>Téléphone: 08 00 00 00 00</p>
-                        <p>Adresse: 1 rue de la rue,Lille,France</p>
-                    <div>
-                </div>
-            </section>
-            <section class='info'>
-                <div>
-                    <h3>Info entreprises</h3>
-                    <div>
-                        <p>à propos d'EcoRide</p>
-                        <p>contactez-nous</p>
-                        <p>presse</p>
-                    </div>
-                </div>
-                <div>
-                    <h3>Aide</h3>
-                    <div>
-                        <p>centre d'aide</p>
-                        <p>sécurité</p>
-                        <p>devenir partenaire</p>
-                    </div>
-                </div>
-                <div>
-                    <h3>Téléchargement</h3>
-                    <div>
-                        <p>notification du voyage<p>
-                        <p>plus facile d'accès</p>
-                        <p><img src='img/app-store.png'>Apple store</p>
-                        <p><img src='img/google-play.png'>Google play</p>
-                    </div>
-                </div>
-                <div>
-                    <h3>Réseaux sociaux<h3>
-                    <div class"social-media">
-                        <img src='img/facebook.png'/>
-                        <img src='img/instagram.png'/>
-                        <img src='img/tik-tok.png'/>
-                        <img src='img/youtube.png'/>
-                        <img src='img/twitter.png'/>
-                    </div>
-                </div>
-            </section>
-            <section class="legal-mentions">
-                <div>
-                    <p>© 2024 EcoRide</p>
-                    <p>Condition d'utilisation</p>
-                    <p>Confidentalité</p>
-                </div>
-            </section>
-        </footer>
-    </body>
-</html>
+	<head>
+		<meta charset="UTF-8">
+		<title>
+			{% block title %}Welcome!
+			{% endblock %}
+		</title>
+		<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+		<script src="https://kit.fontawesome.com/7a9bfc4302.js" crossorigin="anonymous"></script>
+		{% block stylesheets %}
+			{{ encore_entry_link_tags('style') }}
+		{% endblock %}
+		{{ encore_entry_script_tags('buggerMenu') }}
+        {{ encore_entry_script_tags('redirection') }}
+		{% block javascripts %}{% endblock %}
+	</head>
+	<body>
+		<header>
+			<div id="screen-menu">
+				<div class="flex-row">
+					<div class="flex-row">
+						<img src="img/eco.png" alt="logo du site">
+						<h1>EcoRide</h1>
+					</div>
+					<img id="burggerMenu" src="img/hamburger.png" alt="menu déroulant">
+				</div>
+				<nav>
+					<ul>
+						<li>
+							<a href="/">Acceuil</a>
+						</li>
+						<li>
+							<a href="/carpool">Covoiturage</a>
+						</li>
+						<li>
+							<a href="/connexion">Connexion</a>
+						</li>
+						<li>
+							<a href="/contact">Contact</a>
+						</li>
+						<li>20 crédits<img src="img/more.png" alt="ajouter un crédit"/></li>
+					</ul>
+				</nav>
+			</div>
+			<div id="off-screen-menu">
+				<img src="img/menu.png" id="burggerMenuClose" alt="fermer le menu déroulant"/>
+				<nav>
+					<ul>
+						<li onclick="window.location = '/'">Acceuil</li>
+						<li onclick="window.location = '/carpool'">Covoiturage</li>
+						<li onclick="window.location = '/connexion'">Connexion</li>
+						<li onclick="window.location = '/contact'">Contact</li>
+						<li>20 crédits<img src="img/more.png"/></li>
+					</ul>
+				</div>
+			</header>
+			{% block body %}{% endblock %}
+			<footer>
+				<section class='coordonate'>
+					<div>
+						<h3>Coordonnées</h3>
+						<div>
+							<p>Email: EcoRide@gmail.com</p>
+							<p>Téléphone: 08 00 00 00 00</p>
+							<p>Adresse: 1 rue de la rue,Lille,France</p>
+							<div></div>
+						</section>
+						<section class='info'>
+							<div>
+								<h3>Info entreprises</h3>
+								<div>
+									<p>à propos d'EcoRide</p>
+									<p>contactez-nous</p>
+									<p>presse</p>
+								</div>
+							</div>
+							<div>
+								<h3>Aide</h3>
+								<div>
+									<p>centre d'aide</p>
+									<p>sécurité</p>
+									<p>devenir partenaire</p>
+								</div>
+							</div>
+							<div>
+								<h3>Téléchargement</h3>
+								<div>
+									<p>notification du voyage</p>
+									<p></p>
+									<p>plus facile d'accès</p>
+									<p><img src='img/app-store.png'>Apple store</p>
+									<p><img src='img/google-play.png'>Google play</p>
+								</div>
+							</div>
+							<div>
+								<h3>Réseaux sociaux<h3>
+										<div class"social-media">
+											<img src='img/facebook.png'/>
+											<img src='img/instagram.png'/>
+											<img src='img/tik-tok.png'/>
+											<img src='img/youtube.png'/>
+											<img src='img/twitter.png'/>
+										</div>
+									</div>
+								</section>
+								<section class="legal-mentions">
+									<div>
+										<p>© 2024 EcoRide</p>
+										<p>Condition d'utilisation</p>
+										<p>Confidentalité</p>
+									</div>
+								</section>
+							</footer>
+						</body>
+					</html>
