@@ -11,66 +11,74 @@
         <section class='block' id='search-bar'>
             <h1>Itinéraire</h1>
             <div class="allInput">
-                <div class="inputBackground search">
-                    <img src="img/loupe.png" alt='loupe'/>
-                    <input type='search' class='input-place' placeholder='Lieu de départ'/>
+                {{ form_start(form) }}
+                    <div class="inputBackground search">
+                        <img src="img/loupe.png" alt='loupe'/>
+                        {{ form_widget(form.start_place,{'full_name': "start_place"}) }} 
+                    </div>
+                    <div class="inputBackground search">
+                        <img src="img/loupe.png" alt='loupe'/>
+                        {{ form_widget(form.end_place,{"full_name":"end_place"}) }} 
+                    </div>
+                    <div class="inputBackground date">
+                        <img src="img/calendar.png" alt='canlendrier'/>
+                        {{ form_widget(form.date,{"full_name":"date"}) }} 
+                    </div>
                 </div>
-                <div class="inputBackground search">
-                    <img src="img/loupe.png" alt='loupe'/>
-                    <input type='search' class='input-place' placeholder="Lieu d'arrivée"/>
-                </div>
-                <div class="inputBackground date">
-                    <img src="img/calendar.png" alt='canlendrier'/>
-                    <input type='datetime-local' class='input-place'/>
-                </div>
-            </div>
-            <button class="standard-btn">Rechercher</button>
+                <button class="standard-btn">Rechercher</button>
+            {{ form_end(form) }}
         </section>
         <section>
             <div id="btnFilter">
                 <button class="standard-btn" id="filter-btn">Filtre</button>
             </div>
         </section>
-        <section class='block' id="show-carpool">
+        {% if search != null %}
+            {% for search in search %}
+                <section class='block' id="show-carpool">
+                    <div>
+                        <div class='flex-row'>
+                            <h2>{{search.user.pseudo}}</h2>  
+                            <img src='img/userPicture.jpg' alt="phote de profil"/>
+                            <h3>4/5</h3>
+                        </div>
+                        <div class='flex-row'>
+                            <h2>{{search.price}}€</h2>
+                            <p>{{search.placeLeft}} places restantes</p>
+                        </div>
+                        <div class='flex-row'>
+                            <div>
+                                <p>Départ: {{search.startDate|date('d/m/Y H:i')}}</p>
+                                <p>Arrivée: {{search.endDate|date('d/m/Y H:i')}}</p>
+                            </div>
+                            <p>Ecologique: {% if search.isEcologique %}oui {% else %}non{% endif %}</p>
+                        </div>
+                        <button class='standard-btn'>Détails</button>
+                    </div>
+                </section>
+            {% endfor %}
+        {% endif %}
+    </section>
+    {% if search != null %}
+        <section class="block none" id='filter'>
+            <h1>Filter</h1>
             <div>
                 <div class='flex-row'>
-                    <h2>Pseudo</h2>  
-                    <img src='img/userPicture.jpg' alt="phote de profil"/>
-                    <h3>4/5</h3>
+                    <input type="checkbox" id="ecologie"  value="ecologie"/>
+                    <label for="ecologie"><p>Ecologique</p></label>
                 </div>
+                <label for='maxPrices'><p>Prix maximum (crédits):</p></label>
+                <input type='number' placeholder='100' id='maxPrices'/>
+                <label for='maxTimes'><p>Durée maximum:</p></label>
+                <input type='time' id='maxTimes'/>
+                <p>Note minimal:</p>
                 <div class='flex-row'>
-                    <h2>9,00€</h2>
-                    <p>2 places restantes</p>
+                    <input type='text' placeholder='2'>
+                    <p>/5</p>
                 </div>
-                <div class='flex-row'>
-                    <div>
-                        <p>Départ: 10/11/2024 à 9h00</p>
-                        <p>Arrivée: 10/11/2024 à 10h30</p>
-                    </div>
-                    <p>Ecologique: oui</p>
-                </div>
-                <button class='standard-btn'>Détails</button>
             </div>
         </section>
-    </section>
-    <section class="block" id='filter'>
-        <h1>Filter</h1>
-        <div>
-            <div class='flex-row'>
-                <input type="checkbox" id="ecologie"  value="ecologie"/>
-                <label for="ecologie"><p>Ecologique</p></label>
-            </div>
-            <label for='maxPrices'><p>Prix maximum (crédits):</p></label>
-            <input type='number' placeholder='100' id='maxPrices'/>
-            <label for='maxTimes'><p>Durée maximum:</p></label>
-            <input type='time' id='maxTimes'/>
-            <p>Note minimal:</p>
-            <div class='flex-row'>
-                <input type='text' placeholder='2'>
-                <p>/5</p>
-            </div>
-        </div>
-    </section>
+    {% endif %}
 </main>
 
 {% endblock %}

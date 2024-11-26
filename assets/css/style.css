@@ -299,7 +299,11 @@ button:hover{
 .search{
     width: 100%;
 }
+.none{
+    display: none;
+}
 .date{
+    width: fit-content;
     align-self: flex-start;
 }
 .inputBackground img{
@@ -741,7 +745,7 @@ select{
 }
 #travelOutpute>div>div:nth-child(3)>.inputBackground {
     font-size: 1.2em;
-    width: 25%;
+    width: fit-content;
 }
 #travelOutpute>div>div:nth-child(3)>.inputBackground>input{
     margin: 0 auto;
