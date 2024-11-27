@@ -1,8 +1,13 @@
 {% extends 'base.html.twig' %}
 
 {% block javascripts %}
-	{{ parent() }}
-	{{ encore_entry_script_tags('filter-mobile') }}
+	
+    {% if search != null %}
+        {{ parent() }}    
+        {{ encore_entry_script_tags('filter-mobile') }}
+
+    {% endif %}
+	
 {% endblock %}
 
 {% block body %}
@@ -14,26 +19,25 @@
                 {{ form_start(form) }}
                     <div class="inputBackground search">
                         <img src="img/loupe.png" alt='loupe'/>
-                        {{ form_widget(form.start_place,{'full_name': "start_place"}) }} 
+                        {{ form_widget(form.startPlace,{'full_name': "startPlace"}) }} 
                     </div>
                     <div class="inputBackground search">
                         <img src="img/loupe.png" alt='loupe'/>
-                        {{ form_widget(form.end_place,{"full_name":"end_place"}) }} 
+                        {{ form_widget(form.endPlace,{"full_name":"endPlace"}) }} 
                     </div>
                     <div class="inputBackground date">
                         <img src="img/calendar.png" alt='canlendrier'/>
-                        {{ form_widget(form.date,{"full_name":"date"}) }} 
+                        {{ form_widget(form.startDate,{"full_name":"startDate"}) }} 
                     </div>
                 </div>
-                <button class="standard-btn">Rechercher</button>
             {{ form_end(form) }}
         </section>
-        <section>
-            <div id="btnFilter">
-                <button class="standard-btn" id="filter-btn">Filtre</button>
-            </div>
-        </section>
         {% if search != null %}
+            <section>
+                <div id="btnFilter">
+                    <button class="standard-btn" id="filter-btn">Filtre</button>
+                </div>
+            </section>
             {% for search in search %}
                 <section class='block' id="show-carpool">
                     <div>
@@ -57,6 +61,8 @@
                     </div>
                 </section>
             {% endfor %}
+            {% else %}
+            <h3 style="text-align:center;">Vous d'avait soit pas saisi de voyage ou soit que votre voyage n'existe pas, veuillez réessayer.</h3>
         {% endif %}
     </section>
     {% if search != null %}

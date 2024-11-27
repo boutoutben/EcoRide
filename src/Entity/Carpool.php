@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\CarpoolRepository;
+use DateTime;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -18,13 +19,13 @@ class Carpool
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
-    #[Assert\NotBlank(message: "Le champ ne peut pas être vide")]
-    #[Assert\Length(min: 2, max: 50, minMessage:"Il n'y a pas assez de caractère, il en faut au moins 2", maxMessage:"Il y a trop de caractère, il faut maximum 100 caractère")]
+    #[Assert\NotBlank(message: "Le champ ne peut pas être vide", groups: ['SearchTravel'])]
+    #[Assert\Length(min: 2, max: 50, minMessage: "Il n'y a pas assez de caractère, il en faut au moins 2", maxMessage: "Il y a trop de caractère, il faut maximum 50 caractère", groups: ['SearchTravel'])]
     private ?string $startPlace;
 
     #[ORM\Column(length: 50)]
-    #[Assert\NotBlank(message: "Le champ ne peut pas être vide")]
-    #[Assert\Length(min: 2, max: 50)]
+    #[Assert\NotBlank(message: "Le champ ne peut pas être vide", groups: ['SearchTravel'])]
+    #[Assert\Length(min: 2, max: 50, groups: ['SearchTravel'])]
     private ?string $endPlace;
 
     #[ORM\Column]
@@ -32,11 +33,15 @@ class Carpool
     #[Assert\LessThan(10)]
     private ?int $placeLeft;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $endDate;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Assert\NotBlank(message: "Start date is required.", groups: ['SearchTravel'])]
+    #[Assert\Type("\DateTimeInterface")]
+    private ?\DateTime $startDate;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $startDate = null;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Assert\NotBlank(message: "End date is required.")]
+    #[Assert\Type("\DateTimeInterface")]
+    private ?\DateTime $endDate;
 
     #[ORM\Column]
     private ?bool $isEcologique = null;
@@ -64,6 +69,8 @@ class Carpool
     public function __construct()
     {
         $this->Car = new ArrayCollection();
+        $this->startDate = new \DateTime();
+        $this->endDate = (new \DateTime())->modify('+1 hour');
     }
 
     public function getId(): ?int
@@ -107,27 +114,25 @@ class Carpool
         return $this;
     }
 
-    public function getEndDate(): ?\DateTimeInterface
-    {
-        return $this->endDate;
-    }
-
-    public function setEndDate(\DateTimeInterface $endDate): static
-    {
-        $this->endDate = $endDate;
-
-        return $this;
-    }
-
-    public function getStartDate(): ?\DateTimeInterface
+    public function getStartDate(): ?\DateTime
     {
         return $this->startDate;
     }
 
-    public function setStartDate(\DateTimeInterface $startDate): static
+    public function setStartDate($startDate): self
     {
         $this->startDate = $startDate;
+        return $this;
+    }
 
+    public function getEndDate(): ?\DateTime
+    {
+        return $this->endDate;
+    }
+
+    public function setEndDate(\DateTime $endDate): self
+    {
+        $this->endDate = $endDate;
         return $this;
     }
 

@@ -346,6 +346,7 @@ button:hover{
 }
 /*carpool*/
 #filter-btn{
+    background-color: red;
     display: none;
 }
 

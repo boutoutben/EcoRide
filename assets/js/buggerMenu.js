@@ -11,7 +11,6 @@ hamMenuClose.addEventListener("click", ()=> {
 
 document.addEventListener("click", e => {
     if(!offScreenMenu.contains(e.target)&& e.target !== hamMenu){
-        console.log(e.target);
         offScreenMenu.classList.remove("active");
     }
 })
