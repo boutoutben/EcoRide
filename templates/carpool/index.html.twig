@@ -19,17 +19,28 @@
                 {{ form_start(form) }}
                     <div class="inputBackground search">
                         <img src="img/loupe.png" alt='loupe'/>
-                        {{ form_widget(form.startPlace,{'full_name': "startPlace"}) }} 
+                        {{ form_widget(form.startPlace) }} 
                     </div>
+                    {% for error in form.startPlace.vars.errors %}
+                            <div class="form_error">{{ error.message }}</div>
+                    {% endfor %}
                     <div class="inputBackground search">
                         <img src="img/loupe.png" alt='loupe'/>
-                        {{ form_widget(form.endPlace,{"full_name":"endPlace"}) }} 
+                        {{ form_widget(form.endPlace) }} 
                     </div>
+                    {% for error in form.endPlace.vars.errors %}
+                            <div class="form_error">{{ error.message }}</div>
+                    {% endfor %}
                     <div class="inputBackground date">
                         <img src="img/calendar.png" alt='canlendrier'/>
-                        {{ form_widget(form.startDate,{"full_name":"startDate"}) }} 
+                        {{ form_widget(form.startDate) }}
                     </div>
+                    {% for error in form.startDate.vars.errors %}
+                            <div class="form_error">{{ error.message }}</div>
+                    {% endfor %}
+                    {{form_row(form.submit)}}
                 </div>
+                
             {{ form_end(form) }}
         </section>
         {% if search != null %}

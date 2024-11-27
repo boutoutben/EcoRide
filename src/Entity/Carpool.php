@@ -19,14 +19,14 @@ class Carpool
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
-    #[Assert\NotBlank(message: "Le champ ne peut pas être vide", groups: ['SearchTravel'])]
-    #[Assert\Length(min: 2, max: 50, minMessage: "Il n'y a pas assez de caractère, il en faut au moins 2", maxMessage: "Il y a trop de caractère, il faut maximum 50 caractère", groups: ['SearchTravel'])]
-    private ?string $startPlace;
+    #[Assert\NotBlank(message: "Le champ ne peut pas être vide")]
+    #[Assert\Length(min: 2, max: 50, minMessage: "Il n'y a pas assez de caractère, il en faut au moins 2", maxMessage: "Il y a trop de caractère, il faut maximum 50 caractère")]
+    private ?string $startPlace = null;
 
     #[ORM\Column(length: 50)]
-    #[Assert\NotBlank(message: "Le champ ne peut pas être vide", groups: ['SearchTravel'])]
-    #[Assert\Length(min: 2, max: 50, groups: ['SearchTravel'])]
-    private ?string $endPlace;
+    #[Assert\NotBlank(message: "Le champ ne peut pas être vide")]
+    #[Assert\Length(min: 2, max: 50)]
+    private ?string $endPlace = null;
 
     #[ORM\Column]
     #[Assert\Positive]
@@ -34,7 +34,7 @@ class Carpool
     private ?int $placeLeft;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    #[Assert\NotBlank(message: "Start date is required.", groups: ['SearchTravel'])]
+    #[Assert\NotBlank(message: "Start date is required.")]
     #[Assert\Type("\DateTimeInterface")]
     private ?\DateTime $startDate;
 
@@ -70,7 +70,7 @@ class Carpool
     {
         $this->Car = new ArrayCollection();
         $this->startDate = new \DateTime();
-        $this->endDate = (new \DateTime())->modify('+1 hour');
+        $this->endDate = (new \DateTime());
     }
 
     public function getId(): ?int
@@ -83,7 +83,7 @@ class Carpool
         return $this->startPlace;
     }
 
-    public function setStartPlace(string $startPlace): static
+    public function setStartPlace(?string $startPlace): self
     {
         $this->startPlace = $startPlace;
 

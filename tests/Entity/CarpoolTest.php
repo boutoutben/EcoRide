@@ -32,7 +32,6 @@ class CarpoolTest extends KernelTestCase
         $errors = $container->get("validator")->validate($carpool);
         $this->assertCount(0, $errors);
     }
-
     public function testNotBlankAndLenghtMin(): void
     {
         $kernel = self::bootKernel();

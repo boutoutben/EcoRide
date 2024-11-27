@@ -25,40 +25,30 @@ class CarpoolController extends AbstractController
     #[Route('/carpool', name: 'app_carpool')]
     public function index(Request $request): Response
     {
-        $search = "empty";
-        $carpool = new Carpool();
-        $form = $this->createForm(SearchTravelType::class, $carpool);
+        $search = null;
+        $form = $this->createForm(SearchTravelType::class);
         $form->handleRequest($request);
-
-        if ($form->isSubmitted()) {
-            // Debugging submitted request data
-            if($form->isValid()){
-                // Get form data
-                $startPlace = $_POST["startPlace"];
-                $endPlace = $_POST["endPlace"];
-                $startDate = $_POST["startDate"];
-
-
-                // Build the query
-                $queryBuilder = $this->carpoolRepository->createQueryBuilder('c')
-                    ->select('c', 'u') // Select fields from both Carpool (c) and User (u)
-                    ->join('c.user', 'u') // Adjust this to your actual relationship
-                    ->where('c.startPlace = :start_place')
-                    ->andWhere('c.endPlace = :end_place')
-                    ->andWhere('c.startDate >= :startDate') // Ensure you're using the correct date comparison
-                    ->setParameters(new ArrayCollection([
-                        new Parameter('start_place', $startPlace),
-                        new Parameter('end_place', $endPlace),
-                        new Parameter("startDate", $startDate)
-                    ]));
-
-                $search = $queryBuilder->getQuery()->getResult();
-            } else {
-                // Handle invalid form, check for errors
-                dump($form->getErrors(true));
-            }
-            
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $startPlace = $data["startPlace"];
+            $endPlace = $data["endPlace"];
+            $startDate = $data["startDate"];
+                
+            // Build the query
+            $queryBuilder = $this->carpoolRepository->createQueryBuilder('c')
+                ->select('c', 'u') // Select fields from both Carpool (c) and User (u)
+                ->join('c.user', 'u') // Adjust this to your actual relationship
+                ->where('c.startPlace = :start_place')
+                ->andWhere('c.endPlace = :end_place')
+                ->andWhere("c.startDate >= :startDate")
+                ->setParameters(new ArrayCollection([
+                    new Parameter('start_place', $startPlace),
+                    new Parameter('end_place', $endPlace),
+                    new Parameter("startDate", $startDate)
+                ]));
+            $search = $queryBuilder->getQuery()->getResult();
         } 
+            
         return $this->render('carpool/index.html.twig', [
             'controller_name' => 'CarpoolController',
             "form" => $form->createView(),
