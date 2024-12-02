@@ -1,18 +1,28 @@
 <?php
 
-namespace App\Tests\App\Tests\Unit\Entity;
+namespace App\Tests\Unit\Entity;
 
 use App\Entity\Carpool;
 use App\Entity\User;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class CarpoolTest extends KernelTestCase
 {
+    private UserPasswordHasherInterface $passwordHasher;
+
+    protected function setUp(): void
+    {
+        $kernel = self::bootKernel();
+        $this->passwordHasher = static::getContainer()->get(UserPasswordHasherInterface::class);
+    }
+
     public function getEntity(): ?Carpool
     {
-        $user = new User();
-        return (new Carpool)->setStartPlace("Lille")
+        $user = new User($this->passwordHasher);
+        return (new Carpool)
+            ->setStartPlace("Lille")
             ->setEndPlace("Valencienne")
             ->setPlaceLeft(5)
             ->setStartDate(new DateTime("2012-02-01 07:00:00"))
@@ -23,71 +33,56 @@ class CarpoolTest extends KernelTestCase
             ->setPrice(2.0)
             ->setUser($user);
     }
+
     public function testEntityIsValid(): void
     {
-        $kernel = self::bootKernel();
-        $container = static::getContainer();
-
         $carpool = $this->getEntity();
-        $errors = $container->get("validator")->validate($carpool);
+        $errors = static::getContainer()->get("validator")->validate($carpool);
         $this->assertCount(0, $errors);
     }
+
     public function testNotBlankAndLenghtMin(): void
     {
-        $kernel = self::bootKernel();
-        $container = static::getContainer();
-
         $carpool = $this->getEntity();
         $carpool->setStartPlace('');
-        $carpool->setEndPlace("");
-        $errors = $container->get("validator")->validate($carpool);
-        $this->AssertCount(4, $errors);
+        $carpool->setEndPlace('');
+        $errors = static::getContainer()->get("validator")->validate($carpool);
+        $this->assertCount(4, $errors);
     }
 
     public function testLenghtMax(): void
     {
-        $kernel = self::bootKernel();
-        $container = static::getContainer();
-
         $carpool = $this->getEntity();
-        $carpool->setStartPlace("ifokdsofiueodfisusodifuospidfuoidsufoipsdufpoisdfupoisdfuiodsfuposidfuisodfuoisdfuosidufoipsduf");
-        $carpool->setEndPlace("foisdfopisdfospidfposdifpo^sdifpos^dfip^sodifps^doifdfjdkfidifjdifuidufiduf");
-        $errors = $container->get("validator")->validate($carpool);
-        $this->AssertCount(2, $errors);
+        $carpool->setStartPlace(str_repeat('a', 256));
+        $carpool->setEndPlace(str_repeat('b', 256));
+        $errors = static::getContainer()->get("validator")->validate($carpool);
+        $this->assertCount(2, $errors);
     }
+
     public function testPositive(): void
     {
-        $kernel = self::bootKernel();
-        $container = static::getContainer();
-
         $carpool = $this->getEntity();
         $carpool->setPlaceLeft(-1);
-        $errors = $container->get("validator")->validate($carpool);
-        $this->AssertCount(1, $errors);
+        $errors = static::getContainer()->get("validator")->validate($carpool);
+        $this->assertCount(1, $errors);
     }
 
     public function testLessThan(): void
     {
-        $kernel = self::bootKernel();
-        $container = static::getContainer();
-
         $carpool = $this->getEntity();
         $carpool->setPlaceLeft(10);
-        $errors = $container->get("validator")->validate($carpool);
-        $this->AssertCount(1, $errors);
+        $errors = static::getContainer()->get("validator")->validate($carpool);
+        $this->assertCount(1, $errors);
     }
 
     public function testGreaterThanOrEqual(): void
     {
-        $kernel = self::bootKernel();
-        $container = static::getContainer();
-
         $carpool = $this->getEntity();
         $carpool->setPrice(2);
-        $errors = $container->get("validator")->validate($carpool);
-        $this->AssertCount(0, $errors);
+        $errors = static::getContainer()->get("validator")->validate($carpool);
+        $this->assertCount(0, $errors);
         $carpool->setPrice(1);
-        $errors = $container->get("validator")->validate($carpool);
-        $this->AssertCount(1, $errors);
+        $errors = static::getContainer()->get("validator")->validate($carpool);
+        $this->assertCount(1, $errors);
     }
 }

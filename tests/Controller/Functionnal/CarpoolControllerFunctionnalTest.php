@@ -47,7 +47,6 @@ class CarpoolControllerFunctionnalTest extends WebTestCase
 
         // Assert that the form was returned and not redirected (HTTP_OK means it's still the same page)
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
-
         // Assert that the form contains validation error messages
         $this->assertSelectorTextContains('.form_error', 'Le champ ne peut pas être vide');  // Adjust this to match your error message
     }

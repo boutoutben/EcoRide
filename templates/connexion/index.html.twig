@@ -12,20 +12,28 @@
     <section class="block" id="connexion">
         <h1>Connexion</h1>
         <div class="allInput">
+        {{ form_start(form) }}
+            {% if error %}
+                    <div class="alert alert-danger">{{ error.messageKey }}</div>
+            {% endif %}
             <div class="inputBackground">
                 <img src="img/user.png" alt="username">
-                <input type="text" class="input-place" placeholder="username"/>
+                {{ form_widget(form.pseudo) }}
             </div>
             <div class="inputBackground">
                 <img src="img/key.png" alt="mot de passe">
-                <input type="password" id="passwordInput" class="input-place" placeholder="mot de passe sécurisé"/>
+                {{ form_widget(form.password) }}
                 <img id='password' src="img/hidden.png" alt="montrer et cacher mot de passe"/>
             </div>
+            {% for error in form.pseudo.vars.errors %}
+                <div class="form_error">{{ error.message }}</div>
+            {% endfor %}
+            <p>*Le mot de passe doit cotenir au moins 8 caractères, une majuscule, un chiffre et un caractère spécial</p>
+            {{ form_widget(form.submit) }}
         </div>
-        <p>*Le mot de passe doit cotenir au moins 8 caractères, une majuscule, un chiffre et un caractère spécial</p>
-        <button class="standard-btn">Connexion</button>
+    {{ form_end(form) }}
         <div class="flex-row">
-            <a href='/createAccount'><p>Je n'ai pas de compte</p></a>
+            <a href='/signIn'><p>Je n'ai pas de compte</p></a>
             <a href='#'><p>Mot de passe oublié</p></a>
         </div>
     </section>

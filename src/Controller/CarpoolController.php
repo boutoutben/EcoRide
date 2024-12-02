@@ -48,7 +48,6 @@ class CarpoolController extends AbstractController
                 ]));
             $search = $queryBuilder->getQuery()->getResult();
         } 
-            
         return $this->render('carpool/index.html.twig', [
             'controller_name' => 'CarpoolController',
             "form" => $form->createView(),

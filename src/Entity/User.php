@@ -2,45 +2,81 @@
 
 namespace App\Entity;
 
+use App\Repository\RolesRepository;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use PhpParser\Node\Expr\Cast\Array_;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-class User
+#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_USERNAME', fields: ['username'])]
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups('user:read')]
     private ?int $id = null;
 
-    #[ORM\Column(length: 50,nullable: true)]
+    #[ORM\Column(length: 180)]
+    #[Groups('user:read')]
+
+    #[Assert\NotBlank(message:"Le champ ne peux pas être vide")]
+    #[Assert\Length(min:2, max:50, minMessage:"Le nombre de caractère doit être supérieur ou égal à 2", maxMessage:"Le nombre de caractère doit être inférieur à 50")]
+    #[Assert\Regex(pattern: "/^^[a-zA-Z0-9_\-@.]+$/", message: "Le pseudo mis n'est pas conforme",)]
+    private ?string $username = null;
+
+    /**
+     * @var string The hashed password
+     */
+    #[ORM\Column]
+    #[Groups('user:read')]
+    #[Assert\NotBlank(message: "Le champ ne peux pas être vide")]
+    private ?string $password = null;
+
+    #[ORM\Column(length: 50, nullable: true)]
+    #[Groups('user:read')]
+    #[Assert\NotBlank(message: "Le champ ne peux pas être vide")]
+    #[Assert\Length(min: 2, max: 50, minMessage: "Le nombre de caractère doit être supérieur ou égal à 2", maxMessage: "Le nombre de caractère doit être inférieur à 50")]
+    #[Assert\Regex(pattern: "/^[a-zA-Z0-9_\-@.]+$/", message: "Le pseudo mis n'est pas conforme",)]
     private ?string $name = null;
 
     #[ORM\Column(length: 50, nullable: true)]
+    #[Groups('user:read')]
+    #[Assert\NotBlank(message: "Le champ ne peux pas être vide")]
+    #[Assert\Length(min: 2, max: 50, minMessage: "Le nombre de caractère doit être supérieur ou égal à 2", maxMessage: "Le nombre de caractère doit être inférieur à 50")]
+    #[Assert\Regex(pattern: "/^[a-zA-Z0-9_\-@.]+$/", message: "Le pseudo mis n'est pas conforme",)]
     private ?string $surname = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups('user:read')]
+    #[Assert\NotBlank(message: "Le champ ne peux pas être vide")]
+    #[Assert\Length(max: 50, maxMessage: "Le nombre de caractère doit être inférieur à 50")]
+    #[Assert\Regex(pattern: "/^[a-zA-Z0-9_\-@.]+$/", message: "Le pseudo mis n'est pas conforme",)]
+    #[Assert\Email(message: "Ce champ donc contenir un email")]
     private ?string $email = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $phone = null;
-
-    #[ORM\Column(length: 100)]
-    private ?string $pseudo = null;
-
+    #[Groups('user:read')]
+    #[Assert\NotBlank(message: "Le champ ne peux pas être vide")]
+    #[Assert\Regex(pattern: "/^0[1-9]( [0-9]{2}){4}$/", message: "Le numéro n'est pas conforme")]
+    private ?string $phone = null;
+    
     #[ORM\Column]
+    #[Assert\PositiveOrZero(message:"Le nombre ne peut pas être négatif")]
     private ?int $nb_credit = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\NotBlank(message: "Le champ ne peux pas être vide")]
+    #[Assert\Regex(pattern: "/^[a-zA-Z0-9_\-]+\.(png|jpg)$/", message: "Le numéro n'est pas conforme")]
     private ?string $img = null;
-
-    /**
-     * @var Collection<int, Roles>
-     */
-    #[ORM\OneToMany(targetEntity: Roles::class, mappedBy: 'user')]
-    private Collection $Role;
 
     /**
      * @var Collection<int, Opinion>
@@ -63,22 +99,92 @@ class User
     #[ORM\OneToMany(targetEntity: Carpool::class, mappedBy: 'user')]
     private Collection $carpool;
 
-    #[ORM\Column(length: 255)]
-    private ?string $password = null;
 
+    private UserPasswordHasherInterface $passwordHasher;
+
+    #[Assert\NotBlank(message: "Le champ ne peux pas être vide")]
+    #[Assert\Length(max: 50, maxMessage: "Le nombre de caractère doit être inférieur à 50")]
+    #[Assert\Regex(pattern: "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/", message: "Mot de passe non conforme")]
+    private $plainPassword;
+
+    #[ORM\Column(type: "json")]
+    private $roles = [];
 
     public function __construct()
     {
-        $this->Role = new ArrayCollection();
         $this->opinion = new ArrayCollection();
         $this->Car = new ArrayCollection();
         $this->carpool = new ArrayCollection();
+        $this->roles = new ArrayCollection();
     }
-
     public function getId(): ?int
     {
         return $this->id;
     }
+
+    public function getUsername(): ?string
+    {
+        return $this->username;
+    }
+
+    public function setUsername(string $username): static
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+    public function setPlainPassword(string $plainPassword): self
+    {
+        $this->plainPassword = $plainPassword;
+        return $this;
+    }
+
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    #[Groups('user:read')]
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->username;
+    }
+
+    /**
+     * @see UserInterface
+     *
+     * @return list<string>
+     */
+
+
+    /**
+     * @see PasswordAuthenticatedUserInterface
+     */
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): static
+    {
+        $this->password = $password;
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials(): void
+    {
+        $this->plainPassword = null;
+    }
+
+   
 
     public function getName(): ?string
     {
@@ -116,30 +222,17 @@ class User
         return $this;
     }
 
-    public function getPhone(): ?int
+    public function getPhone(): ?string
     {
         return $this->phone;
     }
 
-    public function setPhone(int $phone): static
+    public function setPhone(string $phone): static
     {
         $this->phone = $phone;
 
         return $this;
     }
-
-    public function getPseudo(): ?string
-    {
-        return $this->pseudo;
-    }
-
-    public function setPseudo(string $pseudo): static
-    {
-        $this->pseudo = $pseudo;
-
-        return $this;
-    }
-
     public function getNbCredit(): ?int
     {
         return $this->nb_credit;
@@ -164,35 +257,6 @@ class User
         return $this;
     }
 
-    /**
-     * @return Collection<int, Roles>
-     */
-    public function getRole(): Collection
-    {
-        return $this->Role;
-    }
-
-    public function addRole(Roles $role): static
-    {
-        if (!$this->Role->contains($role)) {
-            $this->Role->add($role);
-            $role->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRole(Roles $role): static
-    {
-        if ($this->Role->removeElement($role)) {
-            // set the owning side to null (unless already changed)
-            if ($role->getUser() === $this) {
-                $role->setUser(null);
-            }
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, Opinion>
@@ -290,14 +354,21 @@ class User
         return $this;
     }
 
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
+    /**
+     * @return Collection<int, UserRoles>
+     */
 
-    public function setPassword(string $password): static
+    public function getRoles(): array
     {
-        $this->password = $password;
+        $roles = $this->roles;
+        $roles[] = "";
+
+        return array_unique($roles);
+    }
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+        
 
         return $this;
     }

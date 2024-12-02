@@ -17,6 +17,13 @@
 	</head>
 	<body>
 		<header>
+			<div class="none">
+				{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+					{{ stimulus_controller('user-api', {
+						url: path('app_user_api_me')
+				}) }}
+				{% endif %}
+			</div>
 			<div id="screen-menu">
 				<div class="flex-row">
 					<div class="flex-row">
@@ -34,7 +41,11 @@
 							<a href="/carpool">Covoiturage</a>
 						</li>
 						<li>
-							<a href="/connexion">Connexion</a>
+							{% if is_granted("ROLE_USER") %}
+								<a href="/userSpace">Espace utilisateur</a>
+							{% else %}
+								<a href="/connexion">connexion</a>
+							{% endif %}
 						</li>
 						<li>
 							<a href="/contact">Contact</a>
@@ -47,10 +58,22 @@
 				<img src="img/menu.png" id="burggerMenuClose" alt="fermer le menu déroulant"/>
 				<nav>
 					<ul>
-						<li onclick="window.location = '/'">Acceuil</li>
-						<li onclick="window.location = '/carpool'">Covoiturage</li>
-						<li onclick="window.location = '/connexion'">Connexion</li>
-						<li onclick="window.location = '/contact'">Contact</li>
+						<li>
+							<a href="/">Acceuil</a>
+						</li>
+						<li>
+							<a href="/carpool">Covoiturage</a>
+						</li>
+						<li>
+							{% if is_granted("ROLE_USER") %}
+								<a href="/userSpace">Espace utilisateur</a>
+							{% else %}
+								<a href="/connexion">connexion</a>
+							{% endif %}
+						</li>
+						<li>
+							<a href="/contact">Contact</a>
+						</li>
 						<li>20 crédits<img src="img/more.png"/></li>
 					</ul>
 				</div>
