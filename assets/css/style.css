@@ -555,8 +555,9 @@ input[type='checkbox']:checked{
     width: 70%;
     text-align: center;
 }
-.links{
+.links >p{
     color: #004b70;
+    text-decoration: underline;
 }
 
 /*connexion*/

@@ -1,7 +1,7 @@
 
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ConnexionController!
+{% block title %}ConnexionController!
 {% endblock %}
 {% block javascripts %}
 	{{ parent() }}
@@ -42,10 +42,10 @@
 			</div>
 			{{ form_end(form) }}
 			<div class="flex-row">
-				<a href='/signIn'>
+				<a class="links" href='/signIn'>
 					<p>Je n'ai pas de compte</p>
 				</a>
-				<a href='#'>
+				<a class="links" href='#'>
 					<p>Mot de passe oublié</p>
 				</a>
 			</div>
