@@ -22,6 +22,7 @@
         "symfony/flex": "^2",
         "symfony/form": "7.1.*",
         "symfony/framework-bundle": "7.1.*",
+        "symfony/http-client": "7.1.*",
         "symfony/property-access": "7.1.*",
         "symfony/property-info": "7.1.*",
         "symfony/runtime": "7.1.*",
@@ -41,7 +42,8 @@
         "symfony/css-selector": "7.1.*",
         "symfony/maker-bundle": "^1.61",
         "symfony/phpunit-bridge": "^7.1",
-        "zenstruck/foundry": "^2.2"
+        "zenstruck/foundry": "^2.2",
+        "symfony/panther": "^2.0"
     },
     "config": {
         "allow-plugins": {
@@ -86,7 +88,6 @@
         ],
         "compile": [
             "composer require symfony/orm-pack",
-            "php bin/console doctrine:migrations:status",
             "php bin/console doctrine:migrations:diff",
             "php bin/console doctrine:migrations:migrate"
        ]

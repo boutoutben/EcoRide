@@ -44,34 +44,32 @@ class ConnexionController extends AbstractController
     #[Route('/signIn', name: 'app_sign_in')]
     public function new(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher)
     {
-        $user = new User($this->passwordHasher);
+        $user = new User();
         $form = $this->createForm(CreateAccountType::class);
         $form->handleRequest($request);
         // Check if the form is submitted and valid
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
-                $data = $form->getData();
+        if ($form->isSubmitted()&& $form->isValid()) {
+            $data = $form->getData();
 
-                // Set user data
-                $user->setEmail($data["email"]);
-                $user->setUsername($data["pseudo"]);
-                $user->setNbCredit(20);
-                $user->setRoles(['ROLE_USER']);
+            // Set user data
+            $user->setEmail($data["email"]);
+            $user->setUsername($data["pseudo"]);
+            $user->setNbCredit(20);
+            $user->setRoles(['ROLE_USER']);
 
-                // Check if passwords match
-                if ($data["password"] !== $data["passwordEgain"]) {
-                    $form->addError(new FormError('The passwords do not match.'));
+            // Check if passwords match
+            if ($data["password"] !== $data["passwordEgain"]) {
+                $form->addError(new FormError('The passwords do not match.'));
                 
-                } else {
-                    // Hash password and save user
-                    $hashedPassword = $passwordHasher->hashPassword($user, $data["password"]);
-                    $user->setPassword($hashedPassword);
-                    $entityManager->persist($user);
-                    $entityManager->flush();
+            } else {
+                // Hash password and save user
+                $hashedPassword = $passwordHasher->hashPassword($user, $data["password"]);
+                $user->setPassword($hashedPassword);
+                $entityManager->persist($user);
+                $entityManager->flush();
 
-                    // Redirect after successful registration
-                    return $this->redirectToRoute('app_connexion', [], Response::HTTP_SEE_OTHER);
-                }
+                // Redirect after successful registration
+                return $this->redirectToRoute('app_connexion', [], Response::HTTP_SEE_OTHER);
             }
         }
 

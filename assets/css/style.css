@@ -280,9 +280,8 @@ button:hover{
 .allInput{
     display: flex;
     flex-direction: column;
-    align-self: center;
     width: 80%;
-    margin: 1vw 0;
+    margin: 1vw auto;
 }
 
 .searchSolo{
@@ -575,20 +574,81 @@ input[type='checkbox']:checked{
 #profile>div{
     margin: 1vw 0;
 }
+
 #profile .flex-row{
     justify-content: space-around;
 }
-#profile>div:first-child>img{
+#profile>div:first-child>div>div>img:first-child{
     width: 8vw;
     background-color: white;
     border-radius: 50vw;
     object-fit: cover;
+}
+#profile>div:first-child>div{
+    position: relative;
+}
+#profile>div:first-child>div>div>img:last-child{
+    display: none;
+    background-color: rgb(248, 207, 207);
+    position: absolute;
+    top: 50%;
+    left: 32%;
+    width: 3vw;
+}
+#profile>div:first-child>div:hover>div>img:last-child{
+    display: block;
+}
+#overlay {
+    position: absolute;
+    display: none;
+    top: 2vw;
+    left: -10vw;
+    width: 25vw;
+    background-color: #004b70;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    z-index: 1000;
+}
+#overlay.active{
+    display: block;
+}
+#overlayContent {
+    color: white;
+    text-align: center;
+    margin: 1vw 2vw;
+}
+.success{
+    font-size: 0.8em;
+}
+
+.file-input {
+    width: 0.1px;
+        height: 0.1px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+        z-index: -1;
+}
+.file-input+label {
+    font-size: 1.25em;
+    font-weight: 700;
+    padding: 0.5vw 1vw;
+    color: white;
+    border-radius: 15vw;
+    background-color: #1790a8;
+    display: inline-block;
+    cursor: pointer;
+}
+.inputfile+label * {
+    pointer-events: none;
 }
 #profile>div.flex-row:first-child{
     align-self: flex-end;
     width: 40vw;
     align-items: center;
 }
+
 #profile>div.flex-row:nth-child(2) {
     width: 40vw;
 }
@@ -601,6 +661,7 @@ td:first-child{
 input[type='radio']{
     width: 1.6vw;
 }
+
 
 @media screen and (max-width:945px) {
     input[type='radio'] {
@@ -624,7 +685,7 @@ input[type='radio']{
     .wrap{
         flex-wrap: wrap;
     }
-    #profile .allInput{
+    #profile .allInput{      
         width: 90%;
     }
 }
@@ -906,4 +967,10 @@ canvas{
 :is(#fullPresentation, #recrutment) h3{
     width: 100%;
     text-align: left;
+}
+
+.form_error{
+    font-size: 0.9em;
+    color: rgb(238, 93, 93);
+    text-align: center;
 }

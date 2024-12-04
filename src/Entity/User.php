@@ -75,7 +75,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\NotBlank(message: "Le champ ne peux pas être vide")]
-    #[Assert\Regex(pattern: "/^[a-zA-Z0-9_\-]+\.(png|jpg)$/", message: "Le numéro n'est pas conforme")]
+    #[Assert\Regex(pattern: "/^[a-zA-Z0-9_\-]+\.(png|jpg|jpeg)$/", message: "Le numéro n'est pas conforme")]
     private ?string $img = null;
 
     /**
@@ -99,8 +99,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Carpool::class, mappedBy: 'user')]
     private Collection $carpool;
 
-
-    private UserPasswordHasherInterface $passwordHasher;
+    #[ORM\Column(nullable: true)]
+    private ?string $userType = null;
 
     #[Assert\NotBlank(message: "Le champ ne peux pas être vide")]
     #[Assert\Length(max: 50, maxMessage: "Le nombre de caractère doit être inférieur à 50")]
@@ -254,6 +254,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->img = $img;
 
+        return $this;
+    }
+    public function getUserType(): ?string
+    {
+        return $this->userType;
+    }
+
+    public function setUserType(string $userType): static
+    {
+        $this->userType = $userType;
+        
         return $this;
     }
 

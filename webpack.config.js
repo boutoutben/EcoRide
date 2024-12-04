@@ -28,6 +28,8 @@ Encore
     .addEntry("buggerMenu","./assets/js/buggerMenu.js")
     .addEntry("filter-mobile", "./assets/js/filter-mobile.js")
     .addEntry("redirection","./assets/js/redirection.js")
+    .addEntry("uploadFile", "./assets/js/uploadFile.js")
+    .addEntry("createAccountPassword","./assets/js/createAccountPassword.js")
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()

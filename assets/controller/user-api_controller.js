@@ -7,8 +7,9 @@ export default class extends Controller {
     }
 
     async connect() {
+    try {
         const response = await axios.get(this.urlValue);
-
-        console.log(response.data);
+    } catch (error) {
     }
+}
 }

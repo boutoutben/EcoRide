@@ -22,7 +22,7 @@ class ConnexionControllerTest extends WebTestCase
 
         $form = $crawler->selectButton('Créer un compte')->form([
             'create_account[email]' => 'test@gmail.com',
-            'create_account[pseudo]' => 'test4',
+            'create_account[pseudo]' => 'test',
             'create_account[password]' => 'Test123!',
             'create_account[passwordEgain]' => 'Test123!'
         ]);
@@ -35,7 +35,7 @@ class ConnexionControllerTest extends WebTestCase
         // Assert the status code after redirection
         $this->assertResponseIsSuccessful();
     }
-    */
+*/
     public function testSignInFormSubmissionWithInValidEmail()
     {
         $client = static::createClient();
@@ -138,7 +138,7 @@ class ConnexionControllerTest extends WebTestCase
         // Select the form and fill it
         $form = $crawler->selectButton('Connexion')->form([
             'connexion[pseudo]' => 'test',
-            'connexion[password]' => 'Test123!',
+            'connexion[password]' => 'Test123?',
         ]);
 
         // Submit the form
@@ -186,7 +186,7 @@ class ConnexionControllerTest extends WebTestCase
         // Select the form and fill it
         $form = $crawler->selectButton('Connexion')->form([
             'connexion[pseudo]' => 'test',
-            'connexion[password]' => 'Test123?',
+            'connexion[password]' => 'Test123!',
         ]);
 
         // Submit the form

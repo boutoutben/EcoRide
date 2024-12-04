@@ -5,6 +5,7 @@
 {% block javascripts %}
 	{{ parent() }}
 	{{ encore_entry_script_tags('profile') }}
+    {{ encore_entry_script_tags("uploadFile") }}
 {% endblock %}
 
 {% block body %}
@@ -12,85 +13,151 @@
     <section class='block' id='profile'>
         <div class="flex-row">
             <h1>Profile</h1>
-            <img src='img/user.png' alt="photo de profile"/>
-        </div>
-        <div class="flex-row wrap">
-            <div class="flex-row">
-                <input type="radio" id='passenger' name='profile-type' checked>
-                <label for='passenger'><p>Passager</p></label>
+            <div>
+                <div>
+                    <img src='img/{{userInfo.img}}' id="profile-pic" alt="profile"/>
+                    <img src="img/edit.png" id="editPicture" alt="modification avatar de profile"/>
+                </div>
+                <div id="overlay">
+                    <div id="overlayContent">
+                        <p>modifier la photo</p>
+                        <input type="file" id="file" class="file-input"/>
+                        <label for="file"><strong id="uploaded_image">Parcourrir...</strong></label>
+                    </div>
+                </div>
             </div>
-            <div class='flex-row'>
-                <input type="radio" id='driver' name='profile-type'>
-                <label for='driver'><p>Conducteur</label>
-            </div>
-            <div class='flex-row'>
-                <input type="radio" id='both' name='profile-type'>
-                <label for='both'><p>Les deux</p></label>
-            </div>
+            
         </div>
-        <div class="allInput">
-            <table>
-                <tr>
-                    <td>Nom:</td>
-                    <td>
-                        <div class='inputBackground'>
-                            <input type='text' class='input-place' placeholder='Boulanger'>
-                        </div>
-                    </td>
-                <tr>
-                <tr>
-                    <td>Prenom:</td>
-                    <td>
-                        <div class='inputBackground'>
-                            <input type='text' class='input-place' placeholder='Tom'>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Email:</td>
-                    <td>
-                        <div class='inputBackground'>
-                            <input type='email' class='input-place' placeholder='utilisateur@gmail.com'>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Email:</td>
-                    <td>
-                        <div class='inputBackground'>
-                            <input type='phone' class='input-place' placeholder='08 00 00 00 00'>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Pseudo:</td>
-                    <td>
-                        <div class='inputBackground'>
-                            <input type='text' class='input-place' placeholder='utilisateur'>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>mot de passe actuel:</td>
-                    <td>
-                        <div class='inputBackground'>
-                            <input type='password' id='passwordInput' class='input-place' placeholder='*************'/>
-                            <img id='password' src="img/hidden.png" alt="montrer et cacher mot de passe"/>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>nouveau mot de passe:</td>
-                    <td>
-                        <div class='inputBackground'>
-                            <input type='password' id='newPasswordInput'class='input-place' placeholder='*************'/>
-                            <img id='newPassword' src="img/hidden.png" alt="montrer et cacher mot de passe"/>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <button class="standard-btn">Enregistrer</button>
+        {{ form_start(form) }}
+            <div class="flex-row wrap">
+            {% for choice in form.userType %}
+                <div class="flex-row">
+                    {{ form_widget(choice) }}
+                    <p>{{ form_label(choice) }}</p>
+                    {% set nbType = nbType + 1 %}
+                </div>
+            {% endfor %}     
+            </div>
+            <div class="allInput">
+                <table>
+                    <tr>
+                        <td>Nom:</td>
+                        <td>
+                            <div class='inputBackground'>
+                                {{ form_widget(form.name, {"attr": {"value": userInfo.name ? userInfo.name : "Ecoride" ~ userInfo.id }}) }}
+                            </div>
+                        </td>
+                    <tr>
+                    <tr>
+                        <td colspan="2">
+                            {% for error in form.name.vars.errors %}
+                                <div class="form_error">{{ error.message }}</div>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Prenom:</td>
+                        <td>
+                            <div class='inputBackground'>
+                                {{ form_widget(form.surname, {"attr": {"value": userInfo.surname ? userInfo.surname : "Ecoride" ~ userInfo.id }}) }}
+
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            {% for error in form.surname.vars.errors %}
+                                <div class="form_error">{{ error.message }}</div>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Email:</td>
+                        <td>
+                            <div class='inputBackground'>
+                                {{ form_widget(form.email, {"attr":{"value":userInfo.email}}) }}
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">{% for error in form.email.vars.errors %}
+                            <div class="form_error">{{ error.message }}</div>
+                        {% endfor %}</td>
+                    </tr>
+                    <tr>
+                        <td>Telephone:</td>
+                        <td>
+                            <div class='inputBackground'>
+                                {{ form_widget(form.phone, {"attr":{"value":userInfo.phone}}) }}
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            {% for error in form.phone.vars.errors %}
+                                <div class="form_error">{{ error.message }}</div>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Pseudo:</td>
+                        <td>
+                            <div class='inputBackground'>
+                                {{ form_widget(form.pseudo, {"attr":{"value":userInfo.username}}) }}
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                    <td colspan="2">
+                            {% for error in form.pseudo.vars.errors %}
+                                <div class="form_error">{{ error.message }}</div>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>mot de passe actuel:</td>
+                        <td>
+                            <div class='inputBackground'>
+                                {{ form_widget(form.password) }}
+                                <img id='password' src="img/hidden.png" alt="montrer et cacher mot de passe"/>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            {% for error in form.password.vars.errors %}
+                                <div class="form_error">{{ error.message }}</div>
+                            {% endfor %}
+                            {% if form.vars.errors|length > 0 %}
+                                <div class="form_error">
+                                    {% for error in form.vars.errors %}
+                                        {{ error.message }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>nouveau mot de passe:</td>
+                        <td>
+                            <div class='inputBackground'>
+                                {{ form_widget(form.newPassword) }}
+                                <img id='newPassword' src="img/hidden.png" alt="montrer et cacher mot de passe"/>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            {% for error in form.newPassword.vars.errors %}
+                                <div class="form_error">{{ error.message }}</div>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            {{ form_row(form._token) }}
+            {{ form_row(form.submit) }}
+        {{ form_end(form) }}
     </section>
     <section class="flex-row">
         <section class='flex-column' id="rulesImgLeft">
