@@ -56,6 +56,7 @@ class ConnexionController extends AbstractController
             $user->setUsername($data["pseudo"]);
             $user->setNbCredit(20);
             $user->setRoles(['ROLE_USER']);
+            $user->setUserType("Passager");
 
             // Check if passwords match
             if ($data["password"] !== $data["passwordEgain"]) {
