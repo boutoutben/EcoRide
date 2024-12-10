@@ -9,7 +9,7 @@
 	{{ encore_entry_script_tags('profile') }}
     {{ encore_entry_script_tags("uploadFile") }}
     {{ encore_entry_script_tags("overlayCar") }}
-    <script nonce="{{ csp_nonce }}">
+    <script nonce="{{ csp_nonce('script') }}">
        document.addEventListener("DOMContentLoaded", function() {
         editBtn({{nbTotalCar}});
         });
