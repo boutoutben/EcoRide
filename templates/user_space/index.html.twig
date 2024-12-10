@@ -441,20 +441,23 @@
                                     </div>
                                 {% endfor %}
                             </div>
-                        <p>Nouveaux:</p>
-                        <div class="flex-row">    
-                            {{ form_start(addPreferenceForm) }}
-                            <div class="flex-row">    
-                                <div class='inputBackground'>
-                                    {{ form_widget(addPreferenceForm.newPreference) }} 
-                                </div>
-                            </div>
-                            {{ form_widget(addPreferenceForm.submit) }}   
-                            {{ form_end(addPreferenceForm) }}   
-                        </div>
                         {{ form_widget(preferenceForm.submit) }}
                         {{ form_end(preferenceForm) }} 
                     </div>
+                    {{ form_start(addPreferenceForm) }}
+                    <p>Nouveaux:</p>
+                    <div class="flex-row">    
+                        <div class="flex-row">    
+                            <div class='inputBackground'>
+                                {{ form_widget(addPreferenceForm.newPreference) }} 
+                            </div>
+                        </div>
+                        {{ form_widget(addPreferenceForm.submit) }}     
+                    </div>
+                    {% for error in addPreferenceForm.newPreference.vars.errors %}
+                        <div class="form_error"><p>{{ error.message }}</p></div>
+                    {% endfor %}
+                    {{ form_end(addPreferenceForm) }} 
                 </div>
             </div>
         </section>
