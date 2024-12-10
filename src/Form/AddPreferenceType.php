@@ -18,7 +18,7 @@ class AddPreferenceType extends AbstractType
                 "required" => false,
             "constraints" => [
                 new Assert\NotBlank(message: "Le champ ne peut pas être vide"),
-                new Assert\Regex("/^[A-Z]{2}-\d{3}-[A-Z]{2}$/", "La préférence n'est pas conforme")
+                new Assert\Regex("/^[A-Za-z0-9&'’.\- ]{2,50}$/", "La préférence n'est pas conforme")
             ],
                 "attr" => [
                     "class" => "input-place",
