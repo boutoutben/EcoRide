@@ -69,6 +69,10 @@ class CreateAccountType extends AbstractType
             ])
         ;
     }
+
+    /**
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([

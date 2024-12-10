@@ -18,18 +18,6 @@ class Roles
     #[ORM\Column(length: 50)]
     private ?string $label = null;
 
-    /**
-     * @var Collection<int, UserRoles>
-     */
-    #[ORM\OneToMany(targetEntity: UserRoles::class, mappedBy: 'roles')]
-    private Collection $userRoles;
-
-    public function __construct()
-    {
-        $this->userRoles = new ArrayCollection();
-    }
-
-
 
 
     public function getId(): ?int
@@ -45,36 +33,6 @@ class Roles
     public function setLabel(string $label): static
     {
         $this->label = $label;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, UserRoles>
-     */
-    public function getUserRoles(): Collection
-    {
-        return $this->userRoles;
-    }
-
-    public function addUserRole(UserRoles $userRole): static
-    {
-        if (!$this->userRoles->contains($userRole)) {
-            $this->userRoles->add($userRole);
-            $userRole->setRoles($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUserRole(UserRoles $userRole): static
-    {
-        if ($this->userRoles->removeElement($userRole)) {
-            // set the owning side to null (unless already changed)
-            if ($userRole->getRoles() === $this) {
-                $userRole->setRoles(null);
-            }
-        }
 
         return $this;
     }

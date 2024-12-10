@@ -24,9 +24,11 @@ class UserTest extends KernelTestCase
             ->setPhone("01 23 45 67 89")
             ->setNbCredit(20)
             ->setImg("img.png")
+            ->setUserType("Passenger")
             ->setPlainPassword("Test123!")
             ->setUsername("tester123")
-            ->setRoles(["ROLE_USER"]);
+            ->setRoles(["ROLE_USER"])
+            ->setPreference([["Non-fumeur",false],["Sans animaux",false], ["sans enfant", false]]);
             
 
         $hashedPassword = $this->passwordHasher->hashPassword($user, $user->getPlainPassword());

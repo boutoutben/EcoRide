@@ -78,11 +78,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\Regex(pattern: "/^[a-zA-Z0-9_\-]+\.(png|jpg|jpeg)$/", message: "Le numéro n'est pas conforme")]
     private ?string $img = null;
 
-    /**
-     * @var Collection<int, Opinion>
-     */
-    #[ORM\ManyToMany(targetEntity: Opinion::class, inversedBy: 'users')]
-    private Collection $opinion;
 
     /**
      * @var Collection<int, Car>
@@ -99,7 +94,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Carpool::class, mappedBy: 'user')]
     private Collection $carpool;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(nullable: false)]
+    #[Assert\Length(min: 2, max: 50, minMessage: "Le nombre de caractère doit être supérieur ou égal à 2", maxMessage: "Le nombre de caractère doit être inférieur à 50")]
+    #[Assert\Regex(pattern: "/^[a-zA-Z0-9_\-@.]+$/", message: "Le type mis n'est pas conforme",)]
     private ?string $userType = null;
 
     #[Assert\NotBlank(message: "Le champ ne peux pas être vide")]
@@ -110,12 +107,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: "json")]
     private $roles = [];
 
+    #[ORM\Column(type: 'json')]
+    private $preference = [];
+
     public function __construct()
     {
-        $this->opinion = new ArrayCollection();
         $this->Car = new ArrayCollection();
         $this->carpool = new ArrayCollection();
         $this->roles = new ArrayCollection();
+        $this->preference = [
+            ["Non-fumeur", false],
+            ["Sans animaux", false],
+        ];
     }
     public function getId(): ?int
     {
@@ -270,30 +273,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
 
     /**
-     * @return Collection<int, Opinion>
-     */
-    public function getOpinion(): Collection
-    {
-        return $this->opinion;
-    }
-
-    public function addOpinion(Opinion $opinion): static
-    {
-        if (!$this->opinion->contains($opinion)) {
-            $this->opinion->add($opinion);
-        }
-
-        return $this;
-    }
-
-    public function removeOpinion(Opinion $opinion): static
-    {
-        $this->opinion->removeElement($opinion);
-
-        return $this;
-    }
-
-    /**
      * @return Collection<int, Car>
      */
     public function getCar(): Collection
@@ -365,9 +344,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection<int, UserRoles>
-     */
 
     public function getRoles(): array
     {
@@ -380,6 +356,31 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->roles = $roles;
         
+
+        return $this;
+    }
+
+    public function getPreference(): array
+    {
+        return $this->preference;
+    }
+
+    public function setPreference(array $preference): self
+    {
+        $this->preference = $preference;
+        return $this;
+    }
+
+    public function addPreference(string $preference): self
+    {
+        foreach ($this->preference as $item) {
+            if ($item[0] === $preference) {
+                return $this; // Preference already exists
+            }
+        }
+
+        // Add the new preference with a default value of `false`
+        $this->preference[] = [$preference, false];
 
         return $this;
     }

@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use PhpParser\Node\Expr\Cast\Array_;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CarRepository::class)]
 class Car
@@ -17,64 +19,67 @@ class Car
     private ?int $id = null;
 
     #[ORM\Column(length: 20)]
-    private ?string $licence_plate = null;
+    #[Assert\NotBlank(message:"Le champ ne peut pas être vide")]
+    #[Assert\Regex("/^[A-Z]{2}-\d{3}-[A-Z]{2}$/", "La plate d'immatriculation n'est pas conforme")]
+    private ?string $licensePlate = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $first_registration = null;
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private $firstRegistration = null;
 
     #[ORM\Column(length: 100)]
+    #[Assert\NotBlank(message: "Le champ ne peut pas être vide")]
+    #[Assert\Regex("/^[A-Za-z0-9&'’.\- ]{2,50}$/", "Le modèle n'est pas conforme et le nombre de caractère doit être compris entre 2 et 50")]
     private ?string $model = null;
 
-    private ?Mark $mark = null;
 
     #[ORM\Column(length: 100)]
+    #[Assert\NotBlank(message: "Le champ ne peut pas être vide")]
+    #[Assert\Regex("/^[A-Za-z0-9&'’.\- ]{2,50}$/", "La couleur n'est pas conforme et le nombre de caractère doit être compris entre 2 et 50")]
     private ?string $color = null;
 
     #[ORM\Column(length: 100)]
     private ?string $energie = null;
 
+    #[ORM\Column]
+    #[Assert\NotBlank(message: "Le champ ne peut pas être vide")]
+    #[Assert\Positive(message: "Le nombre de passager doit être supérieur à 0")]
+    private ?int $nbPassenger = null;
+
     #[ORM\ManyToOne(inversedBy: 'Car')]
     private ?Carpool $carpool = null;
-
-    /**
-     * @var Collection<int, Mark>
-     */
-    #[ORM\OneToMany(targetEntity: Mark::class, mappedBy: 'car')]
-    private Collection $Mark;
 
     #[ORM\ManyToOne(inversedBy: 'Car')]
     private ?User $user = null;
 
-    public function __construct()
-    {
-        $this->Mark = new ArrayCollection();
-    }
+    #[ORM\ManyToOne(inversedBy: 'car')]
+    private ?Mark $mark = null;
+
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getLicencePlate(): ?string
+    public function getLicensePlate(): ?string
     {
-        return $this->licence_plate;
+        return $this->licensePlate;
     }
 
-    public function setLicencePlate(string $licence_plate): static
+    public function setLicensePlate(string $licensePlate): self
     {
-        $this->licence_plate = $licence_plate;
+        $this->licensePlate = $licensePlate;
 
         return $this;
     }
 
     public function getFirstRegistration(): ?\DateTimeInterface
     {
-        return $this->first_registration;
+        return $this->firstRegistration;
     }
 
-    public function setFirstRegistration(\DateTimeInterface $first_registration): static
+    public function setFirstRegistration(\DateTimeInterface $firstRegistration): self
     {
-        $this->first_registration = $first_registration;
+        $this->firstRegistration = $firstRegistration;
 
         return $this;
     }
@@ -91,17 +96,6 @@ class Car
         return $this;
     }
 
-    public function getMark(): ?Mark
-    {
-        return $this->mark;
-    }
-
-    public function setMark(Mark $mark): static
-    {
-        $this->mark = $mark;
-
-        return $this;
-    }
 
     public function getColor(): ?string
     {
@@ -127,6 +121,16 @@ class Car
         return $this;
     }
 
+    public function getNbPassenger(): ?int
+    {
+        return $this->nbPassenger;
+    }
+    public function setNbPassenger(int $nbPassenger): static
+    {
+        $this->nbPassenger = $nbPassenger;
+        return $this;
+    }
+
     public function getCarpool(): ?Carpool
     {
         return $this->carpool;
@@ -135,28 +139,6 @@ class Car
     public function setCarpool(?Carpool $carpool): static
     {
         $this->carpool = $carpool;
-
-        return $this;
-    }
-
-    public function addMark(Mark $mark): static
-    {
-        if (!$this->Mark->contains($mark)) {
-            $this->Mark->add($mark);
-            $mark->setCar($this);
-        }
-
-        return $this;
-    }
-
-    public function removeMark(Mark $mark): static
-    {
-        if ($this->Mark->removeElement($mark)) {
-            // set the owning side to null (unless already changed)
-            if ($mark->getCar() === $this) {
-                $mark->setCar(null);
-            }
-        }
 
         return $this;
     }
@@ -172,4 +154,18 @@ class Car
 
         return $this;
     }
+
+    public function getMark(): ?Mark
+    {
+        return $this->mark;
+    }
+
+    public function setMark(?Mark $mark): static
+    {
+        $this->mark = $mark;
+
+        return $this;
+    }
+
+   
 }

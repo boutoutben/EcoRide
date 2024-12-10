@@ -599,22 +599,25 @@ input[type='checkbox']:checked{
 #profile>div:first-child>div:hover>div>img:last-child{
     display: block;
 }
-#overlay {
+.overlay {
     position: absolute;
     display: none;
-    top: 2vw;
-    left: -10vw;
-    width: 25vw;
     background-color: #004b70;
     justify-content: center;
     align-items: center;
     border-radius: 8px;
     z-index: 1000;
 }
-#overlay.active{
+#overlay.overlay{
+   top: 2vw;
+    left: -10vw;
+    width: 25vw; 
+}
+
+.overlay.active{
     display: block;
 }
-#overlayContent {
+.overlayContent {
     color: white;
     text-align: center;
     margin: 1vw 2vw;
@@ -714,12 +717,19 @@ input[type='radio']{
 #carpoolInfo{
     width: 40vw;
 }
-#carpoolInfo div:nth-child(3){
+#carpoolInfo div:nth-child(2){
     text-align: center;
     justify-content: space-between;
 }
-#carpoolInfo>div:nth-child(3) img{
-    width: 3vw;
+#carpoolInfo div:nth-child(2)>div>div:first-child{
+    justify-content: center;
+    align-items: center;
+}
+#carpoolInfo div:nth-child(2)>div>div:first-child>:is(a,h3){
+    margin: 0 1vw;
+}
+#carpoolInfo>div:nth-child(2) img{
+    width: 4vw;
 }
 #carpoolInfo .ref{
     justify-content: space-between;   
@@ -734,20 +744,27 @@ input[type='radio']{
     justify-content: space-between;
     align-items: center;
 }
-#carpoolInfo>div:nth-child(2)>:is(h3,p){
-    margin: 0 1vw;
-}
-#carpoolInfo>div:nth-child(3)>div:last-child{
+#carpoolInfo>div>div:last-child .flex-row:first-child{
     justify-content: center;
 }
-#carpoolInfo>div:nth-child(3)>div:last-child>:is(button,p){
-    margin: auto 1vw;
+#carpoolInfo>div:nth-child(2)>div:nth-child(3){
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100vw;
 }
-#carpoolInfo>div:nth-child(3)>div:last-child>div{
-    width: 30%;
-    height: 2vw;
-    padding: 1vw;
+#carpoolInfo>div>div:last-child div:first-child>.flex-row:first-child>div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 1vw;
 }
+#carpoolInfo>div>div:last-child>form>div>div{
+    margin: 0 auto;
+    width: fit-content;
+}
+
+
 @media screen and (max-width:945px) {
     :is(#rulesImgLeft, #rulesImgRight){
     display: none;

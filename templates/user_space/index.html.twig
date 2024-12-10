@@ -6,7 +6,15 @@
 	{{ parent() }}
 	{{ encore_entry_script_tags('profile') }}
     {{ encore_entry_script_tags("uploadFile") }}
+    {{ encore_entry_script_tags("overlayCar") }}
+
+    <script>
+       document.addEventListener("DOMContentLoaded", function() {
+        editBtn({{nbTotalCar}});
+        });
+    </script>
 {% endblock %}
+
 
 {% block body %}
 <main>
@@ -18,8 +26,8 @@
                     <img src='img/{{userInfo.img ?? "user.png"}}' id="profile-pic" alt="profile"/>
                     <img src="img/edit.png" id="editPicture" alt="modification avatar de profile"/>
                 </div>
-                <div id="overlay">
-                    <div id="overlayContent">
+                <div id="overlay" class="overlay">
+                    <div class="overlayContent" >
                         <p>modifier la photo</p>
                         <input type="file" id="file" class="file-input"/>
                         <label for="file"><strong id="uploaded_image">Parcourrir...</strong></label>
@@ -169,37 +177,286 @@
         </section>
         <section class='block' id='carpoolInfo'>
             <h1>Information covoiturage</h1>
-            <div class='flex-row'>
-                <h3>Véhicule 1</h3>
-                <p style='text-decoration:underline;'>modifier</p>
-            </div>
             <div>
-                <p>Plaque d'imatriculation: PL-123AK</p>
-                <p>Premiière immatriuclation: 01/05/2005</p>
-                <p>Modèle, marque, couleur</p>
-                <p>Nombre de place disponible: 3</p>
-                <p>Energie utilisé: électricité</p>
-                <img src="img/plus.png" alt='ajouter un élément'>
-                <h3>Préférence:</h3>
-                <div class="flex-row ref">
-                    <div class="flex-row">
-                        <input type="checkbox" id='smock'/>
-                        <label for='smock'><p>Fummeur</p></label>
+                {% for carAndEditCar in carAndCarEditForm %}
+                    <div>
+                        <div class='flex-row'>
+                            <h3>Véhicule {{nbCar}}</h3>
+                            <p style='text-decoration:underline;' id="edit{{nbCar}}">modifier</p>
+                            <div id="overlayEditCar{{nbCar}}" class="overlay">
+                                <div class="overlayContent">
+                                    <p>Modifier véhicule</p>
+                                    {{ form_start(carAndEditCar[1]) }}
+                                    <table>
+                                        <tr>
+                                            <td>Plaque d'immatriculation: </td>
+                                            <td>
+                                                <div class='inputBackground'>
+                                                    {{ form_widget(carAndEditCar[1].licensePlate, {"attr" :{ "value":carAndEditCar[0].licensePlate}}) }}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                {% for error in carAndEditCar[1].licensePlate.vars.errors %}
+                                                    <div class="form_error">{{ error.message }}</div>
+                                                {% endfor %}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Première immatriculation: </td>
+                                            <td>
+                                                <div class='inputBackground'>
+                                                  {{ form_widget(carAndEditCar[1].firstRegistration) }}  
+                                                </div> 
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                {% for error in carAndEditCar[1].firstRegistration.vars.errors %}
+                                                    <div class="form_error">{{ error.message }}</div>
+                                                {% endfor %}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Marque: </td>
+                                            <td>
+                                                <div class='inputBackground'>
+                                                   {{ form_widget(carAndEditCar[1].mark) }}
+
+                                                </div>   
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                {% for error in carAndEditCar[1].mark.vars.errors %}
+                                                    <div class="form_error">{{ error.message }}</div>
+                                                {% endfor %}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Modèle: </td>
+                                            <td>
+                                                <div class='inputBackground'>
+                                                   {{ form_widget(carAndEditCar[1].model,{"attr" :{ "value":carAndEditCar[0].model}}) }} 
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                {% for error in carAndEditCar[1].model.vars.errors %}
+                                                    <div class="form_error">{{ error.message }}</div>
+                                                {% endfor %}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Couleur: </td>
+                                            <td>
+                                                <div class='inputBackground'>
+                                                    {{ form_widget(carAndEditCar[1].color, {"attr" :{ "value":carAndEditCar[0].color}}) }}
+                                                </div>               
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                {% for error in carAndEditCar[1].color.vars.errors %}
+                                                    <div class="form_error">{{ error.message }}</div>
+                                                {% endfor %}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Energie: </td>
+                                            <td>
+                                                <div class='inputBackground'>
+                                                    {{ form_widget(carAndEditCar[1].energie,{"attr" :{ "value":carAndEditCar[0].energie}}) }}
+                                                </div>
+                                               
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                {% for error in carAndEditCar[1].energie.vars.errors %}
+                                                    <div class="form_error">{{ error.message }}</div>
+                                                {% endfor %}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Nombre de place: </td>
+                                            <td>
+                                                <div class='inputBackground'>
+                                                    {{ form_widget(carAndEditCar[1].nbPassenger, {"attr" :{ "value":carAndEditCar[0].nbPassenger}}) }} 
+                                                </div>         
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                {% for error in carAndEditCar[1].nbPassenger.vars.errors %}
+                                                    <div class="form_error">{{ error.message }}</div>
+                                                {% endfor %}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    {{ form_widget(carAndEditCar[1]._token) }}
+                                    {{ form_widget(carAndEditCar[1].submit) }}
+                                    {{ form_end(carAndEditCar[1]) }}
+                                </div>
+                            </div>
+                        </div>
+                        <p>Plaque d'imatriculation: {{carAndEditCar[0].licensePlate}}</p>
+                        <p>Premiière immatriuclation: {{carAndEditCar[0].firstRegistration|date('d/m/Y')}}</p>
+                        <p>{{carAndEditCar[0].mark.label}}, {{carAndEditCar[0].model}}, {{carAndEditCar[0].color}}</p>
+                        <p>Nombre de place disponible: {{carAndEditCar[0].nbPassenger}}</p>
+                        <p>Energie utilisé: {{carAndEditCar[0].energie}}</p>
                     </div>
-                    <div class="flex-row">
-                        <input type="checkbox" id='animals'/>
-                        <label for='animals'><p>Animaux</p></label>
+                    {% set nbCar = nbCar+1 %}
+                {% endfor %}
+                <div>
+                    <img src="img/plus.png" id="plus-btn" alt='ajouter un élément'>
+                    <div id="overlayNewCar" class="overlay">
+                        <div class="overlayContent">
+                            <p>Nouveau véhicule</p>
+                            {{ form_start(newCarForm, { 'attr': { 'id': 'new_car' } }) }}
+                            <table>
+                                <tr>
+                                    <td>Plaque d'immatriculation: </td>
+                                    <td>
+                                        <div class='inputBackground'>
+                                            {{ form_widget(newCarForm.licensePlate) }}
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        {% for error in newCarForm.licensePlate.vars.errors %}
+                                            <div class="form_error">{{ error.message }}</div>
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Première immatriculation: </td>
+                                    <td>
+                                        <div class='inputBackground'>
+                                            {{ form_widget(newCarForm.firstImmatriculation) }}
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        {% for error in newCarForm.firstImmatriculation.vars.errors %}
+                                            <div class="form_error">{{ error.message }}</div>
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Marque: </td>
+                                    <td>
+                                        <div class='inputBackground'>
+                                            {{ form_widget(newCarForm.mark) }}
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        {% for error in newCarForm.mark.vars.errors %}
+                                            <div class="form_error">{{ error.message }}</div>
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Modèle: </td>
+                                    <td>
+                                        <div class='inputBackground'>
+                                            {{ form_widget(newCarForm.model) }}
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        {% for error in newCarForm.model.vars.errors %}
+                                            <div class="form_error">{{ error.message }}</div>
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Couleur: </td>
+                                    <td>
+                                        <div class='inputBackground'>
+                                            {{ form_widget(newCarForm.color) }}
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        {% for error in newCarForm.color.vars.errors %}
+                                            <div class="form_error">{{ error.message }}</div>
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Energie: </td>
+                                    <td>
+                                        <div class='inputBackground'>
+                                            {{ form_widget(newCarForm.energie) }}
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        {% for error in newCarForm.energie.vars.errors %}
+                                            <div class="form_error">{{ error.message }}</div>
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>nombre de place: </td>
+                                    <td>
+                                        <div class='inputBackground'>
+                                            {{ form_widget(newCarForm.nbPassenger) }}
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        {% for error in newCarForm.nbPassenger.vars.errors %}
+                                            <div class="form_error">{{ error.message }}</div>
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                            </table>
+                            {{ form_row(newCarForm._token) }}
+                            {{ form_widget(newCarForm.submit) }}
+                            {{ form_end(form) }}
+                        </div>
                     </div>
                 </div>
-                <div class="flex-row">
-                    <p>Nouveaux:</p>
-                    <div class='inputBackground'>
-                        <input type='text' class='input-place' placeholder='préférence'/>
+                <div>
+                    <h3>Préférence:</h3>
+                    {{ form_start(preferenceForm) }}
+                        <div>
+                            <div class='flex-row'>
+                                {% for choice in preferenceForm.choicePreferences %}
+                                    <div>
+                                        {{ form_widget(choice) }}
+                                        <p>{{ form_label(choice) }}</p>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        <p>Nouveaux:</p>
+                        <div class="flex-row">    
+                            {{ form_start(addPreferenceForm) }}
+                            <div class="flex-row">    
+                                <div class='inputBackground'>
+                                    {{ form_widget(addPreferenceForm.newPreference) }} 
+                                </div>
+                            </div>
+                            {{ form_widget(addPreferenceForm.submit) }}   
+                            {{ form_end(addPreferenceForm) }}   
+                        </div>
+                        {{ form_widget(preferenceForm.submit) }}
+                        {{ form_end(preferenceForm) }} 
                     </div>
-                    <button class="standard-btn">Ajouter</button>
                 </div>
             </div>
-            <button class='standard-btn'>Enregistrer</button>
         </section>
         <section class='flex-column' id="rulesImgRight">
             <img src="img/brain.png" alt="travailler inteligament">

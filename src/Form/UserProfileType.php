@@ -21,9 +21,9 @@ class UserProfileType extends AbstractType
         $builder
             ->add('userType', ChoiceType::class, [
                 'choices' => [
-                'Client' => 'Passager',
-                'Driver' => 'Conducteur',
-                "Both" => "Les deux"
+                'Passager' => 'Passager',
+                'Conducteur' => 'Conducteur',
+                "Les deux" => "Les deux"
                 ],
                 'expanded' => true,
                 'multiple' => false,

@@ -30,6 +30,7 @@ Encore
     .addEntry("redirection","./assets/js/redirection.js")
     .addEntry("uploadFile", "./assets/js/uploadFile.js")
     .addEntry("createAccountPassword","./assets/js/createAccountPassword.js")
+    .addEntry("overlayCar", "./assets/js/overlayCar.js")
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()

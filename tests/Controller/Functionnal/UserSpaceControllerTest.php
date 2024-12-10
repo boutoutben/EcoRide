@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpClient\HttpClient;
 
 
-class UserSpaceControllerTest extends WebTestCase
+class UserSpaceControllerTest extends WebTestCase 
 {
     public function defineClient($client)
     {
@@ -192,4 +192,7 @@ class UserSpaceControllerTest extends WebTestCase
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
         $this->assertSelectorTextContains('.form_error', "Si vous souhaitez mettre à jour le mot de passe, il faut remplir les deux champs");
     }
+
+    
+
 }
