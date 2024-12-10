@@ -21,13 +21,6 @@ nelmio_security:
     csp:
         enforce:
             report-uri: '%router.request_context.base_url%/nelmio/csp/report'
-            default-src:
-                - 'none'
             script-src:
                 - 'self'
-                - 'unsafe-inline'
-                - 'code.jquery.com'
-                - 'cdn.jsdelivr.net'
-            style-src:
-                - 'cdn.jsdelivr.net'
                 - 'unsafe-inline'
