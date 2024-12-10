@@ -33,6 +33,7 @@ final class Version20241209084230 extends AbstractMigration
         $this->addSql('ALTER TABLE carpool ADD CONSTRAINT FK_E95D90CCA76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
         $this->addSql('ALTER TABLE carpool_participation ADD CONSTRAINT FK_6FB6E529A6F0DAE FOREIGN KEY (carpool_id) REFERENCES carpool (id)');
         $this->addSql('ALTER TABLE user ADD CONSTRAINT FK_8D93D649D8685255 FOREIGN KEY (carpool_participation_id) REFERENCES carpool_participation (id)');
+        $this->addSql("INSERT INTO mark(label) VALUES('Toyota'),('Volkswagen'),('Ford'),('Hando'),('Chevrolet'),('BMW'),('MERCEDES_Benz'),('Audi'),('Nissan'),('Peugeot'),('Renault'),('Ferrari'),('Ferrari'),('Porsche'),('Lamborghini'),('Tesla')");
     }
 
     public function down(Schema $schema): void
@@ -51,5 +52,6 @@ final class Version20241209084230 extends AbstractMigration
         $this->addSql('DROP TABLE opinion');
         $this->addSql('DROP TABLE roles');
         $this->addSql('DROP TABLE user');
+        $this->addSql("DELETE FROM mark");
     }
 }
