@@ -7,7 +7,7 @@
 	{{ encore_entry_script_tags('profile') }}
     {{ encore_entry_script_tags("uploadFile") }}
     {{ encore_entry_script_tags("overlayCar") }}
-
+    script-src js-cdn.example.com 'nonce-rAnd0m';
     <script nonce="random123">
        document.addEventListener("DOMContentLoaded", function() {
         editBtn({{nbTotalCar}});
@@ -578,7 +578,7 @@
             </div>
         </div>
         <div>
-            <p style="width:77vw;">* attention 2 crédits sont pris par la plateforme pour le bon fonctionnement de cette dernière</p>
+            <p>* attention 2 crédits sont pris par la plateforme pour le bon fonctionnement de cette dernière</p>
         </div>
         <button class="standard-btn">Enregistrer</button>
     </section>
