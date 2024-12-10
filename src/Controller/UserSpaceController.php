@@ -191,7 +191,9 @@ class UserSpaceController extends AbstractController
             }
             
         }
+        $response = new Response();
         $nonce = base64_encode(random_bytes(16));
+        $response->headers->set('Content-Security-Policy', "script-src 'self' 'nonce-{$nonce}'");
 
         return $this->render('user_space/index.html.twig', [
             'controller_name' => 'UserSpaceController',
