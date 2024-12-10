@@ -7,8 +7,7 @@
 	{{ encore_entry_script_tags('profile') }}
     {{ encore_entry_script_tags("uploadFile") }}
     {{ encore_entry_script_tags("overlayCar") }}
-    script-src js-cdn.example.com 'nonce-rAnd0m';
-    <script nonce="random123">
+    <script nonce="{{ csp_nonce }}">
        document.addEventListener("DOMContentLoaded", function() {
         editBtn({{nbTotalCar}});
         });

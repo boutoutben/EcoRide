@@ -191,6 +191,7 @@ class UserSpaceController extends AbstractController
             }
             
         }
+        $nonce = base64_encode(random_bytes(16));
 
         return $this->render('user_space/index.html.twig', [
             'controller_name' => 'UserSpaceController',
@@ -202,7 +203,8 @@ class UserSpaceController extends AbstractController
             "nbCar" => $nbCar,
             "carAndCarEditForm" => $carAndCarEditForm,
             "preferenceForm" => $preferenceForm->createView(),
-            "addPreferenceForm" => $addPreferenceForm->createView()
+            "addPreferenceForm" => $addPreferenceForm->createView(),
+            'csp_nonce' => $nonce,
         ]);
     }
     #[Route('/userPictureUpload', name: 'app_user_upload_picture', methods:["POST"])]
