@@ -23,6 +23,10 @@ function editBtn(nbCar)
         });
     }
 }
+nbTotalCar = 0
+document.addEventListener("DOMContentLoaded", function() {
+editBtn(nbTotalCar);
+});
 
 document.querySelector("#plus-btn").addEventListener("click", () =>{
     overlay("#overlayNewCar");
@@ -47,6 +51,6 @@ document.addEventListener("click", (e) => {
     // Example: form.submit(); if you want to allow form submission
 });*/
 
-window.editBtn = editBtn;
+window.nbTotalCar = nbTotalCar;
 
 
