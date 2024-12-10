@@ -731,28 +731,10 @@ input[type='radio']{
 #carpoolInfo>div:nth-child(2) img{
     width: 4vw;
 }
-#carpoolInfo .ref{
-    justify-content: space-between;   
-    margin: 0 auto;
-    width: fit-content;
-}
-#carpoolInfo .ref>div{
-    align-items: center;
-    margin: auto 2vw;
-}
-#carpoolInfo>div:nth-child(2) {
-    justify-content: space-between;
-    align-items: center;
-}
 #carpoolInfo>div>div:last-child .flex-row:first-child{
     justify-content: center;
 }
-#carpoolInfo>div:nth-child(2)>div:nth-child(3){
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100vw;
-}
+
 #carpoolInfo>div>div:last-child div:first-child>.flex-row:first-child>div{
     display: flex;
     align-items: center;
@@ -762,6 +744,9 @@ input[type='radio']{
 #carpoolInfo>div>div:last-child>form>div>div{
     margin: 0 auto;
     width: fit-content;
+}
+#overlayNewCar.overlay{
+    margin-top: -5vw;
 }
 .underline{
     text-decoration: underline;

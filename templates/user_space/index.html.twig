@@ -8,12 +8,6 @@
 	{{ encore_entry_script_tags('profile') }}
     {{ encore_entry_script_tags("uploadFile") }}
     {{ encore_entry_script_tags("overlayCar") }}
-    <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        nbTotalCar = {{ nbTotalCar }};  // You will pass nbTotalCar as a global variable
-    });
-         // Set the nbTotalCar variable globally
-    </script>
 {% endblock %}
 
 
@@ -34,8 +28,7 @@
                         <label for="file"><strong id="uploaded_image">Parcourrir...</strong></label>
                     </div>
                 </div>
-            </div>
-            
+            </div>    
         </div>
         {{ form_start(form) }}
             <div class="flex-row wrap">
@@ -179,6 +172,7 @@
         <section class='block' id='carpoolInfo'>
             <h1>Information covoiturage</h1>
             <div>
+                <p>Vous avez <strong id="nbTotalCar">{{nbTotalCar}}</strong> voitures</p>
                 {% for carAndEditCar in carAndCarEditForm %}
                     <div>
                         <div class='flex-row'>
