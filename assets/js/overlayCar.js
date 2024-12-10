@@ -8,6 +8,7 @@ function editBtn(nbCar)
     for (let i = 1; i <= nbCar; i++) {
         const editButton = document.querySelector("#edit" + i);
         const overlay = document.querySelector("#overlayEditCar" + i);
+        console.log("cc");
 
         // Toggle the overlay when clicking the button
         editButton.addEventListener("click", (e) => {

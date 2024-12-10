@@ -763,7 +763,9 @@ input[type='radio']{
     margin: 0 auto;
     width: fit-content;
 }
-
+.underline{
+    text-decoration: underline;
+}
 
 @media screen and (max-width:945px) {
     :is(#rulesImgLeft, #rulesImgRight){
