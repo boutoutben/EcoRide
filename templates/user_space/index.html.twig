@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
 {% block meta %}
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'nonce-{{csp_nonce}}'">
-
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'nonce-{{ csp_nonce }}';">
 {% endblock %}
 {% block title %}Hello UserSpaceController!{% endblock %}
 
