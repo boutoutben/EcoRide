@@ -35,7 +35,27 @@ document.addEventListener("click", (e) => {
     if (!document.querySelector("#overlayNewCar").contains(e.target) && e.target !== document.querySelector("#plus-btn")) {
         document.querySelector("#overlayNewCar").classList.remove("active");
     }
-    });
+});
+
+function handleCarChoice() {
+    let newCarFields = document.querySelectorAll("#autreChoiceCar .input-place");
+    if (carChoice.value === "other") {
+        autreChoiceCar.classList.add("active");
+        newCarFields.forEach(field => field.setAttribute("required", "required"));
+    } else {
+        autreChoiceCar.classList.remove("active");
+        newCarFields.forEach(field => field.removeAttribute("required"));
+    }
+}
+
+let carChoice = document.querySelector("#create_carpool_carChoice");
+let autreChoiceCar = document.querySelector("#autreChoiceCar");
+
+handleCarChoice();
+
+// Add an event listener for changes
+carChoice.addEventListener("change", handleCarChoice);
+
 
 
 

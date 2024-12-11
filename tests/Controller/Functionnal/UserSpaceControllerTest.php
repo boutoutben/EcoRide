@@ -2,6 +2,10 @@
 
 namespace App\Tests;
 
+use App\Entity\Carpool;
+use App\Repository\CarpoolRepository;
+use phpDocumentor\Reflection\PseudoTypes\True_;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
@@ -10,6 +14,15 @@ use Symfony\Component\HttpClient\HttpClient;
 
 class UserSpaceControllerTest extends WebTestCase 
 {
+    private MockObject $carpoolRepository;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // Create a mock for CarpoolRepository
+        $this->carpoolRepository = $this->createMock(CarpoolRepository::class);
+    }
     public function defineClient($client)
     {
         // Fetch the login form page
@@ -193,6 +206,211 @@ class UserSpaceControllerTest extends WebTestCase
         $this->assertSelectorTextContains('.form_error', "Si vous souhaitez mettre à jour le mot de passe, il faut remplir les deux champs");
     }
 
+    //travel outpute
     
-
+    /*public function testTravelOutputeValidData()
+    {
+        $client = static::createClient();
+        $crawler = $this->defineClient($client);
+        $form = $crawler->selectButton("create_carpool[submit]")->form([
+            "create_carpool[startPlace]" => "Lille",
+            "create_carpool[endPlace]" => "Arras",
+            "create_carpool[startDate]" => "2024-12-09 12:00:00",
+            "create_carpool[endDate]" => "2024-12-09 13:00:00",
+            "create_carpool[carChoice]" => 14,
+            "create_carpool[credit]" => 20
+        ]);
+        $client->submit($form);
+        $this->assertResponseStatusCodeSame(302); // Ensure the redirect occurs
+        $this->assertTrue($client->getResponse()->isRedirect('/userSpace#travelOutpute'));
+    }*/
+    public function testTravelOutputeInvalidStartPlace()
+    {
+        $client = static::createClient();
+        $crawler = $this->defineClient($client);
+        $form = $crawler->selectButton("create_carpool[submit]")->form([
+            "create_carpool[startPlace]" => "Lille((",
+            "create_carpool[endPlace]" => "Arras",
+            "create_carpool[startDate]" => "2024-12-09 12:00:00",
+            "create_carpool[endDate]" => "2024-12-09 13:00:00",
+            "create_carpool[carChoice]" => 14,
+            "create_carpool[credit]" => 20
+        ]);
+        $client->submit($form);
+        $this->assertSelectorTextContains('.form_error', "Le lieu de départ n'est pas conforme et le nombre de caractère doit être compris entre 2 et 50");
+    }
+    public function testTravelOutputeInvalidEndPlace()
+    {
+        $client = static::createClient();
+        $crawler = $this->defineClient($client);
+        $form = $crawler->selectButton("create_carpool[submit]")->form([
+            "create_carpool[startPlace]" => "Lille",
+            "create_carpool[endPlace]" => "Arras((",
+            "create_carpool[startDate]" => "2024-12-09 12:00:00",
+            "create_carpool[endDate]" => "2024-12-09 13:00:00",
+            "create_carpool[carChoice]" => 14,
+            "create_carpool[credit]" => 20
+        ]);
+        $client->submit($form);
+        $this->assertSelectorTextContains('.form_error', "Le lieu d'arriver n'est pas conforme et le nombre de caractère doit être compris entre 2 et 50");
+    }
+    public function testTravelOutputeInvalidCredit()
+    {
+        $client = static::createClient();
+        $crawler = $this->defineClient($client);
+        $form = $crawler->selectButton("create_carpool[submit]")->form([
+            "create_carpool[startPlace]" => "Lille",
+            "create_carpool[endPlace]" => "Arras",
+            "create_carpool[startDate]" => "2024-12-09 12:00:00",
+            "create_carpool[endDate]" => "2024-12-09 13:00:00",
+            "create_carpool[carChoice]" => 14,
+            "create_carpool[credit]" => 0
+        ]);
+        $client->submit($form);
+        $this->assertSelectorTextContains('.form_error', "Le crédit doit être supérieur ou égal à 2");
+    }
+    public function testTravelOutputeNotBlank()
+    {
+        $client = static::createClient();
+        $crawler = $this->defineClient($client);
+        $form = $crawler->selectButton("create_carpool[submit]")->form([
+            "create_carpool[startPlace]" => "",
+            "create_carpool[endPlace]" => "",
+            "create_carpool[startDate]" => "2024-12-09 12:00:00",
+            "create_carpool[endDate]" => "2024-12-09 13:00:00",
+            "create_carpool[carChoice]" => 14,
+            "create_carpool[credit]" => 3
+        ]);
+        $client->submit($form);
+        $this->assertSelectorTextContains('.form_error', "Le champ ne peut pas être vide");
+    }
+    public function testTravelOutputeValidDataWithNewCar()
+    {
+        $client = static::createClient();
+        $crawler = $this->defineClient($client);
+        $form = $crawler->selectButton("create_carpool[submit]")->form([
+            "create_carpool[startPlace]" => "Lille",
+            "create_carpool[endPlace]" => "Arras",
+            "create_carpool[startDate]" => "2024-12-09 12:00:00",
+            "create_carpool[endDate]" => "2024-12-09 13:00:00",
+            "create_carpool[carChoice]" => 'other',
+            "create_carpool[credit]" => 20,
+            "create_carpool[licensePlate]" => "XX-400-XX",
+            "create_carpool[firstImmatriculation]" => "2020-12-01",
+            "create_carpool[model]" => "xf",
+            "create_carpool[color]" => "rouge",
+            "create_carpool[nbPassenger]" => 4
+        ]);
+        $client->submit($form);
+        $this->assertResponseStatusCodeSame(302); // Ensure the redirect occurs
+        $this->assertTrue($client->getResponse()->isRedirect('/userSpace#travelOutpute'));
+    }
+    public function testTravelOutputeInvalideLisencePlaceWithNewCar()
+    {
+        $client = static::createClient();
+        $crawler = $this->defineClient($client);
+        $form = $crawler->selectButton("create_carpool[submit]")->form([
+            "create_carpool[startPlace]" => "Lille",
+            "create_carpool[endPlace]" => "Arras",
+            "create_carpool[startDate]" => "2024-12-09 12:00:00",
+            "create_carpool[endDate]" => "2024-12-09 13:00:00",
+            "create_carpool[carChoice]" => 'other',
+            "create_carpool[credit]" => 20,
+            "create_carpool[licensePlate]" => "XX-400-X",
+            "create_carpool[firstImmatriculation]" => "2020-12-01",
+            "create_carpool[model]" => "xf",
+            "create_carpool[color]" => "rouge",
+            "create_carpool[nbPassenger]" => 4
+        ]);
+        $client->submit($form);
+        $this->assertSelectorTextContains('.form_error', "La plaque d'immatriculation n'est pas conforme");
+    }
+    public function testTravelOutputeInvalideModelWithNewCar()
+    {
+        $client = static::createClient();
+        $crawler = $this->defineClient($client);
+        $form = $crawler->selectButton("create_carpool[submit]")->form([
+            "create_carpool[startPlace]" => "Lille",
+            "create_carpool[endPlace]" => "Arras",
+            "create_carpool[startDate]" => "2024-12-09 12:00:00",
+            "create_carpool[endDate]" => "2024-12-09 13:00:00",
+            "create_carpool[carChoice]" => 'other',
+            "create_carpool[credit]" => 20,
+            "create_carpool[licensePlate]" => "XX-400-XX",
+            "create_carpool[firstImmatriculation]" => "2020-12-01",
+            "create_carpool[model]" => "x((f",
+            "create_carpool[color]" => "rouge",
+            "create_carpool[nbPassenger]" => 4
+        ]);
+        $client->submit($form);
+        $this->assertSelectorTextContains('.form_error', "Le modèle n'est pas conforme et le nombre de caractère doit être compris entre 2 et 50");
+    }
+    public function testTravelOutputeInvalideColorWithNewCar()
+    {
+        $client = static::createClient();
+        $crawler = $this->defineClient($client);
+        $form = $crawler->selectButton("create_carpool[submit]")->form([
+            "create_carpool[startPlace]" => "Lille",
+            "create_carpool[endPlace]" => "Arras",
+            "create_carpool[startDate]" => "2024-12-09 12:00:00",
+            "create_carpool[endDate]" => "2024-12-09 13:00:00",
+            "create_carpool[carChoice]" => 'other',
+            "create_carpool[credit]" => 20,
+            "create_carpool[licensePlate]" => "XX-400-XX",
+            "create_carpool[firstImmatriculation]" => "2020-12-01",
+            "create_carpool[model]" => "xf",
+            "create_carpool[color]" => "rouge()",
+            "create_carpool[nbPassenger]" => 4
+        ]);
+        $client->submit($form);
+        $this->assertSelectorTextContains('.form_error', "La couleur n'est pas conforme et le nombre de caractère doit être compris entre 2 et 50");
+    }
+    public function testTravelOutputeInvalideNbPassengerPositifWithNewCar()
+    {
+        $client = static::createClient();
+        $crawler = $this->defineClient($client);
+        $form = $crawler->selectButton("create_carpool[submit]")->form([
+            "create_carpool[startPlace]" => "Lille",
+            "create_carpool[endPlace]" => "Arras",
+            "create_carpool[startDate]" => "2024-12-09 12:00:00",
+            "create_carpool[endDate]" => "2024-12-09 13:00:00",
+            "create_carpool[carChoice]" => 'other',
+            "create_carpool[credit]" => 20,
+            "create_carpool[licensePlate]" => "XX-400-XX",
+            "create_carpool[firstImmatriculation]" => "2020-12-01",
+            "create_carpool[model]" => "xf",
+            "create_carpool[color]" => "rouge",
+            "create_carpool[nbPassenger]" => 0
+        ]);
+        $client->submit($form);
+        $this->assertSelectorTextContains('.form_error', "Le nombre de passager doit être supérieur à 0");
+    }
+    public function testTravelOutputeInvalideNbPassengerLessThanWithNewCar()
+    {
+        $client = static::createClient();
+        $crawler = $this->defineClient($client);
+        $form = $crawler->selectButton("create_carpool[submit]")->form([
+            "create_carpool[startPlace]" => "Lille",
+            "create_carpool[endPlace]" => "Arras",
+            "create_carpool[startDate]" => "2024-12-09 12:00:00",
+            "create_carpool[endDate]" => "2024-12-09 13:00:00",
+            "create_carpool[carChoice]" => 'other',
+            "create_carpool[credit]" => 20,
+            "create_carpool[licensePlate]" => "XX-400-XX",
+            "create_carpool[firstImmatriculation]" => "2020-12-01",
+            "create_carpool[model]" => "xf",
+            "create_carpool[color]" => "rouge",
+            "create_carpool[nbPassenger]" => 10
+        ]);
+        $client->submit($form);
+        $this->assertSelectorTextContains('.form_error', "Le nombre de passager doit être inférieur à 10");
+    }
+    public function testTravelOutputeInvalideIsEcologique()
+    {
+        $carpool = $this->getContainer()->get('doctrine')->getRepository(Carpool::class)->findBy(["isEcologique"=>true]);
+        foreach($carpool as $carpool)
+        {
+            $this->assertEquals($carpool->getCar()->getEnergie(), "Electrique");
+        }
+    }
 }

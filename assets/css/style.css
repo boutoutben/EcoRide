@@ -717,6 +717,7 @@ input[type='radio']{
 #carpoolInfo{
     width: 40vw;
 }
+
 #carpoolInfo div:nth-child(2){
     text-align: center;
     justify-content: space-between;
@@ -793,6 +794,9 @@ input[type='radio']{
 }
 
 /*travelOutpute*/
+#travelOutpute{
+    text-align: center;
+}
 #travelOutpute .flex-row{
     align-items: center;
 }
@@ -831,6 +835,13 @@ select{
     select{
         font-size: .8em;
     }
+}
+#autreChoiceCar{
+    display: none;
+}
+#autreChoiceCar.active{
+    display: flex;
+    flex-direction: column;
 }
 
 /*valid opinion*/

@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Car;
+use App\Entity\Carpool;
 use App\Entity\User;
 use App\Form\AddPreferenceType;
+use App\Form\CreateCarpoolType;
 use App\Form\EditCarType;
 use App\Form\NewCarType;
 use App\Form\UserPreferencesType;
@@ -191,6 +193,56 @@ class UserSpaceController extends AbstractController
             }
             
         }
+        $car = $this->carRepository->findBy(['user' => $this->getUser()->getId()]);
+        $carpool = new Carpool();
+        $newCarpoolForm = $this->createForm(CreateCarpoolType::class,null,[
+            "entities" => $car,
+            "action" => "/userSpace#travelOutpute"
+        ]);
+        $newCarpoolForm->handleRequest($request);
+        if($newCarpoolForm->isSubmitted()&&$newCarpoolForm->isValid()){
+            $data = $newCarpoolForm->getData();
+            $carUse = $this->carRepository->findOneBy(["id" => $data["carChoice"]]);
+            $carpool->setStartPlace($data["startPlace"])
+                    ->setEndPlace($data["endPlace"])
+                    ->setStartDate($data["startDate"])
+                    ->setEndDate($data["endDate"])
+                    ->setPrice($data["credit"])
+                    ->setUser($this->getUser())
+                    ->setGreat(false)
+                    ->setStart(false)
+                    ->setEcologique(false);
+
+            if($data["carChoice"] === "other")
+            {
+                $newCar = new Car();
+                $newCar->setLicensePlate($data["licensePlate"])
+                    ->setFirstRegistration($data["firstImmatriculation"])
+                    ->setMark($data["mark"])
+                    ->setModel($data["model"])
+                    ->setColor($data["color"])
+                    ->setEnergie($data["energie"])
+                    ->setNbPassenger($data["nbPassenger"])
+                    ->setUser($this->getUser());
+                if ($newCar->getEnergie() === "Electrique") {
+                    $carpool->setEcologique(true);
+                }
+                $carpool->setPlaceLeft($newCar->getNbPassenger());
+                $carpool->setCar($newCar);
+                $entityManager->persist($newCar);
+            }
+            else{
+                $carpool->setCar($carUse)
+                        ->setPlaceLeft($carUse->getNbPassenger());
+                if ($carUse->getEnergie() === "Electrique") {
+                    $carpool->setEcologique(true);
+                }
+            }
+            $entityManager->persist($carpool);
+            $entityManager->flush();
+            $url = $this->generateUrl('app_user_space') . '#travelOutpute';
+            return new RedirectResponse($url);
+        }
 
         return $this->render('user_space/index.html.twig', [
             'controller_name' => 'UserSpaceController',
@@ -203,6 +255,7 @@ class UserSpaceController extends AbstractController
             "carAndCarEditForm" => $carAndCarEditForm,
             "preferenceForm" => $preferenceForm->createView(),
             "addPreferenceForm" => $addPreferenceForm->createView(),
+            "newCarpoolForm" => $newCarpoolForm->createView()
         ]);
     }
     #[Route('/userPictureUpload', name: 'app_user_upload_picture', methods:["POST"])]

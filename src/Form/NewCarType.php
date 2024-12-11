@@ -22,7 +22,6 @@ class NewCarType extends AbstractType
     {
         $builder
             ->add("licensePlate", TextType::class,[
-                "required" => false,
                 "constraints" =>[
                     new Assert\NotBlank(message:"Le champ ne peut pas être vide"),
                     new Assert\Regex("/^[A-Z]{2}-\d{3}-[A-Z]{2}$/", "La plaque d'immatriculation n'est pas conforme")

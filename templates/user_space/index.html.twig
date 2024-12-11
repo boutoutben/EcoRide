@@ -541,41 +541,185 @@
     </section>
     <section class="block" id="travelOutpute">
         <h1>Saisie d'un voyage</h1>
+        {{ form_start(newCarpoolForm, { 'attr': { 'id': 'new_carpool' } }) }}
         <div class='allInput'>
             <div class="inputBackground search">
                 <img src="img/loupe.png" alt='loupe'/>
-                <input type='search' class='input-place' placeholder='Lieu de départ'/>
+                {{ form_widget(newCarpoolForm.startPlace) }}
+            </div>
+            <div>
+                {% for error in newCarpoolForm.startPlace.vars.errors %}
+                    <div class="form_error">{{ error.message }}</div>
+                {% endfor %}
             </div>
             <div class="inputBackground search">
                 <img src="img/loupe.png" alt='loupe'/>
-                <input type='search' class='input-place' placeholder="Lieu d'arrivée"/>
+                {{ form_widget(newCarpoolForm.endPlace) }}
+            </div>
+            <div>
+                {% for error in newCarpoolForm.endPlace.vars.errors %}
+                    <div class="form_error">{{ error.message }}</div>
+                {% endfor %}
             </div>
             <div class="flex-row">
                 <div class="inputBackground ">
                     <img src="img/shuttle.png" alt='départ'/>
-                    <input type='datetime-local' class='input-place'/>
+                    {{ form_widget(newCarpoolForm.startDate) }}
                 </div>
+                
                 <div class="inputBackground">
                     <img src="img/finish-flag.png" alt='arrivée'/>
-                    <input type='datetime-local' class='input-place'/>
+                    {{ form_widget(newCarpoolForm.endDate) }}
                 </div>
+                
+            </div>
+            <div>
+                {% for error in newCarpoolForm.startDate.vars.errors %}
+                    <div class="form_error">{{ error.message }}</div>
+                {% endfor %}
+            </div>
+            <div>
+                {% for error in newCarpoolForm.endDate.vars.errors %}
+                    <div class="form_error">{{ error.message }}</div>
+                {% endfor %}
             </div>
             <div class="flex-row">
-                <select>
-                    <option><p>Choisir un véhicule</p></option>
-                    <option><p>Véhicule 1</p></option>
-                    <option><p>autre</p></option>
-                </select>
+                <div class="inputBackground">
+                    <img src="img/sedan.png" alt='voiture'/>
+                    {{ form_widget(newCarpoolForm.carChoice) }}
+                </div>
                 <div class="inputBackground">
                     <img src="img/price-tag.png" alt='horloge'/>
-                    <input type='text' class='input-place' placeholder="prix en crédits"/>
+                    {{ form_widget(newCarpoolForm.credit) }}
                 </div>
             </div>
+            <div>
+                {% for error in newCarpoolForm.credit.vars.errors %}
+                    <div class="form_error">{{ error.message }}</div>
+                {% endfor %}
+            </div>
+            <div id="autreChoiceCar">
+                <h3 class="underline">Nouvelle voiture</h3>
+                <table>
+                    <tr>
+                        <td>Plaque d'immatriculation:
+                        </td>
+                        <td>
+                            <div class='inputBackground'>
+                                {{ form_widget(newCarpoolForm.licensePlate) }}
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            {% for error in newCarpoolForm.licensePlate.vars.errors %}
+                                <div class="form_error">{{ error.message }}</div>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Première immatriculation:
+                        </td>
+                        <td>
+                            <div class='inputBackground'>
+                                {{ form_widget(newCarpoolForm.firstImmatriculation) }}
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            {% for error in newCarpoolForm.firstImmatriculation.vars.errors %}
+                                <div class="form_error">{{ error.message }}</div>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Marque:
+                        </td>
+                        <td>
+                            <div class='inputBackground'>
+                                {{ form_widget(newCarpoolForm.mark) }}
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            {% for error in newCarpoolForm.mark.vars.errors %}
+                                <div class="form_error">{{ error.message }}</div>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Modèle:
+                        </td>
+                        <td>
+                            <div class='inputBackground'>
+                                {{ form_widget(newCarpoolForm.model) }}
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            {% for error in newCarpoolForm.model.vars.errors %}
+                                <div class="form_error">{{ error.message }}</div>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Couleur:
+                        </td>
+                        <td>
+                            <div class='inputBackground'>
+                                {{ form_widget(newCarpoolForm.color) }}
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            {% for error in newCarpoolForm.color.vars.errors %}
+                                <div class="form_error">{{ error.message }}</div>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Energie:
+                        </td>
+                        <td>
+                            <div class='inputBackground'>
+                                {{ form_widget(newCarpoolForm.energie) }}
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            {% for error in newCarpoolForm.energie.vars.errors %}
+                                <div class="form_error">{{ error.message }}</div>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>nombre de place:
+                        </td>
+                        <td>
+                            <div class='inputBackground'>
+                                {{ form_widget(newCarpoolForm.nbPassenger) }}
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            {% for error in newCarpoolForm.nbPassenger.vars.errors %}
+                                <div class="form_error">{{ error.message }}</div>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                </table>
+            </div>
         </div>
-        <div>
             <p>* attention 2 crédits sont pris par la plateforme pour le bon fonctionnement de cette dernière</p>
         </div>
-        <button class="standard-btn">Enregistrer</button>
+        {{ form_widget(newCarpoolForm.submit) }}
+        {{ form_end(newCarpoolForm) }}
     </section>
 </main>
 {% endblock %}

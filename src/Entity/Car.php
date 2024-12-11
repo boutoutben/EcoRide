@@ -19,7 +19,7 @@ class Car
     private ?int $id = null;
 
     #[ORM\Column(length: 20)]
-    #[Assert\NotBlank(message:"Le champ ne peut pas être vide")]
+    #[Assert\NotBlank(message: "Le champ ne peut pas être vide")]
     #[Assert\Regex("/^[A-Z]{2}-\d{3}-[A-Z]{2}$/", "La plate d'immatriculation n'est pas conforme")]
     private ?string $licensePlate = null;
 
@@ -38,21 +38,32 @@ class Car
     private ?string $color = null;
 
     #[ORM\Column(length: 100)]
+    #[Assert\NotBlank(message: "Le champ ne peut pas être vide")]
+    #[Assert\Regex("/^[A-Za-z0-9&'’.\- ]{2,50}$/", "Le modèle n'est pas conforme et le nombre de caractère doit être compris entre 2 et 50")]
     private ?string $energie = null;
 
     #[ORM\Column]
-    #[Assert\NotBlank(message: "Le champ ne peut pas être vide")]
     #[Assert\Positive(message: "Le nombre de passager doit être supérieur à 0")]
+    #[Assert\LessThan(value:10, message:"Le nombre de passager doit être inférieur à 10")]
     private ?int $nbPassenger = null;
 
-    #[ORM\ManyToOne(inversedBy: 'Car')]
-    private ?Carpool $carpool = null;
 
     #[ORM\ManyToOne(inversedBy: 'Car')]
     private ?User $user = null;
 
     #[ORM\ManyToOne(inversedBy: 'car')]
     private ?Mark $mark = null;
+
+    /**
+     * @var Collection<int, Carpool>
+     */
+    #[ORM\OneToMany(targetEntity: Carpool::class, mappedBy: 'car')]
+    private Collection $carpool;
+
+    public function __construct()
+    {
+        $this->carpool = new ArrayCollection();
+    }
 
 
     public function getId(): ?int
@@ -131,18 +142,6 @@ class Car
         return $this;
     }
 
-    public function getCarpool(): ?Carpool
-    {
-        return $this->carpool;
-    }
-
-    public function setCarpool(?Carpool $carpool): static
-    {
-        $this->carpool = $carpool;
-
-        return $this;
-    }
-
     public function getUser(): ?User
     {
         return $this->user;
@@ -163,6 +162,36 @@ class Car
     public function setMark(?Mark $mark): static
     {
         $this->mark = $mark;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Carpool>
+     */
+    public function getCarpool(): Collection
+    {
+        return $this->carpool;
+    }
+
+    public function addCarpool(Carpool $carpool): static
+    {
+        if (!$this->carpool->contains($carpool)) {
+            $this->carpool->add($carpool);
+            $carpool->setCar($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCarpool(Carpool $carpool): static
+    {
+        if ($this->carpool->removeElement($carpool)) {
+            // set the owning side to null (unless already changed)
+            if ($carpool->getCar() === $this) {
+                $carpool->setCar(null);
+            }
+        }
 
         return $this;
     }

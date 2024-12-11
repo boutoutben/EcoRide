@@ -56,19 +56,15 @@ class Carpool
     #[Assert\GreaterThanOrEqual(2)]
     private ?float $price = null;
 
-    /**
-     * @var Collection<int, Car>
-     */
-    #[ORM\OneToMany(targetEntity: Car::class, mappedBy: 'carpool')]
-    private Collection $Car;
-
     #[ORM\ManyToOne(inversedBy: 'carpool')]
     private ?User $user = null;
+
+    #[ORM\ManyToOne(inversedBy: 'carpool')]
+    private ?Car $car = null;
 
 
     public function __construct()
     {
-        $this->Car = new ArrayCollection();
         $this->startDate = new \DateTime();
         $this->endDate = (new \DateTime());
     }
@@ -184,35 +180,6 @@ class Carpool
         return $this;
     }
 
-    /**
-     * @return Collection<int, Car>
-     */
-    public function getCar(): Collection
-    {
-        return $this->Car;
-    }
-
-    public function addCar(Car $car): static
-    {
-        if (!$this->Car->contains($car)) {
-            $this->Car->add($car);
-            $car->setCarpool($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCar(Car $car): static
-    {
-        if ($this->Car->removeElement($car)) {
-            // set the owning side to null (unless already changed)
-            if ($car->getCarpool() === $this) {
-                $car->setCarpool(null);
-            }
-        }
-
-        return $this;
-    }
 
     public function getUser(): ?User
     {
@@ -222,6 +189,18 @@ class Carpool
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getCar(): ?Car
+    {
+        return $this->car;
+    }
+
+    public function setCar(?Car $car): static
+    {
+        $this->car = $car;
 
         return $this;
     }
