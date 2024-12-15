@@ -18,16 +18,8 @@ class CarpoolParticipation
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?Carpool $carpool = null;
 
-    /**
-     * @var Collection<int, User>
-     */
-    #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'carpoolParticipation')]
-    private Collection $user;
-
-    public function __construct()
-    {
-        $this->user = new ArrayCollection();
-    }
+    #[ORM\ManyToOne(inversedBy: 'carpoolParticipation')]
+    private ?User $user = null;
 
     public function getId(): ?int
     {
@@ -46,32 +38,14 @@ class CarpoolParticipation
         return $this;
     }
 
-    /**
-     * @return Collection<int, User>
-     */
-    public function getUser(): Collection
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function addUser(User $user): static
+    public function setUser(?User $user): static
     {
-        if (!$this->user->contains($user)) {
-            $this->user->add($user);
-            $user->setCarpoolParticipation($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): static
-    {
-        if ($this->user->removeElement($user)) {
-            // set the owning side to null (unless already changed)
-            if ($user->getCarpoolParticipation() === $this) {
-                $user->setCarpoolParticipation(null);
-            }
-        }
+        $this->user = $user;
 
         return $this;
     }

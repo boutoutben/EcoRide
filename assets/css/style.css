@@ -475,36 +475,108 @@ input[type='checkbox']:checked{
 }
 
 /*CarpoolDetail*/ 
-#carpool-detail>div{
-    margin: 1vw 0;
+
+#carpool-detail>:first-child>:last-child>h3{
+    margin: 0.5vw 0;
 }
-#carpool-detail div:nth-child(2){
+.backgrandError{
+    background-color: #a4dcf8;
+    width: 60vw;
+    border-radius: 5vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 2vw auto;
+}
+#carpool-detail>div{
+    margin: 0vw 0;
+}
+#carpool-detail p{
+    text-align: center;
+}
+#carpool-detail>div:nth-child(2)
+{
+    text-align: center;
+    width: 70%;
+}
+#carpool-detail>div:nth-child(2)>:first-child{
+    text-align: start;
+}
+#carpool-detail>div:nth-child(2)>:nth-child(2){
+    width: 100%;
+    display: flex;
+    margin: 0 auto;
+    justify-content: space-between;
+}
+#carpool-detail>div:nth-child(2)>:nth-child(2)>:first-child{
+    font-size: 0.8em;
+    margin: 0;
+}
+#carpool-detail>div:nth-child(2)>:nth-child(2)>:first-child>:first-child{
+    justify-content: center;
+    width: max-content;
+}
+#carpool-detail>div:nth-child(2)>:nth-child(2)>:first-child>div:last-child>:nth-child(2){
+    display: flex;
+    flex-direction: column;
+    margin: 0 1vw;
+}
+#carpool-detail>div:nth-child(2)>:nth-child(2)>:first-child>div:last-child>:nth-child(3){
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 8.2vw;
+}
+#carpool-detail>div:nth-child(2)>:nth-child(2)>:first-child>div:last-child>:nth-child(3) p{
+    margin: 0;
+}
+.destinationLine{
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-#carpool-detail div:nth-child(2)>:is(p,h2){
-    margin: 1vw 0;
+.destinationPoint{
+    width: 1.1vw;
+    height: 1.1vw;
+    border: 0.5vw solid black;
+    background-color: white;
+    border-radius: 50vw;
 }
-#carpool-detail div:nth-child(3){
-    width: 70%;
+.verticalLine {
+    border-left: .75vw solid #000000;
+    height: 5vw;
 }
-#carpool-detail div:nth-child(3)>div:first-child {
+#carpool-detail>:nth-child(4){
     text-align: center;
-    width: 50%;
 }
-#carpool-detail div:nth-child(3)>div:last-child{
-    width: 70%;
+#carpool-detail>:nth-child(4)>:last-child{
+    justify-content: center;
 }
-
-#carpool-detail>div:last-child{
-    display: flex;
-    justify-content: space-between;
-    width: 30%;
+#carpool-detail>:nth-child(4) img{
+    width: 4vw;
+    height: 4vw;
 }
 @media screen and (max-width: 945px){
-    #carpool-detail li{
+    :is(#show-carpool, #carpool-detail, #resumeTravel) .flex-row:first-child {
+            width:80%;
+    }
+    #carpool-detail>div:nth-child(2)>:first-child {
         text-align: center;
+    }
+    #carpool-detail>div:nth-child(2)>:nth-child(2)>:first-child>div:last-child>:nth-child(3) {
+        height: 10.6vw;
+    }
+    #carpool-detail>:nth-child(4) img {
+        width: 8vw;
+        height: 8vw;
+    }
+    .verticalLine{
+        border-width: 1vw;
+        height: 8vw;
+    }
+    .destinationPoint{
+        width: 1.3vw;
+        height: 1.3vw;
     }
 }
 
@@ -517,6 +589,7 @@ input[type='checkbox']:checked{
     height: 30vw;
     object-fit: cover;
 }
+
 #validParticipation .flex-row{
     justify-content: space-between;
 }

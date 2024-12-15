@@ -5,7 +5,7 @@
     {% if search != null %}
         {{ parent() }}    
         {{ encore_entry_script_tags('filter-mobile') }}
-
+        {{ encore_entry_script_tags('detailsRedirection') }}
     {% endif %}
 	
 {% endblock %}
@@ -50,27 +50,29 @@
                 </div>
             </section>
             {% for search in search %}
-                <section class='block' id="show-carpool">
-                    <div>
-                        <div class='flex-row'>
-                            <h2>{{search.user.username}}</h2>  
-                            <img src='img/userPicture.jpg' alt="phote de profil"/>
-                            <h3>4/5</h3>
-                        </div>
-                        <div class='flex-row'>
-                            <h2>{{search.price}}€</h2>
-                            <p>{{search.placeLeft}} places restantes</p>
-                        </div>
-                        <div class='flex-row'>
-                            <div>
-                                <p>Départ: {{search.startDate|date('d/m/Y H:i')}}</p>
-                                <p>Arrivée: {{search.endDate|date('d/m/Y H:i')}}</p>
+                {% if (search in carpoolParticipation) == false %}
+                    <section class='block' id="show-carpool">
+                        <div>
+                            <div class='flex-row'>
+                                <h2>{{search.user.username}}</h2>  
+                                <img src='img/{{search.user.img ??"user.png"}}' alt="phote de profil"/>
+                                <h3>4/5</h3>
                             </div>
-                            <p>Ecologique: {% if search.isEcologique %}oui {% else %}non{% endif %}</p>
+                            <div class='flex-row'>
+                                <h2>{{search.price}}€</h2>
+                                <p>{{search.placeLeft}} places restantes</p>
+                            </div>
+                            <div class='flex-row'>
+                                <div>
+                                    <p>Départ: {{search.startDate|date('d/m/Y H:i')}}</p>
+                                    <p>Arrivée: {{search.endDate|date('d/m/Y H:i')}}</p>
+                                </div>
+                                <p>Ecologique: {% if search.isEcologique %}oui {% else %}non{% endif %}</p>
+                            </div>
+                            <button class='standard-btn' id="detail-btn-{{search.id}}">Détails</button>
                         </div>
-                        <button class='standard-btn'>Détails</button>
-                    </div>
-                </section>
+                    </section>
+                {% endif %}
             {% endfor %}
             {% else %}
             <h3 style="text-align:center;">Vous d'avait soit pas saisi de voyage ou soit que votre voyage n'existe pas, veuillez réessayer.</h3>

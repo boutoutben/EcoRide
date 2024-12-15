@@ -44,7 +44,8 @@ class UserSpaceInfoDriverTest extends PantherTestCase
             'new_car[color]' => $color,
             'new_car[nbPassenger]' => $nbPassenger,
         ];
-    }/*
+    }
+    /*
     public function testNewCarValidData()
     {
         $client = self::createPantherClient(['browser' => 'firefox']);
@@ -161,28 +162,177 @@ class UserSpaceInfoDriverTest extends PantherTestCase
         $crawler->filter('#plus-btn')->click();
         $this->assertSelectorTextContains('.form_error', "Le nombre de passager doit être supérieur à 0");
     }
-    public function testNewCarNotBlank()
+
+    public function testEditCar()
     {
         $client = self::createPantherClient(['browser' => 'firefox']);
 
         // Log in and get the user space page
         $crawler = $this->defineClient($client);
 
-        // Wait for the button to appear
-        $client->waitFor('#plus-btn', 5); // Wait up to 60 seconds
-
-        // Click the button
-        $crawler->filter('#plus-btn')->click();
-
+        // Wait for the edit button to appear
+        $client->waitFor('#edit1', 5);
+        $crawler->filter('#edit1')->click();
 
         // Fill out the form and submit it
-        $form = $crawler->selectButton('new_car[submit]')->form($this->newCarData("", "2024-11-25", "vx", "vert", 2));
+        $form = $crawler->selectButton('edit_form[submit]')->form([
+            "edit_form[licensePlate]" => "AB-123-CD",
+            "edit_form[firstRegistration]" => "2022-11-30",
+            "edit_form[model]" => "xz",
+            "edit_form[color]" => "gris",
+            "edit_form[nbPassenger]" => 5
+        ]);
         $client->submit($form);
-        $crawler = $client->refreshCrawler();
-        $client->waitFor('#plus-btn', 5); // Wait up to 60 seconds
 
-        // Click the button
-        $crawler->filter('#plus-btn')->click();
-        $this->assertSelectorTextContains('.form_error', "Le champ ne peut pas être vide");
+        // Refresh the crawler and check the current URL
+        $crawler = $client->refreshCrawler();
+        $this->assertSame(
+            '/userSpace',
+            parse_url($client->getCurrentURL(), PHP_URL_PATH),
+            'The current page is not the expected userSpace page.'
+        );
+    }
+    public function testEditCarInvalidLisencePlate()
+    {
+        $client = self::createPantherClient(['browser' => 'firefox']);
+
+        // Log in and get the user space page
+        $crawler = $this->defineClient($client);
+
+        // Wait for the edit button to appear
+        $client->waitFor('#edit1', 5);
+        $crawler->filter('#edit1')->click();
+
+        // Fill out the form and submit it
+        $form = $crawler->selectButton('edit_form[submit]')->form([
+            "edit_form[licensePlate]" => "AB-123-C",
+        ]);
+        $client->submit($form);
+
+        // Refresh the crawler and check the current URL
+        $crawler = $client->refreshCrawler();
+        $this->assertSame(
+            '/userSpace',
+            parse_url($client->getCurrentURL(), PHP_URL_PATH),
+            'The current page is not the expected userSpace page.'
+        );
+        $client->waitFor('#edit1', 5);
+        $crawler->filter('#edit1')->click();
+        $this->assertSelectorTextContains('.form_error', "La plaque d'immatriculation n'est pas conforme");
+    }
+
+    public function testEditCarInvalidModel()
+    {
+        $client = self::createPantherClient(['browser' => 'firefox']);
+
+        // Log in and get the user space page
+        $crawler = $this->defineClient($client);
+
+        // Wait for the edit button to appear
+        $client->waitFor('#edit1', 5);
+        $crawler->filter('#edit1')->click();
+
+        // Fill out the form and submit it
+        $form = $crawler->selectButton('edit_form[submit]')->form([
+            "edit_form[model]" => "xz;;"
+        ]);
+        $client->submit($form);
+
+        // Refresh the crawler and check the current URL
+        $crawler = $client->refreshCrawler();
+        $this->assertSame(
+            '/userSpace',
+            parse_url($client->getCurrentURL(), PHP_URL_PATH),
+            'The current page is not the expected userSpace page.'
+        );
+        $client->waitFor('#edit1', 5);
+        $crawler->filter('#edit1')->click();
+        $this->assertSelectorTextContains('.form_error', "Le modèle n'est pas conforme et le nombre de caractère doit être compris entre 2 et 50");
+    }
+    public function testEditCarInvalidColor()
+    {
+        $client = self::createPantherClient(['browser' => 'firefox']);
+
+        // Log in and get the user space page
+        $crawler = $this->defineClient($client);
+
+        // Wait for the edit button to appear
+        $client->waitFor('#edit1', 5);
+        $crawler->filter('#edit1')->click();
+
+        // Fill out the form and submit it
+        $form = $crawler->selectButton('edit_form[submit]')->form([
+            "edit_form[color]" => "gris;;",
+        ]);
+        $client->submit($form);
+
+        // Refresh the crawler and check the current URL
+        $crawler = $client->refreshCrawler();
+        $this->assertSame(
+            '/userSpace',
+            parse_url($client->getCurrentURL(), PHP_URL_PATH),
+            'The current page is not the expected userSpace page.'
+        );
+        $client->waitFor('#edit1', 5);
+        $crawler->filter('#edit1')->click();
+        $this->assertSelectorTextContains('.form_error', "La couleur n'est pas conforme et le nombre de caractère doit être compris entre 2 et 50");
+    }
+
+    public function testEditCarInvalidZeroNbPassenger()
+    {
+        $client = self::createPantherClient(['browser' => 'firefox']);
+
+        // Log in and get the user space page
+        $crawler = $this->defineClient($client);
+
+        // Wait for the edit button to appear
+        $client->waitFor('#edit1', 5);
+        $crawler->filter('#edit1')->click();
+
+        // Fill out the form and submit it
+        $form = $crawler->selectButton('edit_form[submit]')->form([
+            "edit_form[nbPassenger]" => 0
+        ]);
+        $client->submit($form);
+
+        // Refresh the crawler and check the current URL
+        $crawler = $client->refreshCrawler();
+        $this->assertSame(
+            '/userSpace',
+            parse_url($client->getCurrentURL(), PHP_URL_PATH),
+            'The current page is not the expected userSpace page.'
+        );
+        $client->waitFor('#edit1', 5);
+        $crawler->filter('#edit1')->click();
+        $this->assertSelectorTextContains('.form_error', "Le nombre de passager doit être supérieur à 0");
+    }
+
+    public function testEditCarInvalidTooMuchPassenger()
+    {
+        $client = self::createPantherClient(['browser' => 'firefox']);
+
+        // Log in and get the user space page
+        $crawler = $this->defineClient($client);
+
+        // Wait for the edit button to appear
+        $client->waitFor('#edit1', 5);
+        $crawler->filter('#edit1')->click();
+
+        // Fill out the form and submit it
+        $form = $crawler->selectButton('edit_form[submit]')->form([
+            "edit_form[nbPassenger]" => 10
+        ]);
+        $client->submit($form);
+
+        // Refresh the crawler and check the current URL
+        $crawler = $client->refreshCrawler();
+        $this->assertSame(
+            '/userSpace',
+            parse_url($client->getCurrentURL(), PHP_URL_PATH),
+            'The current page is not the expected userSpace page.'
+        );
+        $client->waitFor('#edit1', 5);
+        $crawler->filter('#edit1')->click();
+        $this->assertSelectorTextContains('.form_error', "Le nombre de passager doit être inférieur à 10");
     }
 }

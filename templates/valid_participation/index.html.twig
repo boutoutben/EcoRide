@@ -1,7 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Hello ValidParticipationController!{% endblock %}
-
+{% block javascripts %}
+	{{ parent() }}
+	{{ encore_entry_script_tags('participationRedirection') }}
+{% endblock %}
 {% block body %}
 <main>
     <section id='finalAction'>
@@ -9,16 +12,16 @@
     </section>
     <section class='block' id="validParticipation">
         <div class='flex-row'>
-            <p>Voyage de Lille à Valencienne</p>
+            <p>Voyage {{carpool.startPlace}} - {{carpool.endPlace}}</p>
             <div>
-                <p>Départ 9h00</p>
-                <p>Arrivée:10h30</p>
+                <p>Départ: {{carpool.startDate|date("H\\hi")}}</p>
+                <p>Arrivée: {{carpool.endDate|date("H\\hi")}}</p>
             </div>
         </div>
-        <p>Il vous reste 20 crédit, êtes-vous sûre de vouloir payer 9 crédit pour le voyage</p>
+        <p>Il vous reste {{user.nbCredit}} crédit, êtes-vous sûre de vouloir payer {{carpool.price}} crédit pour le voyage</p>
         <div class='flex-row'>
-            <button class='no'>Non</button>
-            <button class="yes">Oui</button>
+            <button class='no' id="noBtn-{{carpool.id}}">Non</button>
+            <button class="yes" id="yesBtn-{{carpool.id}}">Oui</button>
         </div>
     </section>
 {% endblock %}

@@ -20,7 +20,7 @@ class Car
 
     #[ORM\Column(length: 20)]
     #[Assert\NotBlank(message: "Le champ ne peut pas être vide")]
-    #[Assert\Regex("/^[A-Z]{2}-\d{3}-[A-Z]{2}$/", "La plate d'immatriculation n'est pas conforme")]
+    #[Assert\Regex("/^[A-Z]{2}-\d{3}-[A-Z]{2}$/", "La plaque d'immatriculation n'est pas conforme")]
     private ?string $licensePlate = null;
 
     #[ORM\Column(type: 'datetime', nullable: true)]

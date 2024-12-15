@@ -71,7 +71,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     
     #[ORM\Column]
     #[Assert\PositiveOrZero(message:"Le nombre ne peut pas être négatif")]
-    private ?int $nb_credit = null;
+    private ?int $nbCredit = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\NotBlank(message: "Le champ ne peux pas être vide")]
@@ -84,9 +84,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\OneToMany(targetEntity: Car::class, mappedBy: 'user')]
     private Collection $Car;
-
-    #[ORM\ManyToOne(inversedBy: 'user')]
-    private ?CarpoolParticipation $carpoolParticipation = null;
 
     /**
      * @var Collection<int, Carpool>
@@ -110,6 +107,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'json')]
     private $preference = [];
 
+    /**
+     * @var Collection<int, CarpoolParticipation>
+     */
+    #[ORM\OneToMany(targetEntity: CarpoolParticipation::class, mappedBy: 'user')]
+    private Collection $carpoolParticipation;
+
     public function __construct()
     {
         $this->Car = new ArrayCollection();
@@ -119,6 +122,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             ["Non-fumeur", false],
             ["Sans animaux", false],
         ];
+        $this->carpoolParticipation = new ArrayCollection();
     }
     public function getId(): ?int
     {
@@ -238,12 +242,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
     public function getNbCredit(): ?int
     {
-        return $this->nb_credit;
+        return $this->nbCredit;
     }
 
     public function setNbCredit(int $nb_credit): static
     {
-        $this->nb_credit = $nb_credit;
+        $this->nbCredit = $nb_credit;
 
         return $this;
     }
@@ -302,17 +306,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getCarpoolParticipation(): ?CarpoolParticipation
-    {
-        return $this->carpoolParticipation;
-    }
 
-    public function setCarpoolParticipation(?CarpoolParticipation $carpoolParticipation): static
-    {
-        $this->carpoolParticipation = $carpoolParticipation;
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, Carpool>
@@ -385,4 +379,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * @return Collection<int, CarpoolParticipation>
+     */
+    public function getCarpoolParticipation(): Collection
+    {
+        return $this->carpoolParticipation;
+    }
+
+    public function addCarpoolParticipation(CarpoolParticipation $carpoolParticipation): static
+    {
+        if (!$this->carpoolParticipation->contains($carpoolParticipation)) {
+            $this->carpoolParticipation->add($carpoolParticipation);
+            $carpoolParticipation->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCarpoolParticipation(CarpoolParticipation $carpoolParticipation): static
+    {
+        if ($this->carpoolParticipation->removeElement($carpoolParticipation)) {
+            // set the owning side to null (unless already changed)
+            if ($carpoolParticipation->getUser() === $this) {
+                $carpoolParticipation->setUser(null);
+            }
+        }
+
+        return $this;
+    }
 }

@@ -1,0 +1,11 @@
+Array
+(
+    [search_travel] => Array
+        (
+            [startPlace] => Lille
+            [endPlace] => Arras
+            [startDate] => 2024-12-08T12:00
+            [submit] => 
+        )
+
+)

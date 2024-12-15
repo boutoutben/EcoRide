@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Carpool;
+use App\Entity\CarpoolParticipation;
 use App\Form\SearchTravelType;
+use App\Repository\CarpoolParticipationRepository;
 use App\Repository\CarpoolRepository;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -17,15 +19,18 @@ use Symfony\Component\Routing\Attribute\Route;
 class CarpoolController extends AbstractController
 {
     private CarpoolRepository $carpoolRepository;
-    public function __construct(CarpoolRepository $carpoolRepository) 
+    private CarpoolParticipationRepository $carpoolParticipationRepository;
+    public function __construct(CarpoolRepository $carpoolRepository,CarpoolParticipationRepository $carpoolParticipationRepository) 
     {
         $this->carpoolRepository = $carpoolRepository;
+        $this->carpoolParticipationRepository = $carpoolParticipationRepository;
     }
 
     #[Route('/carpool', name: 'app_carpool')]
     public function index(Request $request): Response
     {
         $search = null;
+        $allCarpool = [];
         $form = $this->createForm(SearchTravelType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -48,10 +53,20 @@ class CarpoolController extends AbstractController
                 ]));
             $search = $queryBuilder->getQuery()->getResult();
         } 
+        if($this->getUser()!=null)
+        {
+            $carpoolParticipation = $this->carpoolParticipationRepository->findBy(["user" => $this->getUser()]);
+            foreach($carpoolParticipation as $carpoolParticipation)
+            {
+                $allCarpool[] = $carpoolParticipation->getCarpool();
+            }
+            
+        }
         return $this->render('carpool/index.html.twig', [
             'controller_name' => 'CarpoolController',
             "form" => $form->createView(),
-            "search" => $search
+            "search" => $search,
+            "carpoolParticipation" => $allCarpool
         ]);
         
     }

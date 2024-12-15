@@ -57,7 +57,9 @@
 								<a href="/contact">Contact</a>
 							{% endif %}
 						</li>
-						<li>20 crédits<img src="img/more.png" alt="ajouter un crédit"/></li>
+						{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+							<li>{{app.user.nbCredit}} crédits<img src="img/more.png"/></li>
+						{% endif %}
 					</ul>
 				</nav>
 			</div>
@@ -85,7 +87,10 @@
 								<a href="/contact">Contact</a>
 							{% endif %}
 						</li>
-						<li>20 crédits<img src="img/more.png"/></li>
+						{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+							<li>{{app.user.nbCredit}} crédits<img src="img/more.png"/></li>
+						{% endif %}
+						
 					</ul>
 				</div>
 			</header>

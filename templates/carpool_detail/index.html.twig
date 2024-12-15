@@ -2,40 +2,87 @@
 
 {% block title %}Hello CarpoopDetailController!
 {% endblock %}
+{% block javascripts %}
+	{{ parent() }}
+	{{ encore_entry_script_tags('participationRedirection') }}
+{% endblock %}
 
 {% block body %}
 	<main>
+		{% for message in app.flashes('error') %}
+			<div class="form_error backgrandError">
+				<p>{{ message }}</p>
+			</div>
+		{% endfor %}
 		<section class='block' id='carpool-detail'>
 			<div class='flex-row'>
-				<h1>Pseudo</h1>
-				<img src='img/userPicture.jpg' alt="phote de profil"/>
-				<h3>4/5</h3>
-			</div>
-			<div>
-				<p>Départ: 9h00 à Lille</p>
-				<p>Arrivée: 10h30 à Valencienne</p>
-				<h2>9,00€</h2>
-				<p>2 places restantes</p>
-				<p>Ecologique:oui</p>
-			</div>
-			<div class="flex-row">
+				<h1>{{carpool.user.username}}</h1>
+				<img src='img/{{carpool.user.img ??"user.png"}}' alt="phote de profil"/>
 				<div>
-					<p>Avis du conducteur:</{{ parent() }}>
+					<h3>4/5</h3>
+					<h3 class="underline">avis</h3>
 				</div>
-				<div>
-					<li>Lorem ipsum odor amet, consectetuer adipiscing elit. Cubilia nisl lorem potenti congue est est sapien.</li>
-				</br>
-				<li>Lorem ipsum odor amet, consectetuer adipiscing elit. Cubilia nisl lorem potenti congue est est sapien.</li>
+			</div>
+			
+			<div>
+			    <div>
+			        <h3>Le {{ formattedDate }}</h3>
+			    </div>
+				{% set diff = carpool.startDate.diff(carpool.endDate) %}
+				<div class="flex-row">
+					<div class="flex-row">
+						<div class="flex-row">
+							<p>{{diff.h}}h{{'%02d'|format(diff.i)}}</p>
+							<div class="destinationLine">
+								<div class="destinationPoint"></div>
+								<div class="verticalLine"></div>
+								<div class="destinationPoint"></div>
+							</div>
+							<div>
+								<p>Départ: {{carpool.startDate|date("H\\hi")}} à {{carpool.startPlace}}</p>
+								<p>Arrivée: {{carpool.endDate|date("H\\hi")}} à {{carpool.endPlace}}</p>
+							</div>
+						</div>
+					</div>
+					<h2>{{carpool.price}} crédits</h2>
+				</div>
+				<div class="flex-row">
+					<p>{{carpool.placeLeft}} places restantes</p>
+					<p>Ecologique: {% if carpool.isEcologique %} oui{% else %} non{% endif %}</p>
+				</div>
 			</div>
 		</div>
 		<div>
-			<p>Marque de la voiture: Peugot 208</p>
-			<p>Energie utilisé: électricité</p>
+			<p>Voiture utilisé: {{carpool.car.mark }}   {{carpool.car.model}}   {{carpool.car.color}}</p>
+			<p>Energie utilisé: {{carpool.car.energie}}</p>
 		</div>
 		<div>
-			<img src='img/no-smoking.png' alt="Interdit de fumer"/>
-			<img src='img/pets-allowed.png' alt='Animaux autorisé'/>
+		   <h3>Préférence</h3>
+		   {% for preference in carpool.user.preference %}
+			   {% if preference[1] %}
+				   <p>{{preference[0]}}</p>
+			   {% endif %}
+		   {% endfor %}
+		<div>
+		    {% for preference in carpool.user.preference %}
+			    {% if preference[0] == "Non-fumeur" %}
+                    {% if preference[1] %}
+                        <img src="img/no-smoking.png" alt="Interdit de fumer"/>
+                    {% else %}
+                        <img src="img/smoking.png" alt="Trajet fumeur"/>
+                    {% endif %}
+               {% endif %}
+		   {% endfor %}
+		   {% for preference in carpool.user.preference %}
+			    {% if preference[0] == "Sans animaux" %}
+                    {% if preference[1] %}
+                        <img src="img/no-animals.png" alt="Sans animaux"/>
+                    {% else %}
+                        <img src="img/pets-allowed.png" alt="Animaux autorisé"/>
+                    {% endif %}
+               {% endif %}
+		   {% endfor %}
 		</div>
-        <button class='standard-btn'>participer</button>
+        <button id="participation-{{carpool.id}}" class='standard-btn'>participer</button>
 	</section>
 </main>{% endblock %}
