@@ -43,7 +43,7 @@
                 
             {{ form_end(form) }}
         </section>
-        {% if search != null %}
+        {% if search is not null and search|length != carpoolParticipation|length %}
             <section>
                 <div id="btnFilter">
                     <button class="standard-btn" id="filter-btn">Filtre</button>

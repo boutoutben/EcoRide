@@ -52,15 +52,15 @@ class CarpoolController extends AbstractController
                     new Parameter("startDate", $startDate)
                 ]));
             $search = $queryBuilder->getQuery()->getResult();
-        } 
-        if($this->getUser()!=null)
-        {
-            $carpoolParticipation = $this->carpoolParticipationRepository->findBy(["user" => $this->getUser()]);
-            foreach($carpoolParticipation as $carpoolParticipation)
-            {
-                $allCarpool[] = $carpoolParticipation->getCarpool();
+            if ($this->getUser() != null) {
+                $carpoolParticipation = $this->carpoolParticipationRepository->findBy(["user"=>$this->getUser()]);
+
+                foreach ($carpoolParticipation as $carpoolParticipation) {
+                    if($carpoolParticipation->getCarpool()->getStartPlace() == $startPlace && $carpoolParticipation->getCarpool()->getEndPlace() == $endPlace && $carpoolParticipation->getCarpool()->getStartDate()){
+                        $allCarpool[] = $carpoolParticipation->getCarpool();
+                    }
+                }
             }
-            
         }
         return $this->render('carpool/index.html.twig', [
             'controller_name' => 'CarpoolController',
