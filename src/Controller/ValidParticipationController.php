@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\CarpoolParticipation;
+use App\Repository\CarpoolParticipationRepository;
 use App\Repository\CarpoolRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,9 +17,11 @@ use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationExc
 class ValidParticipationController extends AbstractController
 {
     private CarpoolRepository $carpoolRepository;
-    public function __construct(CarpoolRepository $carpoolRepository)
+    private CarpoolParticipationRepository $carpoolParticipationRepository;
+    public function __construct(CarpoolRepository $carpoolRepository, CarpoolParticipationRepository $carpoolParticipationRepository)
     {
         $this->carpoolRepository = $carpoolRepository;
+        $this->carpoolParticipationRepository = $carpoolParticipationRepository;
     }
 
     #[Route('/validParticipation', name: 'app_valid_participation')]
@@ -36,6 +39,18 @@ class ValidParticipationController extends AbstractController
         }
         $carpool = $this->carpoolRepository->findOneBy(["id" => $detail]);
         $user = $this->getUser();
+        $carpoolParticipation = $this->carpoolParticipationRepository->findBy(["user"=>$user]);
+        if($carpoolParticipation!=null)
+        {
+            foreach($carpoolParticipation as $userCarpool)
+            {
+                if($userCarpool->getCarpool() === $carpool)
+                {
+                    $this->addFlash('error', 'Vous participez déjà au covoiturage');
+                    return new RedirectResponse("carpoolDetail?detail=${detail}");
+                }
+            }
+        }
         return $this->render('valid_participation/index.html.twig', [
             'controller_name' => 'ValidParticipationController',
             "carpool" => $carpool,

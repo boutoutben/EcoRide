@@ -413,4 +413,7 @@ class UserSpaceControllerTest extends WebTestCase
             $this->assertEquals($carpool->getCar()->getEnergie(), "Electrique");
         }
     }
+
+    
+
 }

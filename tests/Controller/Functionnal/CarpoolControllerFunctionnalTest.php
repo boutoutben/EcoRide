@@ -27,7 +27,6 @@ class CarpoolControllerFunctionnalTest extends WebTestCase
         $client->submit($form);
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
     }
-
     public function testFormSubmissionWithInvalidData()
     {
         $client = static::createClient();

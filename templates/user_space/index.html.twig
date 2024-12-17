@@ -8,8 +8,9 @@
 	{{ encore_entry_script_tags('profile') }}
     {{ encore_entry_script_tags("uploadFile") }}
     {{ encore_entry_script_tags("overlayCar") }}
+    {{ encore_entry_script_tags('detailsRedirection') }}
+    {{encore_entry_script_tags("startCarpool")}}
 {% endblock %}
-
 
 {% block body %}
 <main>
@@ -162,7 +163,6 @@
         {{ form_end(form) }}
     </section>
 {% if app.user.userType == "Conducteur" or app.user.userType == "Les deux" %}
-
         <section class="flex-row">
             <section class='flex-column' id="rulesImgLeft">
                 <img src="img/cleaning.png" alt="netoyer">
@@ -489,59 +489,75 @@
         </div>
         <button class="standard-btn">Valider</button>
     </section>
-    <section class="block" id='resumeTravel'>
-        <h1>Vos voyages</h1>
-        <div class="sub-block">
-            <div class='flex-row'>
-                <h2>Pseudo</h2>
-                <img src='img/userPicture.jpg' alt="phote de profil"/>
-                <h3>4/5</h3>
-            </div>
-            <div class='flex-row'>
-                <h2>9,00€</h2>
-                <p>2 places restantes</p>
-            </div>
-            <div class='flex-row'>
-                <div>
-                    <p>Départ: 10/11/2024 à 9h00</p>
-                    <p>Arrivée: 10/11/2024 à 10h30</p>
+    {% if app.user.userType == "Passager" or app.user.userType == "Les deux" %}
+        <section class="block" id='resumeTravel'>
+            <h1>Vos voyages</h1>
+            {% if userTravel != null %}
+                {% for userTravel in userTravel %}
+                    <section class='sub-block' id="show-carpool">
+                        <div>
+                            <div class='flex-row'>
+                                <h2>{{userTravel.carpool.user.username}}</h2>
+                                <img src='img/{{userTravel.carpool.user.img ??"user.png"}}' alt="phote de profil"/>
+                                <h3>4/5</h3>
+                            </div>
+                            <div class='flex-row'>
+                                <h2>{{userTravel.carpool.price}}€</h2>
+                                <p>{{userTravel.carpool.placeLeft}}
+                                    places restantes</p>
+                            </div>
+                            <div class='flex-row'>
+                                <div>
+                                    <p>Départ:
+                                        {{userTravel.carpool.startDate|date('d/m/Y H:i')}}</p>
+                                    <p>Arrivée:
+                                        {{userTravel.carpool.endDate|date('d/m/Y H:i')}}</p>
+                                </div>
+                                <p>Ecologique:
+                                    {% if userTravel.carpool.isEcologique %}oui
+                                        {% else %}non
+                                    {% endif %}
+                                </p>
+                            </div>
+                            <button class='standard-btn' id="detail-btn-{{userTravel.carpool.id}}">Détails</button>
+                        </div>
+                    </section>
+                {% endfor %}
+            {% endif %}
+        </section>
+    {% endif %}
+    {% if app.user.userType == "Conducteur" or app.user.userType == "Les deux" %}
+        <section class="block" id="histori">
+            <h1>Historique</h1>
+            {% for carpoolHistory in carpoolHistory %}
+                <div class="sub-block">
+                    <div class="flex-row">
+                        <div>
+                            <p>Départ: {{carpoolHistory.startDate|date("H\\hi")}} à {{carpoolHistory.startPlace}}</p>
+                            <p>Arrivée: {{carpoolHistory.endDate|date("H\\hi")}} à {{carpoolHistory.endPlace}} </p>
+                        </div>
+                        <p>{{carpoolHistory.price}} crédits</p>
+                    </div>
+                    <div class='flex-row'>
+                        <div class="relative">
+                            <button class="standard-btn" id="cancelle-{{carpoolHistory.id}}">Anuller</button>
+                            <div id="overlayCancelle-{{carpoolHistory.id}}" class="overlay">
+                                <div class="overlayContent" id="overlayContent-{{carpoolHistory.id}}">
+                                    <p>Etes-vous sure de vouloir supprimer ce covoiturage</p>
+                                    <div class="flex-row">
+                                        <button class='no' id="noBtn-{{carpoolHistory.id}}">Non</button>
+                                        <button class="yes" id="yesBtn-{{carpoolHistory.id}}">Oui</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class='standard-btn' id="detail-btn-{{carpoolHistory.id}}">Détails</button>
+                        <button id="startBtn-{{carpoolHistory.id }}" class="standard-btn {{ carpoolHistory.isStart ? 'stopBtn' : '' }}">{{ carpoolHistory.isStart ? 'Arrêter' : 'Démarer' }}</button>
+                    </div>
                 </div>
-                <p>Ecologique: oui</p>
-            </div>
-            <button class='standard-btn'>Détails</button>
-        </div>
-    </section>
-    <section class="block" id="histori">
-        <h1>Historique</h1>
-        <div class="sub-block">
-            <div class="flex-row">
-                <div>
-                    <p>Départ: 9h00 à Lille</p>
-                    <p>Arrivée: 10h30 à Valencienne</p>
-                </div>
-                <p>9 crédits</p>
-            </div>
-            <div class='flex-row'>
-                <button class="standard-btn">Anuller</button>
-                <button class="standard-btn">Détails</button>
-                <button class="standard-btn">Démarer</button>
-            </div>
-        </div>
-        <div class="sub-block">
-            <div class="flex-row">
-                <div>
-                    <p>Départ: 9h00 à Lille</p>
-                    <p>Arrivée: 10h30 à Valencienne</p>
-                </div>
-                <p>9 crédits</p>
-            </div>
-            <div class='flex-row'>
-                <button class="standard-btn">Anuller</button>
-                <button class="standard-btn">Détails</button>
-                <button class="standard-btn">Démarer</button>
-            </div>
-        </div>
-    </section>
+            {% endfor %}
+        </section>
+    {% endif %}
     {% if app.user.userType == "Conducteur" or app.user.userType == "Les deux" %}
         <section class="block" id="travelOutpute">
             <h1>Saisie d'un voyage</h1>

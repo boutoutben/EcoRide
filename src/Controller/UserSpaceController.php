@@ -11,6 +11,8 @@ use App\Form\EditCarType;
 use App\Form\NewCarType;
 use App\Form\UserPreferencesType;
 use App\Form\UserProfileType;
+use App\Repository\CarpoolParticipationRepository;
+use App\Repository\CarpoolRepository;
 use App\Repository\CarRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -30,13 +32,17 @@ class UserSpaceController extends AbstractController
 {
     private UserRepository $userRepository;
     private CarRepository $carRepository;
+    private CarpoolParticipationRepository $carpoolParticipationRepository;
     private RouterInterface $route;
+    private CarpoolRepository $carpoolRepository;
     private $formFactory;
-    public function __construct(UserRepository $userRepository, private UserPasswordHasherInterface $passwordHasher, RouterInterface $route,CarRepository $carRepository, FormFactoryInterface $formFactory) {
+    public function __construct(UserRepository $userRepository, private UserPasswordHasherInterface $passwordHasher, RouterInterface $route,CarRepository $carRepository, FormFactoryInterface $formFactory,CarpoolParticipationRepository $carpoolParticipationRepository, CarpoolRepository $carpoolRepository) {
         $this->userRepository = $userRepository;
         $this->carRepository = $carRepository;
         $this->route = $route;
         $this->formFactory = $formFactory;
+        $this->carpoolParticipationRepository = $carpoolParticipationRepository;
+        $this->carpoolRepository = $carpoolRepository;
     }
 
     public function verifyPassword($user, $plainPassword)
@@ -244,6 +250,9 @@ class UserSpaceController extends AbstractController
             return new RedirectResponse($url);
         }
 
+        $userTravel = $this->carpoolParticipationRepository->findBy(["user"=>$this->getUser()]);
+        $carpoolHistory = $this->carpoolRepository->findBy(["user"=>$this->getUser()]);
+
         return $this->render('user_space/index.html.twig', [
             'controller_name' => 'UserSpaceController',
             "form" =>$form->createView(),
@@ -255,7 +264,9 @@ class UserSpaceController extends AbstractController
             "carAndCarEditForm" => $carAndCarEditForm,
             "preferenceForm" => $preferenceForm->createView(),
             "addPreferenceForm" => $addPreferenceForm->createView(),
-            "newCarpoolForm" => $newCarpoolForm->createView()
+            "newCarpoolForm" => $newCarpoolForm->createView(),
+            "userTravel" => $userTravel,
+            "carpoolHistory" => $carpoolHistory
         ]);
     }
     #[Route('/userPictureUpload', name: 'app_user_upload_picture', methods:["POST"])]
@@ -286,5 +297,37 @@ class UserSpaceController extends AbstractController
         }
 
         return new JsonResponse(['message' => 'No file uploaded!'], 400);
+    }
+
+    #[Route('/startCarpool', name: 'app_start_carpool', methods: ["POST"])]
+    public function startCarpool(EntityManagerInterface $entityManager): Response
+    {
+        $data = json_decode(file_get_contents('php://input'), true);
+        $value = $data["value"];
+        $id = (int)$data["id"];
+        $carpool = $this->carpoolRepository->findOneBy(["id"=>$id]);
+        $carpool->setStart($value);
+        $entityManager->persist($carpool);
+        $entityManager->flush();
+        return new JsonResponse("Success");
+    }
+
+    #[Route('/deleteCarpool', name: 'app_delete_carpool', methods: ["POST"])]
+    public function deteleCarpool(EntityManagerInterface $entityManager)
+    {
+        $data = json_decode(file_get_contents('php://input'), true);
+        $id = (int)$data["id"];
+        $carpoolParticipationToDelete = $this->carpoolParticipationRepository->findBy(["carpool"=>$id]);
+        $carpoolToDelete = $this->carpoolRepository->findOneBy(["id" => $id]);
+        foreach($carpoolParticipationToDelete as $carpoolParticipation)
+        {
+            $entityManager->remove($carpoolParticipation);
+            $entityManager->flush();
+        }
+        if($carpoolToDelete)
+        {
+            $entityManager->remove($carpoolToDelete);
+        }
+        return new JsonResponse("Sucess");
     }
 }

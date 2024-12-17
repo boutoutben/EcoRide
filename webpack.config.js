@@ -33,6 +33,7 @@ Encore
     .addEntry("overlayCar", "./assets/js/overlayCar.js")
     .addEntry("detailsRedirection", "./assets/js/detailsRedirection.js")
     .addEntry("participationRedirection", "./assets/js/participationRedirection.js")
+    .addEntry("startCarpool", "./assets/js/startCarpool.js")
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()

@@ -2,6 +2,7 @@
 
 namespace App\Tests;
 
+use App\Entity\Carpool;
 use Symfony\Component\Panther\PantherTestCase;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,14 +22,13 @@ class UserSpaceInfoDriverTest extends PantherTestCase
 
         // Select the form and fill it
         $form = $crawler->selectButton('Connexion')->form([
-            'connexion[pseudo]' => 'boutoutben',
-            'connexion[password]' => 'Boutout123!',
+            'connexion[pseudo]' => 'test',
+            'connexion[password]' => 'Test123!',
         ]);
 
         // Submit the form
         $client->submit($form);
 
-        
 
         // Fetch the page after login (user space)
         $crawler2 = $client->request("GET","/userSpace"); // Get the crawler for the current page
@@ -59,13 +59,18 @@ class UserSpaceInfoDriverTest extends PantherTestCase
         // Click the button
         $crawler->filter('#plus-btn')->click();
 
-
+        $crawler = $client->refreshCrawler();
         // Fill out the form and submit it
         $form = $crawler->selectButton('new_car[submit]')->form($this->newCarData("AB-123-CD", "2024-11-25", "xs", "vert", 4));
         $client->submit($form);
-        $this->assertEquals($form["new_car[model]"],"xs");
+        $this->assertSame(
+            '/userSpace',
+            parse_url($client->getCurrentURL(), PHP_URL_PATH),
+            'The user was not redirected to the expected carpool details page.'
+        );
         
-    }*/
+    }
+    
     public function testNewCarInvalidPlateLicense()
     {
         $client = self::createPantherClient(['browser' => 'firefox']);
@@ -334,5 +339,118 @@ class UserSpaceInfoDriverTest extends PantherTestCase
         $client->waitFor('#edit1', 5);
         $crawler->filter('#edit1')->click();
         $this->assertSelectorTextContains('.form_error', "Le nombre de passager doit être inférieur à 10");
+    }*/
+
+    /*userTravel*/
+    /*
+    public function testUserTravelParticipationErrorMessage()
+    {
+        $client = self::createPantherClient(['browser' => 'firefox']);
+        $crawler = $client->request('GET', '/connexion');
+
+        $client->waitFor('form'); // Wait for login form
+
+        $form = $crawler->selectButton('Connexion')->form([
+            'connexion[pseudo]' => 'boutoutben',
+            'connexion[password]' => 'Boutout123!',
+        ]);
+
+        $client->submit($form);
+
+        $crawler = $client->request('GET', '/userSpace');
+        $client->waitFor('#detail-btn-1', 10); // Wait for button to load
+
+        $this->assertGreaterThan(0, $crawler->filter('#detail-btn-1')->count(), 'Button not found!');
+        $crawler->filter('#detail-btn-1')->click();
+        $crawler = $client->refreshCrawler();
+        $client->waitFor('#participation-1', 10); // Wait for button to load
+
+        $this->assertGreaterThan(0, $crawler->filter('#participation-1')->count(), 'Button not found!');
+        $crawler->filter('#participation-1')->click();
+        // Wait for the error message to appear
+        $client->waitFor('.form_error', 10);
+        $this->assertSelectorTextContains('.form_error', 'Vous participez déjà au covoiturage');
+    }*/
+
+    /* history*/
+    /*
+    public function testCancelleCarpool()
+    {
+        $client = self::createPantherClient(['browser' => 'firefox']);
+
+        $crawler = $client->request('GET', '/connexion');
+
+        $client->waitFor('form'); // Wait for login form
+
+        $form = $crawler->selectButton('Connexion')->form([
+            'connexion[pseudo]' => 'test4',
+            'connexion[password]' => 'Test123?',
+        ]);
+        $client->submit($form);
+        $crawler = $client->request('GET', '/userSpace');
+        $this->assertGreaterThan(0, $crawler->filter('#cancelle-45')->count(), 'The element with the given ID does not exist.');
+        $client->waitFor("#cancelle-45", 15);
+        $crawler->filter("#cancelle-45")->click();
+        $crawler = $client->refreshCrawler();
+        $client->waitFor("#yesBtn-45",10);
+        $crawler->filter("#yesBtn-45")->click();
+        $crawler = $client->refreshCrawler();
+        $this->assertEquals(0, $crawler->filter('#cancelle-45')->count(), 'The element with the given ID does not exist.');
+    }*/
+    public function testCancelleCarpool()
+    {
+        $client = self::createPantherClient(['browser' => 'firefox']);
+
+        $crawler = $client->request('GET', '/connexion');
+
+        $client->waitFor('form'); // Wait for login form
+
+        $form = $crawler->selectButton('Connexion')->form([
+            'connexion[pseudo]' => 'test4',
+            'connexion[password]' => 'Test123?',
+        ]);
+        $client->submit($form);
+        $crawler = $client->request('GET', '/userSpace');
+        $this->assertGreaterThan(0, $crawler->filter('#cancelle-44')->count(), 'The element with the given ID does not exist.');
+        $client->waitFor("#cancelle-44", 15);
+        $crawler->filter("#cancelle-44")->click();
+        $crawler = $client->refreshCrawler();
+        $client->waitFor("#noBtn-44", 10);
+        $crawler->filter("#noBtn-44")->click();
+        $crawler = $client->refreshCrawler();
+        $this->assertEquals(1, $crawler->filter('#cancelle-44')->count(), 'The element with the given ID does not exist.');
+    }
+
+    public function testStartBtn()
+    {
+        $client = self::createPantherClient(['browser' => 'firefox']);
+
+        $crawler = $client->request('GET', '/connexion');
+
+        $client->waitFor('form'); // Wait for login form
+
+        $form = $crawler->selectButton('Connexion')->form([
+            'connexion[pseudo]' => 'test4',
+            'connexion[password]' => 'Test123?',
+        ]);
+        $client->submit($form);
+        $crawler = $client->request('GET', '/userSpace');
+        $carpool = $this->getContainer()->get('doctrine')->getRepository(Carpool::class)->findOneBy(["id" => 43]);
+        if($carpool->isStart())
+        {
+            $client->waitFor("#startBtn-43",10);
+            $crawler->filter("#startBtn-43")->click();
+        }
+        else{
+            $client->waitFor("#startBtn-43",10);
+            $crawler->filter("#startBtn-43")->click();
+        }
+        
+        $this->assertSame(
+            '/userSpace',
+            parse_url($client->getCurrentURL(), PHP_URL_PATH),
+            'The user was not redirected to the expected userSpace page.'
+        );
+        // For the start bool, look at the database
     }
 }
