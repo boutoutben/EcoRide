@@ -60,7 +60,7 @@ class ConnexionController extends AbstractController
 
             // Check if passwords match
             if ($data["password"] !== $data["passwordEgain"]) {
-                $form->addError(new FormError('The passwords do not match.'));
+                $form->addError(new FormError('Les deux mot de passe ne sont pas identique'));
                 
             } else {
                 // Hash password and save user

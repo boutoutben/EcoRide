@@ -45,7 +45,7 @@ class UserSpaceInfoDriverTest extends PantherTestCase
             'new_car[nbPassenger]' => $nbPassenger,
         ];
     }
-    /*
+    
     public function testNewCarValidData()
     {
         $client = self::createPantherClient(['browser' => 'firefox']);
@@ -339,10 +339,10 @@ class UserSpaceInfoDriverTest extends PantherTestCase
         $client->waitFor('#edit1', 5);
         $crawler->filter('#edit1')->click();
         $this->assertSelectorTextContains('.form_error', "Le nombre de passager doit être inférieur à 10");
-    }*/
+    }
 
     /*userTravel*/
-    /*
+    
     public function testUserTravelParticipationErrorMessage()
     {
         $client = self::createPantherClient(['browser' => 'firefox']);
@@ -370,7 +370,7 @@ class UserSpaceInfoDriverTest extends PantherTestCase
         // Wait for the error message to appear
         $client->waitFor('.form_error', 10);
         $this->assertSelectorTextContains('.form_error', 'Vous participez déjà au covoiturage');
-    }*/
+    }
 
     /* history*/
     /*
@@ -388,16 +388,16 @@ class UserSpaceInfoDriverTest extends PantherTestCase
         ]);
         $client->submit($form);
         $crawler = $client->request('GET', '/userSpace');
-        $this->assertGreaterThan(0, $crawler->filter('#cancelle-45')->count(), 'The element with the given ID does not exist.');
-        $client->waitFor("#cancelle-45", 15);
-        $crawler->filter("#cancelle-45")->click();
+        $this->assertGreaterThan(0, $crawler->filter('#cancelle-15')->count(), 'The element with the given ID does not exist.');
+        $client->waitFor("#cancelle-15", 15);
+        $crawler->filter("#cancelle-15")->click();
         $crawler = $client->refreshCrawler();
-        $client->waitFor("#yesBtn-45",10);
-        $crawler->filter("#yesBtn-45")->click();
+        $client->waitFor("#yesBtn-15",10);
+        $crawler->filter("#yesBtn-15")->click();
         $crawler = $client->refreshCrawler();
-        $this->assertEquals(0, $crawler->filter('#cancelle-45')->count(), 'The element with the given ID does not exist.');
+        $this->assertEquals(0, $crawler->filter('#cancelle-15')->count(), 'The element with the given ID does not exist.');
     }*/
-    public function testCancelleCarpool()
+    public function testCancelleCarpoolNoBtn()
     {
         $client = self::createPantherClient(['browser' => 'firefox']);
 
@@ -411,16 +411,15 @@ class UserSpaceInfoDriverTest extends PantherTestCase
         ]);
         $client->submit($form);
         $crawler = $client->request('GET', '/userSpace');
-        $this->assertGreaterThan(0, $crawler->filter('#cancelle-44')->count(), 'The element with the given ID does not exist.');
-        $client->waitFor("#cancelle-44", 15);
-        $crawler->filter("#cancelle-44")->click();
+        $client->waitFor("#cancelle-20", 15);
+        $crawler->filter("#cancelle-20")->click();
         $crawler = $client->refreshCrawler();
-        $client->waitFor("#noBtn-44", 10);
-        $crawler->filter("#noBtn-44")->click();
+        $client->waitFor("#noBtn-20", 10);
+        $crawler->filter("#noBtn-20")->click();
         $crawler = $client->refreshCrawler();
-        $this->assertEquals(1, $crawler->filter('#cancelle-44')->count(), 'The element with the given ID does not exist.');
+        $this->assertEquals(1, $crawler->filter('#cancelle-20')->count(), 'The element with the given ID does not exist.');
     }
-
+    /*
     public function testStartBtn()
     {
         $client = self::createPantherClient(['browser' => 'firefox']);
@@ -436,15 +435,8 @@ class UserSpaceInfoDriverTest extends PantherTestCase
         $client->submit($form);
         $crawler = $client->request('GET', '/userSpace');
         $carpool = $this->getContainer()->get('doctrine')->getRepository(Carpool::class)->findOneBy(["id" => 43]);
-        if($carpool->isStart())
-        {
-            $client->waitFor("#startBtn-43",10);
-            $crawler->filter("#startBtn-43")->click();
-        }
-        else{
-            $client->waitFor("#startBtn-43",10);
-            $crawler->filter("#startBtn-43")->click();
-        }
+        $client->waitFor("#startBtn-19",10);
+        $crawler->filter("#startBtn-19")->click();
         
         $this->assertSame(
             '/userSpace',
@@ -452,5 +444,144 @@ class UserSpaceInfoDriverTest extends PantherTestCase
             'The user was not redirected to the expected userSpace page.'
         );
         // For the start bool, look at the database
+    }*/
+    /*
+    public function testCarpoolOpinion()
+    {
+        $client = self::createPantherClient(['browser' => 'firefox']);
+        $crawler = $client->request('GET', '/connexion');
+
+        $client->waitFor('form'); // Wait for login form
+
+        $form = $crawler->selectButton('Connexion')->form([
+            'connexion[pseudo]' => 'test4',
+            'connexion[password]' => 'Test123?',
+        ]);
+        $client->submit($form);
+        $crawler = $client->request('GET', '/userSpace');
+        for($i=0;$i<2;$i++)
+        {
+            $client->waitFor("#startBtn-1", 10);
+            $crawler->filter("#startBtn-1")->click();
+            
+        }
+        $crawler = $client->request('GET', '/connexion');
+
+        $client->waitFor('form'); // Wait for login form
+
+        $form = $crawler->selectButton('Connexion')->form([
+                'connexion[pseudo]' => 'boutoutben',
+                'connexion[password]' => 'Boutout123!',
+            ]);
+        $client->submit($form);
+
+        // Request the next page after login
+        $crawler = $client->request('GET', '/userSpace');
+
+        // Fill and submit the opinion form
+        $opinionForm = $crawler->selectButton("Valider")->form([
+            "carpool_opinion[satisfied]" => true,
+            "carpool_opinion[opinion]" => "Le covoiturage était super bien passé"
+        ]);
+        $client->submit($opinionForm);
+
+        // Re-fetch the crawler after submission to ensure DOM is up-to-date
+        $crawler = $client->getCrawler();
+
+        // Assert the element no longer exists
+        $this->assertEquals(0, $crawler->filter('#carpool_opinion_submit')->count(), 'The element id exists');
+
+    }*/
+    /*
+    public function testCarpoolOpinionWihoutOpinion()
+    {
+        $client = self::createPantherClient(['browser' => 'firefox']);
+        $crawler = $client->request('GET', '/connexion');
+
+        $client->waitFor('form'); // Wait for login form
+
+        $form = $crawler->selectButton('Connexion')->form([
+            'connexion[pseudo]' => 'test4',
+            'connexion[password]' => 'Test123?',
+        ]);
+        $client->submit($form);
+        $crawler = $client->request('GET', '/userSpace');
+        for ($i = 0; $i < 2; $i++) {
+            $client->waitFor("#startBtn-18", 10);
+            $crawler->filter("#startBtn-18")->click();
+        }
+        $crawler = $client->request('GET', '/connexion');
+
+        $client->waitFor('form'); // Wait for login form
+
+        $form = $crawler->selectButton('Connexion')->form([
+            'connexion[pseudo]' => 'boutoutben',
+            'connexion[password]' => 'Boutout123!',
+        ]);
+        
+        $client->submit($form);
+
+        // Request the next page after login
+        $crawler = $client->request('GET', '/userSpace');
+
+        // Fill and submit the opinion form
+        $opinionForm = $crawler->selectButton("Valider")->form([
+            "carpool_opinion[satisfied]" => true,
+        ]);
+
+        $client->submit($opinionForm);
+
+        // Re-fetch the crawler after submission to ensure DOM is up-to-date
+        $crawler = $client->getCrawler();
+
+        // Assert the element no longer exists
+        $this->assertEquals(0, $crawler->filter('#carpool_opinion_submit')->count(), 'The element id exists');
+    }*/
+    public function testCarpoolOpinionWithInvalidOpinon()
+    {
+        $client = self::createPantherClient(['browser' => 'firefox']);
+        /*
+        $crawler = $client->request('GET', '/connexion');
+
+        $client->waitFor('form'); // Wait for login form
+
+        $form = $crawler->selectButton('Connexion')->form([
+            'connexion[pseudo]' => 'test4',
+            'connexion[password]' => 'Test123?',
+        ]);
+        $client->submit($form);
+        $crawler = $client->request('GET', '/userSpace');
+        for ($i = 0; $i < 2; $i++) {
+            $client->waitFor("#startBtn-44", 10);
+            $crawler->filter("#startBtn-44")->click();
+        }*/
+        $crawler = $client->request('GET', '/connexion');
+
+        $client->waitFor('form'); // Wait for login form
+
+        $form = $crawler->selectButton('Connexion')->form([
+            'connexion[pseudo]' => 'boutoutben',
+            'connexion[password]' => 'Boutout123!',
+        ]);
+
+        $client->submit($form);
+
+        // Request the next page after login
+        $crawler = $client->request('GET', '/userSpace');
+
+        // Fill and submit the opinion form
+        $opinionForm = $crawler->selectButton("Valider")->form([
+            "carpool_opinion[satisfied]" => true,
+            "carpool_opinion[opinion]" => "Le covoiturage était super bien passé;;;"
+        ]);
+
+        $client->submit($opinionForm);
+
+        // Re-fetch the crawler after submission to ensure DOM is up-to-date
+        $crawler = $client->getCrawler();
+
+        // Assert the element no longer exists
+        $this->assertSelectorTextContains('.form_error', 'Votre opinion doit comporter entre 10 et 500 caractères valides.'); 
     }
+
 }

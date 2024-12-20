@@ -33,12 +33,12 @@ class Carpool
     #[Assert\LessThan(10)]
     private ?int $placeLeft;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[ORM\Column(type: 'datetime', nullable: true)]
     #[Assert\NotBlank(message: "Start date is required.")]
     #[Assert\Type("\DateTimeInterface")]
     private ?\DateTime $startDate;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[ORM\Column(type: 'datetime', nullable: true)]
     #[Assert\NotBlank(message: "End date is required.")]
     #[Assert\Type("\DateTimeInterface")]
     private ?\DateTime $endDate;
@@ -61,6 +61,9 @@ class Carpool
 
     #[ORM\ManyToOne(inversedBy: 'carpool')]
     private ?Car $car = null;
+
+    #[ORM\Column]
+    private ?bool $isFinish = false;
 
 
     public function __construct()
@@ -201,6 +204,18 @@ class Carpool
     public function setCar(?Car $car): static
     {
         $this->car = $car;
+
+        return $this;
+    }
+
+    public function isFinish(): ?bool
+    {
+        return $this->isFinish;
+    }
+
+    public function setFinish(bool $isFinish): static
+    {
+        $this->isFinish = $isFinish;
 
         return $this;
     }

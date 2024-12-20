@@ -15,7 +15,7 @@ class Opinion
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 500)]
+    #[ORM\Column(length: 500, nullable:true)]
     private ?string $opinion = null;
 
     #[ORM\Column]
@@ -23,6 +23,9 @@ class Opinion
 
     #[ORM\Column]
     private ?bool $is_valid = null;
+
+    #[ORM\ManyToOne(inversedBy: 'Opinion')]
+    private ?User $user = null;
 
 
     public function getId(): ?int
@@ -62,6 +65,18 @@ class Opinion
     public function setValid(bool $is_valid): static
     {
         $this->is_valid = $is_valid;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

@@ -32,7 +32,7 @@
                     <div class="form_error">{{ error.message }}</div>
                 {% endfor %}
                 <div class="inputBackground">
-                    <img src="img/key.png" alt="mot de passe">
+                    <img src="img/key.png" alt="mot de passe"/>
                     {{ form_widget(form.password) }}
                     <img id='password' src="img/hidden.png" alt="montrer et cacher mot de passe"/>
                 </div>
@@ -47,12 +47,11 @@
                 {% for error in form.passwordEgain.vars.errors %}
                     <div class="form_error">{{ error.message }}</div>
                 {% endfor %}
-<div class="form_error">
-	{% for error in form.vars.errors %}
-		{{ error.message }}
-	{% endfor %}
-</div>
-
+                <div class="form_error">
+                    {% for error in form.vars.errors %}
+                        {{ error.message }}
+                    {% endfor %}
+                </div>
                 {{ form_widget(form._token) }}
                 <p>*Le mot de passe doit cotenir au moins 8 caractères, une majuscule, un chiffre et un caractère spécial</p>
             {{ form_widget(form.submit) }}

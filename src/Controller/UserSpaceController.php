@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Car;
 use App\Entity\Carpool;
+use App\Entity\Opinion;
 use App\Entity\User;
 use App\Form\AddPreferenceType;
+use App\Form\CarpoolOpinionType;
 use App\Form\CreateCarpoolType;
 use App\Form\EditCarType;
 use App\Form\NewCarType;
@@ -23,6 +25,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\RouterInterface;
@@ -249,9 +253,45 @@ class UserSpaceController extends AbstractController
             $url = $this->generateUrl('app_user_space') . '#travelOutpute';
             return new RedirectResponse($url);
         }
+        
+        $carpoolOpinion = $this->createForm(CarpoolOpinionType::class);
+        $carpoolOpinion->handleRequest($request);
+        if($carpoolOpinion->isSubmitted() && $carpoolOpinion->isValid())
+        {
+            $user = $this->getUser();
+            $opinion = new Opinion();
+            $carpoolSelect = $this->carpoolParticipationRepository->findBy(["user"=>$user]);
+            foreach($carpoolSelect as $carpoolSelect)
+            {
+                if($carpoolSelect->getCarpool()->isFinish())
+                {
+                    $carpoolToMark = $carpoolSelect;
+                }
+            }
+            $data = $carpoolOpinion->getData();
+            $opinion->setGrade($data["mark"])
+                    ->setUser($user)
+                    ->setValid(false);
+            if($data["opinion"]!== null)
+            {
+                $opinion->setOpinion($data["opinion"]);
+            }
+            $carpoolSelect->setHasToValidate(false);
+            $carpoolToMark->getCarpool()->setGreat($data["satisfied"]);
+            $entityManager->persist($carpoolSelect);
+            $entityManager->persist($opinion);
+            $entityManager->persist($carpoolToMark->getCarpool());
+            $entityManager->flush();
+        }
 
-        $userTravel = $this->carpoolParticipationRepository->findBy(["user"=>$this->getUser()]);
-        $carpoolHistory = $this->carpoolRepository->findBy(["user"=>$this->getUser()]);
+        $userTravel = $this->carpoolParticipationRepository->createQueryBuilder('cp')
+            ->join('cp.carpool', 'c')  // Join the related Carpool entity
+            ->where('cp.user = :user')  // Filter by the user
+            ->setParameter('user', $this->getUser())
+            ->orderBy('c.startDate', 'DESC')  // Sort by the startDate field in Carpool entity
+            ->getQuery()
+            ->getResult();
+        $carpoolHistory = $this->carpoolRepository->findBy(["user"=>$this->getUser()],["startDate"=>"DESC"],5);
 
         return $this->render('user_space/index.html.twig', [
             'controller_name' => 'UserSpaceController',
@@ -266,7 +306,8 @@ class UserSpaceController extends AbstractController
             "addPreferenceForm" => $addPreferenceForm->createView(),
             "newCarpoolForm" => $newCarpoolForm->createView(),
             "userTravel" => $userTravel,
-            "carpoolHistory" => $carpoolHistory
+            "carpoolHistory" => $carpoolHistory,
+            "carpoolOpinion" => $carpoolOpinion->createView()
         ]);
     }
     #[Route('/userPictureUpload', name: 'app_user_upload_picture', methods:["POST"])]
@@ -300,7 +341,7 @@ class UserSpaceController extends AbstractController
     }
 
     #[Route('/startCarpool', name: 'app_start_carpool', methods: ["POST"])]
-    public function startCarpool(EntityManagerInterface $entityManager): Response
+    public function startCarpool(EntityManagerInterface $entityManager, MailerInterface $mailer): Response
     {
         $data = json_decode(file_get_contents('php://input'), true);
         $value = $data["value"];
@@ -309,6 +350,26 @@ class UserSpaceController extends AbstractController
         $carpool->setStart($value);
         $entityManager->persist($carpool);
         $entityManager->flush();
+        if($value === false){
+            $carpool->setFinish(true);
+            $users = $this->carpoolParticipationRepository->findBy(["carpool"=>$carpool]);
+            foreach($users as $user)
+            {
+                $email = (new Email())
+                    ->from("ecoride.team@gmail.com")
+                    ->to($user->getUser()->getEmail())
+                    ->subject("Validation de votre dernier covoiturage")
+                    ->text("Suite à votre covoiturage, je vous pris de vous rendre sur votre espace utilisateur afin de dire si le trajet c'est bien passé. Vous avez également la posibilité de laisser un avis sur le chauffeur");
+                $mailer->send($email);
+                $user->setHasToValidate(true);
+                $entityManager->persist($user);
+                $entityManager->flush();
+            } 
+            $entityManager->persist($carpool);
+            $entityManager->flush();
+        }
+        
+        
         return new JsonResponse("Success");
     }
 
@@ -327,6 +388,7 @@ class UserSpaceController extends AbstractController
         if($carpoolToDelete)
         {
             $entityManager->remove($carpoolToDelete);
+            $entityManager->flush();
         }
         return new JsonResponse("Sucess");
     }

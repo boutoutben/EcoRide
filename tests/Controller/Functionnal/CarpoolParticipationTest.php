@@ -15,8 +15,8 @@ class CarpoolParticipationTest extends PantherTestCase
 
         // Step 2: Submit the login form
         $form = $crawler->selectButton('Connexion')->form([
-            'connexion[pseudo]' => 'test4',
-            'connexion[password]' => 'Test123?',
+            'connexion[pseudo]' => 'boutoutben',
+            'connexion[password]' => 'Boutout123!',
         ]);
         $client->submit($form);
         $crawler = $client->refreshCrawler();
@@ -54,22 +54,19 @@ class CarpoolParticipationTest extends PantherTestCase
     {
         $client = self::createPantherClient(['browser' => 'firefox']);
         $crawler = $this->defineClient($client);
-
         // Step 1: Wait for the detail button and click it
-        $client->waitFor('#detail-btn-3', 5); // Wait up to 5 seconds
-        $crawler->filter('#detail-btn-3')->click();
+        $client->waitFor('#detail-btn-18', 5); // Wait up to 5 seconds
+        $crawler->filter('#detail-btn-18')->click();
 
         // Step 2: Refresh the crawler after DOM changes
         $crawler = $client->refreshCrawler();
 
         // Step 3: Wait for the participation button and click it
-        $client->waitFor('#participation-3', 5);
-        $crawler->filter('#participation-3')->click();
-
+        $client->waitFor('#participation-18', 5);
+        $crawler->filter('#participation-18')->click();
         $crawler = $client->refreshCrawler();
-
-        $client->waitFor('#yesBtn-3', 5);
-        $crawler->filter('#yesBtn-3')->click();
+        $client->waitFor('#yesBtn-18', 5);
+        $crawler->filter('#yesBtn-18')->click();
 
         $crawler = $client->refreshCrawler();
 
@@ -86,18 +83,18 @@ class CarpoolParticipationTest extends PantherTestCase
     $crawler = $this->defineClient($client);
 
     // Step 1: Wait for and click the detail button
-    $client->waitFor('#detail-btn-15', 5);
-    $crawler->filter('#detail-btn-15')->click();
+    $client->waitFor('#detail-btn-23', 5);
+    $crawler->filter('#detail-btn-23')->click();
     $crawler = $client->refreshCrawler();
 
     // Step 2: Wait for and click the participation button
-    $client->waitFor('#participation-15', 5);
-    $crawler->filter('#participation-15')->click();
+    $client->waitFor('#participation-23', 5);
+    $crawler->filter('#participation-23')->click();
     $crawler = $client->refreshCrawler();
 
     // Step 3: Wait for and click the "No" button to cancel
-    $client->waitFor('#noBtn-15', 5);
-    $crawler->filter('#noBtn-15')->click();
+    $client->waitFor('#noBtn-23', 5);
+    $crawler->filter('#noBtn-23')->click();
     $crawler = $client->refreshCrawler();
 
     // Step 4: Verify the user is redirected back to the carpool details page
@@ -136,15 +133,15 @@ class CarpoolParticipationTest extends PantherTestCase
         $crawler = $client->refreshCrawler();
 
         // Step 1: Wait for the detail button and click it
-        $client->waitFor('#detail-btn-15', 5); // Wait up to 5 seconds
-        $crawler->filter('#detail-btn-15')->click();
+        $client->waitFor('#detail-btn-23', 5); // Wait up to 5 seconds
+        $crawler->filter('#detail-btn-23')->click();
 
         // Step 2: Refresh the crawler after DOM changes
         $crawler = $client->refreshCrawler();
 
         // Step 3: Wait for the participation button and click it
-        $client->waitFor('#participation-15', 5);
-        $crawler->filter('#participation-15')->click();
+        $client->waitFor('#participation-23', 5);
+        $crawler->filter('#participation-23')->click();
 
         $crawler = $client->refreshCrawler();
 
@@ -190,15 +187,15 @@ class CarpoolParticipationTest extends PantherTestCase
         $crawler = $client->refreshCrawler();
 
         // Step 1: Wait for the detail button and click it
-        $client->waitFor('#detail-btn-15', 5); // Wait up to 5 seconds
-        $crawler->filter('#detail-btn-15')->click();
+        $client->waitFor('#detail-btn-23', 5); // Wait up to 5 seconds
+        $crawler->filter('#detail-btn-23')->click();
 
         // Step 2: Refresh the crawler after DOM changes
         $crawler = $client->refreshCrawler();
 
         // Step 3: Wait for the participation button and click it
-        $client->waitFor('#participation-15', 5);
-        $crawler->filter('#participation-15')->click();
+        $client->waitFor('#participation-23', 5);
+        $crawler->filter('#participation-23')->click();
 
         $crawler = $client->refreshCrawler();
 

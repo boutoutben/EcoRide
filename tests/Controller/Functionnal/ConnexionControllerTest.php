@@ -95,7 +95,7 @@ class ConnexionControllerTest extends WebTestCase
         ]);
         $client->submit($form);
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
-        $this->assertSelectorTextContains('.form_error', "The passwords do not match.");
+        $this->assertSelectorTextContains('.form_error', "Les deux mot de passe ne sont pas identique");
     }
     public function testSignInFormSubmissionWithInValidMax()
     {

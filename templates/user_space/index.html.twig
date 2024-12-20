@@ -10,6 +10,7 @@
     {{ encore_entry_script_tags("overlayCar") }}
     {{ encore_entry_script_tags('detailsRedirection') }}
     {{encore_entry_script_tags("startCarpool")}}
+    {{encore_entry_script_tags("carpoolMark")}}
 {% endblock %}
 
 {% block body %}
@@ -467,34 +468,53 @@
             </section>
         </section>
     {% endif %}
-    <section class="block" id="carpoolOpinion">
-        <h1>Avis sur le dernier covoiturage</h1>
-        <div class="flex-row">
-            <div class="flex-row">
-                <input type="radio" id='passenger' name='opinion' checked>
-                <label for='passenger'>
-                    <p>Bien passé</p>
-                </label>
-            </div>
-            <div class='flex-row'>
-                <input type="radio" id='driver' name='opinion'>
-                <label for='driver'>
-                    <p>Mal passé</p>
-                </label>
-            </div>
-        </div>
-        <div class="flex-row">
-            <label for="optionText"><p>Avis:</p></label>
-            <textarea placeholder="Avis"></textarea>
-        </div>
-        <button class="standard-btn">Valider</button>
-    </section>
+
+    {% if app.user.userType == "Passager" or app.user.userType == "Les deux" %}
+        {% for userTravel in userTravel %}
+            {% if userTravel.carpool.isFinish == true %} 
+                {% if userTravel.hasToValidate  %}
+                    <section class="block" id="carpoolOpinion">
+                        <h1>Avis sur le dernier covoiturage</h1>
+                        {{ form_start(carpoolOpinion) }}
+                            <div class="flex-row">
+                              {% for choice in carpoolOpinion.satisfied %}
+                                    <div class="flex-row">
+                                        {{ form_widget(choice) }}
+                                        <label for='passenger'>
+                                            <p>{{ form_label(choice) }}</p>
+                                        </label>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <div class="flex-row">
+                                {% for mark in carpoolOpinion.mark %}
+                                    <div>
+                                        {{ form_label(mark) }}
+                                        {{ form_widget(mark) }}
+                                    </div>
+                                {% endfor %}
+                            </div>  
+                            <div class="flex-row">
+                                <label for="carpool_opinion_opinion"><p>Avis:</p></label>
+                                {{ form_widget(carpoolOpinion.opinion) }}
+                            </div>
+                            {% for error in carpoolOpinion.opinion.vars.errors %}
+                                <div class="form_error"><p>{{ error.message }}</p></div>
+                            {% endfor %}
+
+                            {{ form_widget(carpoolOpinion.submit) }}
+                        {{ form_end(carpoolOpinion) }}
+                    </section>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
     {% if app.user.userType == "Passager" or app.user.userType == "Les deux" %}
         <section class="block" id='resumeTravel'>
             <h1>Vos voyages</h1>
             {% if userTravel != null %}
                 {% for userTravel in userTravel %}
-                    <section class='sub-block' id="show-carpool">
+                    <div class='sub-block' id="show-carpool">
                         <div>
                             <div class='flex-row'>
                                 <h2>{{userTravel.carpool.user.username}}</h2>
@@ -521,7 +541,7 @@
                             </div>
                             <button class='standard-btn' id="detail-btn-{{userTravel.carpool.id}}">Détails</button>
                         </div>
-                    </section>
+                    </div>
                 {% endfor %}
             {% endif %}
         </section>
@@ -539,20 +559,24 @@
                         <p>{{carpoolHistory.price}} crédits</p>
                     </div>
                     <div class='flex-row'>
-                        <div class="relative">
-                            <button class="standard-btn" id="cancelle-{{carpoolHistory.id}}">Anuller</button>
-                            <div id="overlayCancelle-{{carpoolHistory.id}}" class="overlay">
-                                <div class="overlayContent" id="overlayContent-{{carpoolHistory.id}}">
-                                    <p>Etes-vous sure de vouloir supprimer ce covoiturage</p>
-                                    <div class="flex-row">
-                                        <button class='no' id="noBtn-{{carpoolHistory.id}}">Non</button>
-                                        <button class="yes" id="yesBtn-{{carpoolHistory.id}}">Oui</button>
+                        {% if not carpoolHistory.isFinish %}
+                            <div class="relative">
+                                <button class="standard-btn" id="cancelle-{{carpoolHistory.id}}">Anuller</button>
+                                <div id="overlayCancelle-{{carpoolHistory.id}}" class="overlay">
+                                    <div class="overlayContent" id="overlayContent-{{carpoolHistory.id}}">
+                                        <p>Etes-vous sure de vouloir supprimer ce covoiturage</p>
+                                        <div class="flex-row">
+                                            <button class='no' id="noBtn-{{carpoolHistory.id}}">Non</button>
+                                            <button class="yes" id="yesBtn-{{carpoolHistory.id}}">Oui</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        {% endif %}
                         <button class='standard-btn' id="detail-btn-{{carpoolHistory.id}}">Détails</button>
-                        <button id="startBtn-{{carpoolHistory.id }}" class="standard-btn {{ carpoolHistory.isStart ? 'stopBtn' : '' }}">{{ carpoolHistory.isStart ? 'Arrêter' : 'Démarer' }}</button>
+                        {% if not carpoolHistory.isFinish %}
+                            <button id="startBtn-{{carpoolHistory.id }}" class="standard-btn {{ carpoolHistory.isStart ? 'stopBtn' : '' }}">{{ carpoolHistory.isStart ? 'Arrêter' : 'Démarer' }}</button>
+                        {% endif %}
                     </div>
                 </div>
             {% endfor %}

@@ -4,7 +4,7 @@
 
 {% block javascripts %}
 	{{ parent() }}
-	{{ encore_entry_script_tags('app') }}
+    {{ encore_entry_script_tags('createAccountPassword') }}
     {{encore_entry_script_tags('graph')}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
     <script>
@@ -21,18 +21,47 @@
     <section class="block" id="createEmployee">
         <h1>Créer un compte employée</h1>
         <div class="allInput">
-            <div class="inputBackground">
-                <img src="img/user.png" alt="username">
-                <input type="text" class="input-place" placeholder="username"/>
+                {{ form_start(form) }}
+                <div class="inputBackground">
+                    <img src="img/mail.png" alt="email">
+                    {{ form_widget(form.email) }}
+                </div>
+                {% for error in form.email.vars.errors %}
+                    <div class="form_error">{{ error.message }}</div>
+                {% endfor %}
+                <div class="inputBackground">
+                    <img src="img/user.png" alt="username">
+                    {{ form_widget(form.pseudo) }}
+                </div>
+                {% for error in form.pseudo.vars.errors %}
+                    <div class="form_error">{{ error.message }}</div>
+                {% endfor %}
+                <div class="inputBackground">
+                    <img src="img/key.png" alt="mot de passe"/>
+                    {{ form_widget(form.password) }}
+                    <img id='password' src="img/hidden.png" alt="montrer et cacher mot de passe"/>
+                </div>
+                {% for error in form.password.vars.errors %}
+                    <div class="form_error">{{ error.message }}</div>
+                {% endfor %}
+                <div class="inputBackground">
+                    <img src="img/key.png" alt="mot de passe">
+                    {{ form_widget(form.passwordEgain) }}
+                    <img id='confirmPassword' src="img/hidden.png" alt="montrer et cacher mot de passe"/>
+                </div>
+                {% for error in form.passwordEgain.vars.errors %}
+                    <div class="form_error">{{ error.message }}</div>
+                {% endfor %}
+                <div class="form_error">
+                    {% for error in form.vars.errors %}
+                        {{ error.message }}
+                    {% endfor %}
+                </div>
+                {{ form_widget(form._token) }}
+                <p>*Le mot de passe doit cotenir au moins 8 caractères, une majuscule, un chiffre et un caractère spécial</p>
+            {{ form_widget(form.submit) }}
             </div>
-            <div class="inputBackground">
-                <img src="img/key.png" alt="mot de passe">
-                <input type="password" id="passwordInput" class="input-place" placeholder="mot de passe sécurisé"/>
-                <img id='password' src="img/hidden.png" alt="montrer et cacher mot de passe"/>
-            </div>
-            <p style="text-align:center;width:100%">* Le mot de passe doit contenir au moins 8 caractères, une majuscule, un chiffre et un caractère spécial.</p>
-        </div>
-        <button class="standard-btn">Créer un compte</button>
+        {{ form_end(form) }}
     </section>
     <section class="block" id="nbCarpool">
         <h1>Nombre de covoiturage par jour</h1>

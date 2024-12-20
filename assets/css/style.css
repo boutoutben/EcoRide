@@ -881,6 +881,10 @@ input[type='radio']{
 }
 .relative{
     position: relative;
+} 
+/*resumeTravel*/
+#resumeTravel>div{
+    margin: 2vw 0 ;
 }
 /*travelOutpute*/
 #travelOutpute{
@@ -1062,8 +1066,26 @@ canvas{
     font-size: 1.3em;
     width: 30vw;
 }
-#carpoolOpinion>.flex-row>div.flex-row{
+#carpoolOpinion>form>.flex-row>div.flex-row{
     margin: 0 2vw;
+}
+#carpoolOpinion>form>.flex-row{
+    margin: 0 auto;
+    justify-content: center;
+}
+#carpoolOpinion>form>.flex-row:nth-child(2) input{
+    display: none;
+}
+
+#carpoolOpinion>form>.flex-row:nth-child(2){
+    margin-bottom: 3vw;
+}
+#carpoolOpinion>form>.flex-row:nth-child(2)>div label {
+    background-image: url('../img/star.png'); 
+    background-repeat: no-repeat;
+    padding: 2vw;
+    font-size: 0;
+    background-size: 4vw 4vw;
 }
 
 :is(#fullPresentation,#recrutment) li{

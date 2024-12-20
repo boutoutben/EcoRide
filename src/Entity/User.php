@@ -69,7 +69,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\Regex(pattern: "/^0[1-9]( [0-9]{2}){4}$/", message: "Le numéro n'est pas conforme")]
     private ?string $phone = null;
     
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     #[Assert\PositiveOrZero(message:"Le nombre ne peut pas être négatif")]
     private ?int $nbCredit = null;
 
@@ -91,7 +91,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Carpool::class, mappedBy: 'user')]
     private Collection $carpool;
 
-    #[ORM\Column(nullable: false)]
+    #[ORM\Column(nullable: true)]
     #[Assert\Length(min: 2, max: 50, minMessage: "Le nombre de caractère doit être supérieur ou égal à 2", maxMessage: "Le nombre de caractère doit être inférieur à 50")]
     #[Assert\Regex(pattern: "/^[a-zA-Z0-9_\-@.]+$/", message: "Le type mis n'est pas conforme",)]
     private ?string $userType = null;
@@ -113,6 +113,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: CarpoolParticipation::class, mappedBy: 'user')]
     private Collection $carpoolParticipation;
 
+    /**
+     * @var Collection<int, Opinion>
+     */
+    #[ORM\OneToMany(targetEntity: Opinion::class, mappedBy: 'user')]
+    private Collection $Opinion;
+
     public function __construct()
     {
         $this->Car = new ArrayCollection();
@@ -123,6 +129,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             ["Sans animaux", false],
         ];
         $this->carpoolParticipation = new ArrayCollection();
+        $this->Opinion = new ArrayCollection();
     }
     public function getId(): ?int
     {
@@ -403,6 +410,38 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($carpoolParticipation->getUser() === $this) {
                 $carpoolParticipation->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    
+
+    /**
+     * @return Collection<int, Opinion>
+     */
+    public function getOpinion(): Collection
+    {
+        return $this->Opinion;
+    }
+
+    public function addOpinion(Opinion $opinion): static
+    {
+        if (!$this->Opinion->contains($opinion)) {
+            $this->Opinion->add($opinion);
+            $opinion->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOpinion(Opinion $opinion): static
+    {
+        if ($this->Opinion->removeElement($opinion)) {
+            // set the owning side to null (unless already changed)
+            if ($opinion->getUser() === $this) {
+                $opinion->setUser(null);
             }
         }
 

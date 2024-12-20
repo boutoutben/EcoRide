@@ -42,8 +42,28 @@ class UserSpaceControllerTest extends WebTestCase
         $this->assertResponseRedirects('/'); // Adjust the redirection path
         $client->followRedirect();
 
-        $crawler2 = $client->request('GET', '/userSpace');
-        return $crawler2;
+        $crawler = $client->request('GET', '/userSpace');
+        return $crawler;
+    }
+    public function defineClientDriver($client){
+        $crawler = $client->request('GET', '/connexion');
+        $this->assertResponseIsSuccessful(); // Ensure the form page loads successfully
+
+        // Select the form and fill it
+        $form = $crawler->selectButton('Connexion')->form([
+            'connexion[pseudo]' => 'test',
+            'connexion[password]' => 'Test123!',
+        ]);
+
+        // Submit the form
+        $client->submit($form);
+
+        // Follow the redirection after submission
+        $this->assertResponseRedirects('/'); // Adjust the redirection path
+        $client->followRedirect();
+
+        $crawler = $client->request('GET', '/userSpace');
+        return $crawler;
     }
 
 
@@ -211,7 +231,7 @@ class UserSpaceControllerTest extends WebTestCase
     /*public function testTravelOutputeValidData()
     {
         $client = static::createClient();
-        $crawler = $this->defineClient($client);
+        $crawler = $this->defineClientDriver($client);
         $form = $crawler->selectButton("create_carpool[submit]")->form([
             "create_carpool[startPlace]" => "Lille",
             "create_carpool[endPlace]" => "Arras",
@@ -227,13 +247,13 @@ class UserSpaceControllerTest extends WebTestCase
     public function testTravelOutputeInvalidStartPlace()
     {
         $client = static::createClient();
-        $crawler = $this->defineClient($client);
+        $crawler = $this->defineClientDriver($client);
         $form = $crawler->selectButton("create_carpool[submit]")->form([
             "create_carpool[startPlace]" => "Lille((",
             "create_carpool[endPlace]" => "Arras",
             "create_carpool[startDate]" => "2024-12-09 12:00:00",
             "create_carpool[endDate]" => "2024-12-09 13:00:00",
-            "create_carpool[carChoice]" => 14,
+            "create_carpool[carChoice]" => 49,
             "create_carpool[credit]" => 20
         ]);
         $client->submit($form);
@@ -242,13 +262,13 @@ class UserSpaceControllerTest extends WebTestCase
     public function testTravelOutputeInvalidEndPlace()
     {
         $client = static::createClient();
-        $crawler = $this->defineClient($client);
+        $crawler = $this->defineClientDriver($client);
         $form = $crawler->selectButton("create_carpool[submit]")->form([
             "create_carpool[startPlace]" => "Lille",
             "create_carpool[endPlace]" => "Arras((",
             "create_carpool[startDate]" => "2024-12-09 12:00:00",
             "create_carpool[endDate]" => "2024-12-09 13:00:00",
-            "create_carpool[carChoice]" => 14,
+            "create_carpool[carChoice]" => 49,
             "create_carpool[credit]" => 20
         ]);
         $client->submit($form);
@@ -257,13 +277,13 @@ class UserSpaceControllerTest extends WebTestCase
     public function testTravelOutputeInvalidCredit()
     {
         $client = static::createClient();
-        $crawler = $this->defineClient($client);
+        $crawler = $this->defineClientDriver($client);
         $form = $crawler->selectButton("create_carpool[submit]")->form([
             "create_carpool[startPlace]" => "Lille",
             "create_carpool[endPlace]" => "Arras",
             "create_carpool[startDate]" => "2024-12-09 12:00:00",
             "create_carpool[endDate]" => "2024-12-09 13:00:00",
-            "create_carpool[carChoice]" => 14,
+            "create_carpool[carChoice]" => 49,
             "create_carpool[credit]" => 0
         ]);
         $client->submit($form);
@@ -272,13 +292,13 @@ class UserSpaceControllerTest extends WebTestCase
     public function testTravelOutputeNotBlank()
     {
         $client = static::createClient();
-        $crawler = $this->defineClient($client);
+        $crawler = $this->defineClientDriver($client);
         $form = $crawler->selectButton("create_carpool[submit]")->form([
             "create_carpool[startPlace]" => "",
             "create_carpool[endPlace]" => "",
             "create_carpool[startDate]" => "2024-12-09 12:00:00",
             "create_carpool[endDate]" => "2024-12-09 13:00:00",
-            "create_carpool[carChoice]" => 14,
+            "create_carpool[carChoice]" => 49,
             "create_carpool[credit]" => 3
         ]);
         $client->submit($form);
@@ -287,7 +307,7 @@ class UserSpaceControllerTest extends WebTestCase
     public function testTravelOutputeValidDataWithNewCar()
     {
         $client = static::createClient();
-        $crawler = $this->defineClient($client);
+        $crawler = $this->defineClientDriver($client);
         $form = $crawler->selectButton("create_carpool[submit]")->form([
             "create_carpool[startPlace]" => "Lille",
             "create_carpool[endPlace]" => "Arras",
@@ -308,7 +328,7 @@ class UserSpaceControllerTest extends WebTestCase
     public function testTravelOutputeInvalideLisencePlaceWithNewCar()
     {
         $client = static::createClient();
-        $crawler = $this->defineClient($client);
+        $crawler = $this->defineClientDriver($client);
         $form = $crawler->selectButton("create_carpool[submit]")->form([
             "create_carpool[startPlace]" => "Lille",
             "create_carpool[endPlace]" => "Arras",
@@ -328,7 +348,7 @@ class UserSpaceControllerTest extends WebTestCase
     public function testTravelOutputeInvalideModelWithNewCar()
     {
         $client = static::createClient();
-        $crawler = $this->defineClient($client);
+        $crawler = $this->defineClientDriver($client);
         $form = $crawler->selectButton("create_carpool[submit]")->form([
             "create_carpool[startPlace]" => "Lille",
             "create_carpool[endPlace]" => "Arras",
@@ -348,7 +368,7 @@ class UserSpaceControllerTest extends WebTestCase
     public function testTravelOutputeInvalideColorWithNewCar()
     {
         $client = static::createClient();
-        $crawler = $this->defineClient($client);
+        $crawler = $this->defineClientDriver($client);
         $form = $crawler->selectButton("create_carpool[submit]")->form([
             "create_carpool[startPlace]" => "Lille",
             "create_carpool[endPlace]" => "Arras",
@@ -368,7 +388,7 @@ class UserSpaceControllerTest extends WebTestCase
     public function testTravelOutputeInvalideNbPassengerPositifWithNewCar()
     {
         $client = static::createClient();
-        $crawler = $this->defineClient($client);
+        $crawler = $this->defineClientDriver($client);
         $form = $crawler->selectButton("create_carpool[submit]")->form([
             "create_carpool[startPlace]" => "Lille",
             "create_carpool[endPlace]" => "Arras",
@@ -388,7 +408,7 @@ class UserSpaceControllerTest extends WebTestCase
     public function testTravelOutputeInvalideNbPassengerLessThanWithNewCar()
     {
         $client = static::createClient();
-        $crawler = $this->defineClient($client);
+        $crawler = $this->defineClientDriver($client);
         $form = $crawler->selectButton("create_carpool[submit]")->form([
             "create_carpool[startPlace]" => "Lille",
             "create_carpool[endPlace]" => "Arras",

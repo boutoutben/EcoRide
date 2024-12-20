@@ -1,7 +1,6 @@
-
-export function show_hide(elementId, inputId) {
-    let passwordImg = document.getElementById(elementId);
-    let passwordInput = document.getElementById(inputId);
+export function show_hide(imageId, inputId) {
+    const passwordImg = document.getElementById(imageId);
+    const passwordInput = document.getElementById(inputId);
 
     if (passwordImg.getAttribute("src") === "img/hidden.png") {
         passwordImg.setAttribute("src", "img/eye.png");
