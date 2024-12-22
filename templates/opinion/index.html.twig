@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello OpinionController!{% endblock %}
+
+{% block body %}
+<main>
+	<section class='block' id="opinion">
+		<div class='flex-row'>
+			<h1>{{user.username}}</h1>
+			<img src='img/{{user.img ??"user.png"}}' alt="phote de profil"/>
+			<div>
+				<h3>4/5</h3>
+			</div>
+		</div>
+		<div>
+        	<h3>Avis</h3>
+            {% for opinion in opinion %}
+                {% if opinion.opinion != null %}
+					<div class="flex-row">
+						<p>{{opinion.user.username}}
+                    	<p>{{opinion.opinion}}</p>
+					</div>
+                {% endif %}
+            {% endfor %}
+		</div>
+	</section>
+</main>
+
+{% endblock %}

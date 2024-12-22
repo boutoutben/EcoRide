@@ -54,6 +54,8 @@
 						<li>
 							{% if is_granted("ROLE_USER") %}
 								<a href="/userSpace">Espace utilisateur</a>
+							{% elseif is_granted("ROLE_EMPLOYEE") %}
+								<a href='/employeeSpace'>Espace employée</a>
 							{% elseif is_granted("ROLE_ADMINISTRATEUR") %}
 								<a href='/administrationSpace'>Espace administrateur</a>
 							{% else %}
@@ -86,6 +88,8 @@
 						<li>
 							{% if is_granted("ROLE_USER") %}
 								<a href="/userSpace">Espace utilisateur</a>
+							{% elseif is_granted("ROLE_EMPLOYEE") %}
+								<a href='/employeeSpace'>Espace employée</a>
 							{% elseif is_granted("ROLE_ADMINISTRATEUR") %}
 								<a href='/administrationSpace'>Espace administrateur</a>
 							{% else %}

@@ -22,6 +22,8 @@ Encore
     .addEntry('participationRedirection', './assets/js/participationRedirection.js')
     .addEntry('startCarpool', './assets/js/startCarpool.js')
     .addEntry("carpoolMark", "./assets/js/carpoolMark.js")
+    .addEntry("validOpinion", "./assets/js/validOpinion.js")
+    .addEntry("opinion", "./assets/js/opinion.js")
 
     // Enable splitting for better optimization
     .splitEntryChunks()

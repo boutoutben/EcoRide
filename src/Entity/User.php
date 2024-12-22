@@ -119,6 +119,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Opinion::class, mappedBy: 'user')]
     private Collection $Opinion;
 
+    #[ORM\ManyToOne(inversedBy: 'driver')]
+    private ?Opinion $opinion = null;
+
+    /**
+     * @var Collection<int, Opinion>
+     */
+    #[ORM\OneToMany(targetEntity: Opinion::class, mappedBy: 'driver')]
+    private Collection $driver;
+
+
     public function __construct()
     {
         $this->Car = new ArrayCollection();
@@ -130,6 +140,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         ];
         $this->carpoolParticipation = new ArrayCollection();
         $this->Opinion = new ArrayCollection();
+        $this->driver = new ArrayCollection();
     }
     public function getId(): ?int
     {
@@ -442,6 +453,43 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($opinion->getUser() === $this) {
                 $opinion->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function setOpinion(?Opinion $opinion): static
+    {
+        $this->opinion = $opinion;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Opinion>
+     */
+    public function getDriver(): Collection
+    {
+        return $this->driver;
+    }
+
+    public function addDriver(Opinion $driver): static
+    {
+        if (!$this->driver->contains($driver)) {
+            $this->driver->add($driver);
+            $driver->setDriver($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDriver(Opinion $driver): static
+    {
+        if ($this->driver->removeElement($driver)) {
+            // set the owning side to null (unless already changed)
+            if ($driver->getDriver() === $this) {
+                $driver->setDriver(null);
             }
         }
 

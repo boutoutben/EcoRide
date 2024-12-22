@@ -5,6 +5,7 @@
 {% block javascripts %}
 	{{ parent() }}
 	{{ encore_entry_script_tags('participationRedirection') }}
+	{{ encore_entry_script_tags("opinion")}}
 {% endblock %}
 
 {% block body %}
@@ -20,7 +21,7 @@
 				<img src='img/{{carpool.user.img ??"user.png"}}' alt="phote de profil"/>
 				<div>
 					<h3>4/5</h3>
-					<h3 class="underline">avis</h3>
+					<h3 class="underline" id="opinion_{{carpool.user.id}}">avis</h3>
 				</div>
 			</div>
 			
@@ -85,4 +86,5 @@
 		</div>
         <button id="participation-{{carpool.id}}" class='standard-btn'>participer</button>
 	</section>
-</main>{% endblock %}
+</main>
+{% endblock %}

@@ -22,10 +22,13 @@ class Opinion
     private ?int $grade = null;
 
     #[ORM\Column]
-    private ?bool $is_valid = null;
+    private ?bool $isValid = null;
 
     #[ORM\ManyToOne(inversedBy: 'Opinion')]
     private ?User $user = null;
+
+    #[ORM\ManyToOne(inversedBy: 'driver')]
+    private ?User $driver = null;
 
 
     public function getId(): ?int
@@ -38,7 +41,7 @@ class Opinion
         return $this->opinion;
     }
 
-    public function setOpinion(string $opinion): static
+    public function setOpinion(string|null $opinion): static
     {
         $this->opinion = $opinion;
 
@@ -59,12 +62,12 @@ class Opinion
 
     public function isValid(): ?bool
     {
-        return $this->is_valid;
+        return $this->isValid;
     }
 
     public function setValid(bool $is_valid): static
     {
-        $this->is_valid = $is_valid;
+        $this->isValid = $is_valid;
 
         return $this;
     }
@@ -81,4 +84,15 @@ class Opinion
         return $this;
     }
 
+    public function getDriver(): ?User
+    {
+        return $this->driver;
+    }
+
+    public function setDriver(?User $driver): static
+    {
+        $this->driver = $driver;
+
+        return $this;
+    }
 }

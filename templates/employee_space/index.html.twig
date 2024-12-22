@@ -1,37 +1,32 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Hello EmployeeSpaceController!{% endblock %}
+{% block javascripts %}
+	{{ parent() }}
+	{{ encore_entry_script_tags('validOpinion') }}
+{% endblock %}
 
 {% block body %}
 <main>
     <section class="block" id="validOpinion">
         <h1>Validation des avis</h1>
-        <div class="sub-block">
-            <div class="flex-row">
-                <p>Mail</p>
-                <p>1</p>
-            </div>
-            <div class="flex-row">
-                <p>Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum est viverra maximus bibendum rhoncus.</p>
-                <div class="flex-row">
-                    <img src="img/checkmark.png" alt="valider"/>
-                    <img src="img/close.png" alt="non valider"/>
+        {% for opinion in opinions %}
+            {% if opinion.opinion != null %}
+                <div class="sub-block">
+                    <div class="flex-row">
+                        <p>{{opinion.user.username}}</p>
+                        <p>{{opinion.id}}</p>
+                    </div>
+                    <div class="flex-row">
+                        <p>{{opinion.opinion}}</p>
+                        <div class="flex-row">
+                            <img src="img/checkmark.png" alt="valider" id="validBtn-{{opinion.id}}"/>
+                            <img src="img/close.png" alt="non valider" id="noValidBtn-{{opinion.id}}"/>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="sub-block">
-            <div class="flex-row">
-                <p>Mail</p>
-                <p>1</p>
-            </div>
-            <div class="flex-row">
-                <p>Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum est viverra maximus bibendum rhoncus.</p>
-                <div class="flex-row">
-                    <img src="img/checkmark.png" alt="valider"/>
-                    <img src="img/close.png" alt="non valider"/>
-                </div>
-            </div>
-        </div>
+            {% endif %}
+        {% endfor %}
     </section>
     <section class="block" id="badTravel">
         <h1>Trajet mal passés</h1>

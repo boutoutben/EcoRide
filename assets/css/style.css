@@ -352,25 +352,25 @@ button:hover{
     display: flex;
     flex-direction: row;
 }
-:is(#show-carpool, #resumeTravel) img, #carpool-detail img{
+:is(#show-carpool, #resumeTravel,#opinion) img, #carpool-detail img{
     width: 9vw;
     height: 9vw;
     object-fit: cover;
     border-radius: 50vw;
 }
 
-:is(#show-carpool,#resumeTravel){
+:is(#show-carpool,#resumeTravel,#opinion){
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
-:is(#show-carpool,#carpool-detail, #resumeTravel) .flex-row{
+:is(#show-carpool,#carpool-detail, #resumeTravel, #opinion) .flex-row{
     justify-content: space-between;
     margin: 0 auto;
     align-items: center;
 }
-:is(#show-carpool, #carpool-detail, #resumeTravel) .flex-row:first-child{
+:is(#show-carpool, #carpool-detail, #resumeTravel, #opinion) .flex-row:first-child{
     width: 60%;
     margin: 0 auto;
 }
@@ -972,6 +972,32 @@ select{
         height: 5vw;
     }
 }
+/*opinion*/ 
+
+#opinion div:nth-child(2){
+    text-align: center;
+    width: 100%;
+}
+
+#opinion div:nth-child(2)>div{
+    background-color: #004b70;
+    margin: 1vw auto;
+    border-radius: 2vw;
+    color: white;
+    width: 80%;
+}
+
+#opinion div:nth-child(2)>div>:first-child{
+    text-align: center;
+    width: 30%;
+}
+
+#opinion div:nth-child(2)>div>:last-child {
+    text-align: center;
+    width: 70%;
+}
+
+
 
 /*bad travel*/ 
 
