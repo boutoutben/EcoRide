@@ -8,14 +8,12 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 #[AsCommand(
-    name: 'app:createAdmin',
+    name: 'app:create-admin',
     description: 'Créer un compte administrateur',
 )]
 class CreateAdminCommand extends Command
@@ -33,106 +31,76 @@ class CreateAdminCommand extends Command
     protected function configure(): void
     {
         $this
-        ->setDescription("Créer un compte administrateur")
-        ;
+            ->setDescription('Créer un compte administrateur')
+            ->addArgument('email', InputArgument::OPTIONAL, 'Email de l\'administrateur')
+            ->addArgument('username', InputArgument::OPTIONAL, 'Nom d\'utilisateur de l\'administrateur')
+            ->addArgument('password', InputArgument::OPTIONAL, 'Mot de passe de l\'administrateur');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $user = new User();
-        $helper = $this->getHelper('question');
 
-        while (true) {
-            $askEmail = new Question("Veuillez mettre une adresse email: ");
-            $email = $helper->ask($input, $output, $askEmail);
+        // Get input arguments
+        $email = $input->getArgument('email');
+        $username = $input->getArgument('username');
+        $password = $input->getArgument('password');
 
-            // Check if the email is empty
-            if (empty($email)) {
-                $output->writeln("<error>Le champ ne peut pas être vide</error>");
-                continue; // Restart the loop
-            }
-
-            // Define the regex pattern for email validation
-            $patternEmail = "/^[^\s@]+@[^\s@]+\.[^\s@]+$/";
-
-            // Validate the email format
-            if (!preg_match($patternEmail, $email)) {
-                $output->writeln("<error>Le mail n'est pas conforme</error>");
-                continue; // Restart the loop
-            }
-
-            // If email passes validation, break out of the loop
-            break;
-        }
-
-        while (true) {
-            $askUsername = new Question('Veuillez mettre un username: ');
-            $username = $helper->ask($input, $output, $askUsername);
-
-            // Check if the email is empty
-            if (empty($username)) {
-                $output->writeln("<error>Le champ ne peut pas être vide</error>");
-                continue; // Restart the loop
-            }
-
-            $parternUsername = "/^[A-Za-z0-9&'’.\- ]{2,50}$/";
-
-            if (!preg_match($parternUsername, $username)) {
-                $output->writeln("<error>L'username n'est pas conforme</error>");
-                continue; // Restart the loop
-            }
-
-            // If email passes validation, break out of the loop
-            break;
-        }
-
-        while (true) {
-            $askPassword = new Question("Veuillez saisir votre mot de passe: ");
-            $askPassword->setHidden(true)
-                        ->setHiddenFallback(false);
-            $password = $helper->ask($input, $output, $askPassword);
-
-            // Check if the email is empty
-            if (empty($password)) {
-                $output->writeln("<error>Le champ ne peut pas être vide</error>");
-                continue; // Restart the loop
-            }
-
-            $parternPassword = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/";
-            if (!preg_match($parternPassword, $password)) {
-                $output->writeln("<error>Le mot de passe n'est pas conforme</error>");
-                continue; // Restart the loop
-            }
-
-            // If email passes validation, break out of the loop
-            break;
-        }
-
-        while (true) {
-            $askPasswordAgain = new Question("Veuillez confirmer votre mot de passe: ");
-            $askPasswordAgain->setHidden(true)
-                ->setHiddenFallback(false);
-            $passwordAgain = $helper->ask($input, $output, $askPasswordAgain);
-            if ($passwordAgain) {
-                while($password != $passwordAgain)
-                {
-                    $output->writeln("Les deux mot de passe ne sont pas égaux");
-                    $askPasswordAgain = new Question("Veuillez confirmer votre mot de passe: ");
-                    $passwordAgain = $helper->ask($input, $output, $askPasswordAgain);
+        // Interactive fallback for missing arguments
+        if (!$email) {
+            $email = $io->ask('Veuillez saisir une adresse email', null, function ($value) {
+                if (empty($value)) {
+                    throw new \RuntimeException('L\'adresse email est obligatoire.');
                 }
-                break; 
-                
-            }
-            $output->writeln("Le champ ne peut pas être vide");
+                if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
+                    throw new \RuntimeException('Adresse email invalide.');
+                }
+                return $value;
+            });
         }
 
+        if (!$username) {
+            $username = $io->ask('Veuillez saisir un nom d\'utilisateur', null, function ($value) {
+                if (empty($value)) {
+                    throw new \RuntimeException('Le nom d\'utilisateur est obligatoire.');
+                }
+                return $value;
+            });
+        }
+
+        if (!$password) {
+            $password = $io->askHidden('Veuillez saisir un mot de passe', function ($value) {
+                if (empty($value)) {
+                    throw new \RuntimeException('Le mot de passe est obligatoire.');
+                }
+                if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/', $value)) {
+                    throw new \RuntimeException('Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.');
+                }
+                return $value;
+            });
+        }
+
+        // Validate passwords in non-interactive mode
+        if ($input->isInteractive()) {
+            $confirmPassword = $io->askHidden('Veuillez confirmer le mot de passe', function ($value) use ($password) {
+                if ($value !== $password) {
+                    throw new \RuntimeException('Les mots de passe ne correspondent pas.');
+                }
+                return $value;
+            });
+        }
+
+        // Create and persist the admin user
+        $user = new User();
         $user->setEmail($email)
-             ->setUsername($username)
-             ->setPassword($this->passwordHasher->hashPassword($user,$password))
-             ->setRoles(["ROLE_ADMINISTRATEUR"]);
+            ->setUsername($username)
+            ->setPassword($this->passwordHasher->hashPassword($user, $password))
+            ->setRoles(['ROLE_ADMINISTRATEUR']);
+
         $this->em->persist($user);
         $this->em->flush();
+
+        $io->success("Le compte administrateur '$username' a été créé avec succès !");
         return Command::SUCCESS;
     }
 }
