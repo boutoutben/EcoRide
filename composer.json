@@ -91,7 +91,7 @@
         ],
         "compile": [
             "php bin/console doctrine:schema:update --force",
-            "php bin/console app:create-admin jose.direction@gmail.com jose.direction Jose123!"
+            "php bin/console app:create-admin jose.direction@gmail.com jose.direction Jose123! Jose123!"
        ]
     },
     "conflict": {
