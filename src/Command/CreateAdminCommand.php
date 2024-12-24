@@ -34,7 +34,8 @@ class CreateAdminCommand extends Command
             ->setDescription('Créer un compte administrateur')
             ->addArgument('email', InputArgument::OPTIONAL, 'Email de l\'administrateur')
             ->addArgument('username', InputArgument::OPTIONAL, 'Nom d\'utilisateur de l\'administrateur')
-            ->addArgument('password', InputArgument::OPTIONAL, 'Mot de passe de l\'administrateur');
+            ->addArgument('password', InputArgument::OPTIONAL, 'Mot de passe de l\'administrateur')
+            ->addArgument("confirmPassword",InputArgument::OPTIONAL,"Confirmation mot de passe de l\'administrateur");
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -45,6 +46,7 @@ class CreateAdminCommand extends Command
         $email = $input->getArgument('email');
         $username = $input->getArgument('username');
         $password = $input->getArgument('password');
+        $confirmPassword = $input->getArgument("confirmPassword");
 
         // Interactive fallback for missing arguments
         if (!$email) {
@@ -80,15 +82,15 @@ class CreateAdminCommand extends Command
             });
         }
 
-        // Validate passwords in non-interactive mode
-        if ($input->isInteractive()) {
-            $confirmPassword = $io->askHidden('Veuillez confirmer le mot de passe', function ($value) use ($password) {
+        if(!$confirmPassword){
+           $confirmPassword = $io->askHidden('Veuillez confirmer le mot de passe', function ($value) use ($password) {
                 if ($value !== $password) {
                     throw new \RuntimeException('Les mots de passe ne correspondent pas.');
                 }
                 return $value;
-            });
+            }); 
         }
+        
 
         // Create and persist the admin user
         $user = new User();
