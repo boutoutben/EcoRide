@@ -24,11 +24,17 @@ class Opinion
     #[ORM\Column]
     private ?bool $isValid = null;
 
+    #[ORM\Column]
+    private ?bool $isGreat = null;
+
     #[ORM\ManyToOne(inversedBy: 'Opinion')]
     private ?User $user = null;
 
     #[ORM\ManyToOne(inversedBy: 'driver')]
     private ?User $driver = null;
+
+    #[ORM\ManyToOne(inversedBy: 'carpool')]
+    private ?Carpool $carpool = null;
 
 
     public function getId(): ?int
@@ -72,6 +78,18 @@ class Opinion
         return $this;
     }
 
+    public function isGreat(): ?bool
+    {
+        return $this->isGreat;
+    }
+
+    public function setGreat(bool $isGreat): static
+    {
+        $this->isGreat = $isGreat;
+
+        return $this;
+    }
+
     public function getUser(): ?User
     {
         return $this->user;
@@ -92,6 +110,18 @@ class Opinion
     public function setDriver(?User $driver): static
     {
         $this->driver = $driver;
+
+        return $this;
+    }
+
+    public function getCarpool(): ?Carpool
+    {
+        return $this->carpool;
+    }
+
+    public function setCarpool(?Carpool $carpool): static
+    {
+        $this->carpool = $carpool;
 
         return $this;
     }

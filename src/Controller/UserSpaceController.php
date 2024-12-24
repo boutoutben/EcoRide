@@ -219,7 +219,6 @@ class UserSpaceController extends AbstractController
                     ->setEndDate($data["endDate"])
                     ->setPrice($data["credit"])
                     ->setUser($this->getUser())
-                    ->setGreat(false)
                     ->setStart(false)
                     ->setEcologique(false);
 
@@ -260,25 +259,20 @@ class UserSpaceController extends AbstractController
         {
             $user = $this->getUser();
             $opinion = new Opinion();
-            $carpoolSelect = $this->carpoolParticipationRepository->findBy(["user"=>$user]);
-            foreach($carpoolSelect as $carpoolSelect)
-            {
-                if($carpoolSelect->getCarpool()->isFinish())
-                {
-                    $carpoolToMark = $carpoolSelect;
-                }
-            }
+            $carpoolToMark = $this->carpoolParticipationRepository->findOneBy(["user"=>$user, "hasToValidate"=>true]);
             $data = $carpoolOpinion->getData();
             $opinion->setGrade($data["mark"])
                     ->setUser($user)
-                    ->setValid(false);
+                    ->setGreat($data["satisfied"])
+                    ->setDriver($carpoolToMark->getCarpool()->getUser())
+                    ->setValid(false)
+                    ->setCarpool($carpoolToMark->getCarpool());
             if($data["opinion"]!== null)
             {
                 $opinion->setOpinion($data["opinion"]);
             }
-            $carpoolSelect->setHasToValidate(false);
-            $carpoolToMark->getCarpool()->setGreat($data["satisfied"]);
-            $entityManager->persist($carpoolSelect);
+            $carpoolToMark->setHasToValidate(false);
+            $entityManager->persist($carpoolToMark);
             $entityManager->persist($opinion);
             $entityManager->persist($carpoolToMark->getCarpool());
             $entityManager->flush();
@@ -374,22 +368,62 @@ class UserSpaceController extends AbstractController
     }
 
     #[Route('/deleteCarpool', name: 'app_delete_carpool', methods: ["POST"])]
-    public function deteleCarpool(EntityManagerInterface $entityManager)
+    public function deleteCarpool(EntityManagerInterface $entityManager, MailerInterface $mailer, Request $request): JsonResponse
     {
-        $data = json_decode(file_get_contents('php://input'), true);
-        $id = (int)$data["id"];
-        $carpoolParticipationToDelete = $this->carpoolParticipationRepository->findBy(["carpool"=>$id]);
-        $carpoolToDelete = $this->carpoolRepository->findOneBy(["id" => $id]);
-        foreach($carpoolParticipationToDelete as $carpoolParticipation)
-        {
-            $entityManager->remove($carpoolParticipation);
-            $entityManager->flush();
-        }
-        if($carpoolToDelete)
-        {
+        try {
+            $data = json_decode(file_get_contents('php://input'), true);
+            if (!isset($data["id"])) {
+                return new JsonResponse(["error" => "Missing carpool ID"], 400);
+            }
+
+            $id = (int)$data["id"];
+            $carpoolParticipationToDelete = $this->carpoolParticipationRepository->findBy(["carpool" => $id]);
+            $carpoolToDelete = $this->carpoolRepository->findOneBy(["id" => $id]);
+
+            if (!$carpoolToDelete) {
+                return new JsonResponse(["error" => "Carpool not found"], 404);
+            }
+
+            foreach ($carpoolParticipationToDelete as $carpoolParticipation) {
+                $carpool = $carpoolParticipation->getCarpool();
+                $user = $carpoolParticipation->getUser();
+
+                /*// Create the email
+                $email = (new Email())
+                    ->from("ecoride.team@gmail.com")
+                    ->to($user->getEmail())
+                    ->subject("Annulation de votre covoiturage")
+                    ->text(
+                        "Bonjour,\n\n" .
+                            "Nous vous informons que votre covoiturage prévu le " .
+                            $carpool->getStartDate()->format("d/m/Y") . " à " .
+                            $carpool->getStartDate()->format("H:i") .
+                            " au départ de " . $carpool->getStartPlace() .
+                            " est annulé.\n\n" .
+                            "Veuillez nous excuser pour la gêne occasionnée.\n\n" .
+                            "Cordialement,\nL'équipe Ecoride"
+                    );
+
+                // Send the email
+                $mailer->send($email);*/
+
+                // Update user credits
+                $user->setNbCredit($user->getNbCredit() + $carpool->getPrice());
+
+                // Remove participation
+                $entityManager->remove($carpoolParticipation);
+            }
+
+            // Remove the carpool
             $entityManager->remove($carpoolToDelete);
+
+            // Flush all changes
             $entityManager->flush();
+
+            return new JsonResponse(["success" => "Carpool and participations deleted successfully"]);
+        } catch (\Exception $e) {
+            return new JsonResponse(["error" => $e->getMessage()], 500);
         }
-        return new JsonResponse("Sucess");
     }
+
 }

@@ -47,9 +47,6 @@ class Carpool
     private ?bool $isEcologique = null;
 
     #[ORM\Column]
-    private ?bool $isGreat = null;
-
-    #[ORM\Column]
     private ?bool $isStart = null;
 
     #[ORM\Column]
@@ -65,11 +62,23 @@ class Carpool
     #[ORM\Column]
     private ?bool $isFinish = false;
 
+    /**
+     * @var Collection<int, Opinion>
+     */
+    #[ORM\OneToMany(targetEntity: Opinion::class, mappedBy: 'carpool')]
+    private Collection $carpool;
+
+    /**
+     * @var Collection<int, CarpoolParticipation>
+     */
+    #[ORM\OneToMany(targetEntity: CarpoolParticipation::class, mappedBy: 'CarpoolParticipation')]
+    private Collection $CarpoolParticipation;
 
     public function __construct()
     {
         $this->startDate = new \DateTime();
         $this->endDate = (new \DateTime());
+        $this->CarpoolParticipation = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -147,18 +156,6 @@ class Carpool
         return $this;
     }
 
-    public function isGreat(): ?bool
-    {
-        return $this->isGreat;
-    }
-
-    public function setGreat(bool $isGreat): static
-    {
-        $this->isGreat = $isGreat;
-
-        return $this;
-    }
-
     public function isStart(): ?bool
     {
         return $this->isStart;
@@ -219,5 +216,63 @@ class Carpool
 
         return $this;
     }
+    /**
+     * @return Collection<int, Opinion>
+     */
+    public function getDriver(): Collection
+    {
+        return $this->carpool;
+    }
 
+    public function addDriver(Opinion $carpool): static
+    {
+        if (!$this->carpool->contains($carpool)) {
+            $this->carpool->add($carpool);
+            $carpool->setCarpool($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDriver(Opinion $Carpool): static
+    {
+        if ($this->carpool->removeElement($Carpool)) {
+            // set the owning side to null (unless already changed)
+            if ($Carpool->getCarpool() === $this) {
+                $Carpool->setCarpool(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CarpoolParticipation>
+     */
+    public function getCarpoolParticipation(): Collection
+    {
+        return $this->CarpoolParticipation;
+    }
+
+    public function addCarpoolParticipation(CarpoolParticipation $carpoolParticipation): static
+    {
+        if (!$this->CarpoolParticipation->contains($carpoolParticipation)) {
+            $this->CarpoolParticipation->add($carpoolParticipation);
+            $carpoolParticipation->setCarpoolParticipation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCarpoolParticipation(CarpoolParticipation $carpoolParticipation): static
+    {
+        if ($this->CarpoolParticipation->removeElement($carpoolParticipation)) {
+            // set the owning side to null (unless already changed)
+            if ($carpoolParticipation->getCarpoolParticipation() === $this) {
+                $carpoolParticipation->setCarpoolParticipation(null);
+            }
+        }
+
+        return $this;
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\CarpoolRepository;
 use App\Repository\OpinionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -12,15 +13,19 @@ use Symfony\Component\Routing\Attribute\Route;
 class EmployeeSpaceController extends AbstractController
 {
     public OpinionRepository $opinionRepository;
-    public function __construct(OpinionRepository $opinionRepository) {
+    public CarpoolRepository $carpoolRepository;
+    public function __construct(OpinionRepository $opinionRepository, CarpoolRepository $carpoolRepository) {
         $this->opinionRepository = $opinionRepository;
+        $this->carpoolRepository = $carpoolRepository;
     }
     #[Route('/employeeSpace', name: 'app_employee_space')]
     public function index(): Response
     {
         $opinions = $this->opinionRepository->findBy(["isValid"=>false]);
+        $badTravel = $this->opinionRepository->findBy(["isGreat"=>false]);
         return $this->render('employee_space/index.html.twig', [
             'controller_name' => 'EmployeeSpaceController',
+            "badTravel" => $badTravel,
             "opinions" => $opinions
         ]);
     }

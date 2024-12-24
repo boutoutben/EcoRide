@@ -6,16 +6,27 @@ document.addEventListener("click",(e)=>{
         const element = document.querySelector(`#overlayCancelle-${parts[1]}`);
         element.classList.toggle("active");
     } 
-    if(elementId.startsWith("yesBtn"))
-    {
+    if (elementId.startsWith("yesBtn")) {
         fetch("/deleteCarpool", {
-            method:"POST",
-            headers:{
+            method: "POST",
+            headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({id: parts[1]})
+            body: JSON.stringify({ id: parts[1] })
         })
-        .then(location.reload())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("Carpool deleted:", data);
+            location.reload();
+        })
+        .catch(error => {
+            console.error("Error deleting carpool:", error);
+        });
     }
     if(elementId.startsWith("noBtn")){
         location.reload();

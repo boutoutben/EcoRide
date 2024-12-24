@@ -15,31 +15,20 @@ class CarpoolParticipation
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?Carpool $carpool = null;
-
     #[ORM\ManyToOne(inversedBy: 'carpoolParticipation')]
     private ?User $user = null;
 
     #[ORM\Column]
     private ?bool $hasToValidate = false;
 
+    #[ORM\ManyToOne(inversedBy: 'CarpoolParticipation')]
+    private ?Carpool $carpool = null;
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getCarpool(): ?Carpool
-    {
-        return $this->carpool;
-    }
-
-    public function setCarpool(?Carpool $carpool): static
-    {
-        $this->carpool = $carpool;
-
-        return $this;
-    }
 
     public function getUser(): ?User
     {
@@ -61,6 +50,18 @@ class CarpoolParticipation
     public function setHasToValidate(bool $hasToValidate): static
     {
         $this->hasToValidate = $hasToValidate;
+
+        return $this;
+    }
+
+    public function getCarpool(): ?Carpool
+    {
+        return $this->carpool;
+    }
+
+    public function setCarpool(?Carpool $Carpool): static
+    {
+        $this->carpool = $Carpool;
 
         return $this;
     }

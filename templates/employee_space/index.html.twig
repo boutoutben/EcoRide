@@ -10,6 +10,9 @@
 <main>
     <section class="block" id="validOpinion">
         <h1>Validation des avis</h1>
+        {% if opinions == null %}
+            <p>Il n'y a pas d'avis à valider</p>
+        {% endif %}
         {% for opinion in opinions %}
             {% if opinion.opinion != null %}
                 <div class="sub-block">
@@ -30,22 +33,28 @@
     </section>
     <section class="block" id="badTravel">
         <h1>Trajet mal passés</h1>
-        <div class="sub-block">
+        {% if badTravel == null %}
+            <p>Il n'y a pas eu d'incident récent</p>
+        {% endif %}
+        {% for badTravel in badTravel %}
+            <div class="sub-block">
             <div class="flex-row">
-                <p>1</p>
-                <p>Pseudo</p>
+                <p>{{badTravel.id}}</p>
+                <p>Par {{badTravel.user.username}} pour {{badTravel.driver.username}}</p>
             </div>
             <div class="flex-row">
                 <div>
-                    <p>Conducteur: conducteur@gmail.com</p>
-                    <p>Passager: passager@gmail.com</p>
+                    <p>Conducteur: {{badTravel.driver.email}}</p>
+                    <p>Passager: {{badTravel.user.email}}</p>
                 </div>
                 <div>
-                    <p>Départ à 9h00 à Lyon</p>
-                    <p>Arrivé à 11h30 à Paris</p>
+                    <p>Départ à {{badTravel.carpool.startDate|date("H\\hi")}} à {{badTravel.carpool.startPlace}}</p>
+                    <p>Arrivé à {{badTravel.carpool.endDate|date("H\\hi")}} à {{badTravel.carpool.endPlace}}</p>
                 </div>
             </div>
-            <p style="text-align:center;margin:0 7vw">Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum est viverra maximus bibendum rhoncus.Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum est viverra maximus bibendum rhoncus.</p>
-        </div>
+            <p style="text-align:center;margin:0 7vw">{{badTravel.opinion}}</p>
+        </div>   
+        {% endfor %}
+        
 </main>
 {% endblock %}

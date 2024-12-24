@@ -1000,7 +1000,9 @@ select{
 
 
 /*bad travel*/ 
-
+#badTravel>div{
+    margin: 2vw auto;
+}
 #badTravel>div>div:nth-child(2){
     width: 90%;
     justify-content: space-between;

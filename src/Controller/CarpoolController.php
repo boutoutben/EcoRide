@@ -46,6 +46,8 @@ class CarpoolController extends AbstractController
                 ->where('c.startPlace = :start_place')
                 ->andWhere('c.endPlace = :end_place')
                 ->andWhere("c.startDate >= :startDate")
+                ->andWhere("c.isFinish = false")
+                ->andWhere("c.placeLeft > 0")
                 ->setParameters(new ArrayCollection([
                     new Parameter('start_place', $startPlace),
                     new Parameter('end_place', $endPlace),
