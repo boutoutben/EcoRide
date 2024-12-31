@@ -77,6 +77,10 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator implements Authent
                     // Throw an exception if the user is not found
                     throw new UserNotFoundException('User not found.');
                 }
+                elseif($user->isSuspend())
+                {
+                    throw new CustomUserMessageAuthenticationException("Désolé, votre compte est bloqué, merci de vous rapprocher de notre équipe pour plus d'info");
+                }
 
                 return $user;
             }),

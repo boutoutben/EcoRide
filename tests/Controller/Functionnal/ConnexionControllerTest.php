@@ -2,8 +2,11 @@
 
 namespace App\Tests;
 
+use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class ConnexionControllerTest extends WebTestCase
 {
@@ -244,5 +247,38 @@ class ConnexionControllerTest extends WebTestCase
         // Assert the status code after redirection
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('.form_error', "Le mot de passe doit contenir en 3 et 50 caractère and être constitué au moins d'une majuscule, d'une minuscule, d'un chiffre et d'un caractère spécial");
-    } 
+    }
+    public function testLoginBlock()
+    {
+        $client = static::createClient();
+        /*
+        $hasher = self::getContainer()->get(UserPasswordHasherInterface::class);
+        $em = self::getContainer()->get(EntityManagerInterface::class);
+        $entity = new User();
+        $entity->setUsername("testBlock")
+               ->setEmail("test@gmail.com")
+               ->setPassword($hasher->hashPassword($entity, "Test123!"))
+               ->isSuspend(true);
+        $em->persist($entity);
+        $em->flush();
+        */
+        $crawler = $client->request('GET', '/connexion');
+        $this->assertResponseIsSuccessful(); // Ensure the form page loads successfully
+        
+        // Select the form and fill it
+        $form = $crawler->selectButton('Connexion')->form([
+            'connexion[pseudo]' => 'testBlock',
+            'connexion[password]' => 'Test123!',
+        ]);
+
+        // Submit the form
+        $client->submit($form);
+        // Follow the redirection after submission
+        $this->assertResponseRedirects('/connexion'); // Adjust the redirection 
+        $client->followRedirect();
+        // Assert the status code after redirection
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorTextContains('.form_error', "Désolé, votre compte est bloqué, merci de vous rapprocher de notre équipe pour plus d'info");
+
+    }
 }
