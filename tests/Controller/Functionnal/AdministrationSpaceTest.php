@@ -2,11 +2,29 @@
 
 namespace App\Tests;
 
+use App\Repository\CarpoolParticipationRepository;
+use App\Repository\CarpoolRepository;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
+use function PHPUnit\Framework\assertEquals;
+
 class AdministrationSpaceTest extends WebTestCase
 {
+    private $carpoolRepository;
+    private $carpoolParticipationRepository;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // Create a mock for the CarpoolRepository
+        $this->carpoolRepository = $this->createMock(CarpoolRepository::class);
+        $this->carpoolParticipationRepository = $this->createMock(CarpoolParticipationRepository::class);
+
+        // Set up additional configurations if needed
+    }
     public function defineClient($client)
     {
         // Fetch the login form page
@@ -29,7 +47,7 @@ class AdministrationSpaceTest extends WebTestCase
         $crawler2 = $client->request('GET', '/administrationSpace');
         return $crawler2;
     }
-
+    
     public function createEmployeeData(string $email, string $pseudo, string $password, string $passwordEgain){
         return [
             "create_account[email]" => $email,
@@ -99,6 +117,55 @@ class AdministrationSpaceTest extends WebTestCase
         $client->submit($form);
         $this->assertSelectorTextContains('.form_error', "Le champ ne doit pas être vide");
 
+    }
+    /*graph*/
+
+    public function testNbCarpoolValue()
+    {
+        // Create a DateTime object for the test
+        $dateTime = new \DateTime("2024-12-10 12:00:00");
+
+        // Configure the mock to return a specific value when countDate is called
+        $this->carpoolRepository
+            ->expects($this->once()) // Ensure countDate is called exactly once
+            ->method('countDate')
+            ->with($this->equalTo($dateTime)) // Expect a DateTime object as parameter
+            ->willReturn(2); // Simulate the method returning 2
+
+        // Call the method under test
+        $count = $this->carpoolRepository->countDate($dateTime);
+
+        // Assert that the returned value matches the expected value
+        $this->assertEquals(2, $count, "The countDate method did not return the expected value.");
+    }
+    public function testNbCreditValue()
+    {
+        // Create a DateTime object for the test
+        $dateTime = new \DateTime("2024-12-10 12:00:00");
+
+        // Configure the mock to return a specific value when countDate is called
+        $this->carpoolParticipationRepository
+            ->expects($this->once()) // Ensure countDate is called exactly once
+            ->method('countCreditPlatform')
+            ->with($this->equalTo($dateTime)) // Expect a DateTime object as parameter
+            ->willReturn(4); // Simulate the method returning 4
+
+        // Call the method under test
+        $count = $this->carpoolParticipationRepository->countCreditPlatform($dateTime,2);
+
+        // Assert that the returned value matches the expected value
+        $this->assertEquals(4, $count, "The countDate method did not return the expected value.");
+    }
+    
+    public function testNbTotalCredit()
+    {
+        // Configure the mock to return a specific value when countDate is called
+        $this->carpoolParticipationRepository
+            ->expects($this->once()) // Ensure countDate is called exactly once
+            ->method('nbTotalCreditPlatform')
+            ->willReturn(8);
+        $count = $this->carpoolParticipationRepository->nbTotalCreditPlatform(2);
+        $this->assertEquals(8, $count, "The countDate method did not return the expected value.");
     }
 
 }

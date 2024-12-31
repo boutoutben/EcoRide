@@ -371,7 +371,7 @@ button:hover{
     align-items: center;
 }
 :is(#show-carpool, #carpool-detail, #resumeTravel, #opinion) .flex-row:first-child{
-    width: 60%;
+    width: 70%;
     margin: 0 auto;
 }
 #show-carpool .flex-row:nth-child(2){  
@@ -475,8 +475,11 @@ input[type='checkbox']:checked{
 }
 
 /*CarpoolDetail*/ 
+#carpool-detail>:first-child>:last-child>div{
+    width: fit-content;
+}
 
-#carpool-detail>:first-child>:last-child>h3{
+#carpool-detail>:first-child>:last-child :is(h3, p){
     margin: 0.5vw 0;
 }
 .backgrandError{
@@ -1065,22 +1068,29 @@ canvas{
 #blockAccount .inputBackground{
     width: 80%;
 }
-#blockAccount>.sub-block{
+#blockAccount>div{
+    width: 90%;
+}
+#blockAccount>div>.sub-block{
     margin: 1vw auto;
 }
-#blockAccount>.sub-block>.flex-row{
+#blockAccount>div>.sub-block>.flex-row{
     width: 100%;
     justify-content: space-between;
     align-items: center;
 }
-#blockAccount>.sub-block img{
+#blockAccount>div>.sub-block img{
     width: 3vw;
     height: 3vw;
     object-fit: cover;
 }
-
+.suspend{
+    background-color: #CB6B62;
+    padding: 1vw;
+    border-radius: 2vw;
+}
 @media screen and (max-width:945px) {
-    #blockAccount>.sub-block img {
+    #blockAccount>div>.sub-block img {
             width: 5vw;
             height: 5vw;
             object-fit: cover;

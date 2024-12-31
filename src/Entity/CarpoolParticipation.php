@@ -24,6 +24,9 @@ class CarpoolParticipation
     #[ORM\ManyToOne(inversedBy: 'CarpoolParticipation')]
     private ?Carpool $carpool = null;
 
+    #[ORM\Column(nullable:true)]
+    private ?\DateTimeImmutable $createAt = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -62,6 +65,18 @@ class CarpoolParticipation
     public function setCarpool(?Carpool $Carpool): static
     {
         $this->carpool = $Carpool;
+
+        return $this;
+    }
+
+    public function getCreateAt(): ?\DateTimeImmutable
+    {
+        return $this->createAt;
+    }
+
+    public function setCreateAt(\DateTimeImmutable $createAt): static
+    {
+        $this->createAt = $createAt;
 
         return $this;
     }

@@ -37,6 +37,8 @@
         "build": "encore production --progress"
     },
     "dependencies": {
+        "chart.js": "^4.4.7",
+        "date-fns": "^4.1.0",
         "jquery": "^3.7.1"
     }
 }

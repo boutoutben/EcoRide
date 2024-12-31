@@ -60,7 +60,7 @@ class UserSpaceController extends AbstractController
         $userInfo = $this->getUser();
         $user = $this->userRepository->findOneBy(['id' =>$userInfo->getId()]);
         if (array_key_exists('file', $_FILES)){
-           if ($_FILES["file"]["name"] != "") {
+            if ($_FILES["file"]["name"] != "") {
                 $test = explode(".", $_FILES["file"]["name"]);
                 $extension = end($test);
                 $name = rand(100, 999) . '.' . $extension;

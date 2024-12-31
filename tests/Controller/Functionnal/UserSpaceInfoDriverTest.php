@@ -10,7 +10,6 @@ use Symfony\Component\Validator\Constraints\Date;
 
 class UserSpaceInfoDriverTest extends PantherTestCase
 {
-    //new car
 
     public function defineClient($client)
     {
@@ -49,7 +48,6 @@ class UserSpaceInfoDriverTest extends PantherTestCase
     public function testNewCarValidData()
     {
         $client = self::createPantherClient(['browser' => 'firefox']);
-
         // Log in and get the user space page
         $crawler = $this->defineClient($client);
 

@@ -6,14 +6,9 @@
 	{{ parent() }}
     {{ encore_entry_script_tags('createAccountPassword') }}
     {{encore_entry_script_tags('graph')}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            graph([200, 200, 20, 1000, 600, 700, 400],"NbCarpoolChart");
-            graph([500, 800, 100, 300, 500, 555, 389],"nbCreditsChart");
+    {{encore_entry_script_tags("suspend")}}
 
-        });
-    </script>
+    
 {% endblock %}
 
 {% block body %}
@@ -66,37 +61,45 @@
     <section class="block" id="nbCarpool">
         <h1>Nombre de covoiturage par jour</h1>
         <div class="flex-row">
-            <img src="img/right-arrow.png" alt="flèche vers la gauche"/>
-            <p>Semaine du 11/11/24 au 17/11/24</p>
-            <img src="img/right-arrow.png" alt="flèche vers la droite"/>
+            <img src="img/right-arrow.png" alt="flèche vers la gauche" id="CountCarpoolLeft"/>
+            <p>Semaine du <span id="startWeek"></span> au <span id="endWeek"></span></p>
+            <img src="img/right-arrow.png" alt="flèche vers la droite" id="CountCarpoolRight"/>
         </div>
        <canvas id="NbCarpoolChart" ></canvas>
     </section>
     <section class="block" id="nbCredit">
         <h1>Nombre de crédit en fonction des jours</h1>
         <div class="flex-row">
-            <img src="img/right-arrow.png" alt="flèche vers la gauche"/>
-            <p>Semaine du 11/11/24 au 17/11/24</p>
-            <img src="img/right-arrow.png" alt="flèche vers la droite"/>
+            <img src="img/right-arrow.png" alt="flèche vers la gauche" id="CountCreditLeft"/>
+            <p>Semaine du <span id="startWeekCredit"></span> au <span id="endWeekCredit"></span></p>
+            <img src="img/right-arrow.png" alt="flèche vers la droite" id="CountCreditRight"/>
         </div>
         <canvas id="nbCreditsChart" ></canvas>
     </section>
     <section class='block' id="totalCredit">
         <h1>Gain total de la plateforme</h1>
-        <h3>100 000 crédis</h3>
+        <h3>{{nbTotalCreditPlatform}} crédis</h3>
     </section>
     <section class="block" id="blockAccount">
         <h1>Supendre un utiliseur ou un employée</h1>
         <div class="inputBackground search">
             <img src="img/loupe.png" alt='loupe'/>
-            <input type='search' class='input-place' placeholder='Nom à suspendre'/>
+            <input type='search' class='input-place' placeholder='Nom à suspendre' id="suspendSearch"/>
         </div>
-        <div class="sub-block">
-            <div class="flex-row">
-                <p>username</p>
-                <p>utilisateur type</p>
-                <img src="img/suspended.png" alt="susprendre"/>
-            </div>
+        <div id="AllUserSupend">
+            {% for user in allUser %}
+                <div class="sub-block">
+                    <div class="flex-row">
+                        <p>{{user.username}}</p>
+                        {% if "ROLE_USER" in user.roles %}
+                            <p>Utilisateur</p>   
+                        {% else %}
+                            <p>Employée</p> 
+                        {% endif %}
+                        <img src="img/suspended.png" alt="susprendre" id="suspend-{{user.id}}" {% if user.isSuspend %}class="suspend"{% endif %}/>
+                    </div>
+                </div>    
+            {% endfor %}
         </div>
     </section>
 </main>

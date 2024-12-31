@@ -21,7 +21,6 @@ document.addEventListener("click",(e)=>{
             return response.json();
         })
         .then(data => {
-            console.log("Carpool deleted:", data);
             location.reload();
         })
         .catch(error => {

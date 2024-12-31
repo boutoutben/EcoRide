@@ -253,26 +253,4 @@ class Carpool
     {
         return $this->CarpoolParticipation;
     }
-
-    public function addCarpoolParticipation(CarpoolParticipation $carpoolParticipation): static
-    {
-        if (!$this->CarpoolParticipation->contains($carpoolParticipation)) {
-            $this->CarpoolParticipation->add($carpoolParticipation);
-            $carpoolParticipation->setCarpoolParticipation($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCarpoolParticipation(CarpoolParticipation $carpoolParticipation): static
-    {
-        if ($this->CarpoolParticipation->removeElement($carpoolParticipation)) {
-            // set the owning side to null (unless already changed)
-            if ($carpoolParticipation->getCarpoolParticipation() === $this) {
-                $carpoolParticipation->setCarpoolParticipation(null);
-            }
-        }
-
-        return $this;
-    }
 }

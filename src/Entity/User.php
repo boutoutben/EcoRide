@@ -128,6 +128,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Opinion::class, mappedBy: 'driver')]
     private Collection $driver;
 
+    #[ORM\Column]
+    private ?bool $isSuspend = false;
+
 
     public function __construct()
     {
@@ -492,6 +495,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $driver->setDriver(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isSuspend(): ?bool
+    {
+        return $this->isSuspend;
+    }
+
+    public function setSuspend(bool $isSuspend): static
+    {
+        $this->isSuspend = $isSuspend;
 
         return $this;
     }

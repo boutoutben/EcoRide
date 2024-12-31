@@ -4,9 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Carpool;
 use App\Entity\CarpoolParticipation;
+use App\Entity\User;
 use App\Form\SearchTravelType;
 use App\Repository\CarpoolParticipationRepository;
 use App\Repository\CarpoolRepository;
+use App\Repository\OpinionRepository;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,10 +22,12 @@ class CarpoolController extends AbstractController
 {
     private CarpoolRepository $carpoolRepository;
     private CarpoolParticipationRepository $carpoolParticipationRepository;
-    public function __construct(CarpoolRepository $carpoolRepository,CarpoolParticipationRepository $carpoolParticipationRepository) 
+    private OpinionRepository $opinionRepository;
+    public function __construct(CarpoolRepository $carpoolRepository,CarpoolParticipationRepository $carpoolParticipationRepository, OpinionRepository $opinionRepository) 
     {
         $this->carpoolRepository = $carpoolRepository;
         $this->carpoolParticipationRepository = $carpoolParticipationRepository;
+        $this->opinionRepository = $opinionRepository;
     }
 
     #[Route('/carpool', name: 'app_carpool')]
@@ -54,6 +58,15 @@ class CarpoolController extends AbstractController
                     new Parameter("startDate", $startDate)
                 ]));
             $search = $queryBuilder->getQuery()->getResult();
+            $allSearch = [];
+            $i = 0;
+            foreach ($search as $item) { // Avoid shadowing the $search variable
+                $allSearch[] = [
+                    $item, // Add the search item
+                    $this->opinionRepository->getAVGMark($item->getUser()) // Add the average mark
+                ];
+                $i++;
+            }
             if ($this->getUser() != null) {
                 $carpoolParticipation = $this->carpoolParticipationRepository->findBy(["user"=>$this->getUser()]);
 
@@ -67,7 +80,7 @@ class CarpoolController extends AbstractController
         return $this->render('carpool/index.html.twig', [
             'controller_name' => 'CarpoolController',
             "form" => $form->createView(),
-            "search" => $search,
+            "search" => $allSearch,
             "carpoolParticipation" => $allCarpool
         ]);
         

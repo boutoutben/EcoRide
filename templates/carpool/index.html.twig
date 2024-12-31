@@ -54,22 +54,27 @@
                     <section class='block' id="show-carpool">
                         <div>
                             <div class='flex-row'>
-                                <h2>{{search.user.username}}</h2>  
-                                <img src='img/{{search.user.img ??"user.png"}}' alt="phote de profil"/>
-                                <h3>4/5</h3>
+                                <h2>{{search[0].user.username}}</h2>  
+                                <img src='img/{{search[0].user.img ??"user.png"}}' alt="phote de profil"/>
+                                <div>
+                                    <div class="flex-row">
+                                        <p>{{search[1]}}</p>
+                                        <h3>/5</h3>
+                                    </div>
+                                </div>
                             </div>
                             <div class='flex-row'>
-                                <h2>{{search.price}}€</h2>
-                                <p>{{search.placeLeft}} places restantes</p>
+                                <h2>{{search[0].price}}€</h2>
+                                <p>{{search[0].placeLeft}} places restantes</p>
                             </div>
                             <div class='flex-row'>
                                 <div>
-                                    <p>Départ: {{search.startDate|date('d/m/Y H:i')}}</p>
-                                    <p>Arrivée: {{search.endDate|date('d/m/Y H:i')}}</p>
+                                    <p>Départ: {{search[0].startDate|date('d/m/Y H:i')}}</p>
+                                    <p>Arrivée: {{search[0].endDate|date('d/m/Y H:i')}}</p>
                                 </div>
-                                <p>Ecologique: {% if search.isEcologique %}oui {% else %}non{% endif %}</p>
+                                <p>Ecologique: {% if search[0].isEcologique %}oui {% else %}non{% endif %}</p>
                             </div>
-                            <button class='standard-btn' id="detail-btn-{{search.id}}">Détails</button>
+                            <button class='standard-btn' id="detail-btn-{{search[0].id}}">Détails</button>
                         </div>
                     </section>
                 {% endif %}
