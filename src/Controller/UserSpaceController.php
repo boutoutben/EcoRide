@@ -165,7 +165,7 @@ class UserSpaceController extends AbstractController
             "usernamePreference" => $user->getUsername()
         ]);
         $preferenceForm->handleRequest($request);
-        $client = new Client($_ENV["MONGODB_URI"]);
+        $client = new Client($_ENV["MONGODB_URL"]);
 
         // Accéder à la collection "preferences" dans la base "ecoride"
         $collection = $client->ecoride->preferences;

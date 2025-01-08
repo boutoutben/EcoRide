@@ -15,7 +15,7 @@ class UserPreferencesType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $client = new Client($_ENV["MONGODB_URI"]);
+        $client = new Client($_ENV["MONGODB_URL"]);
 
         // Accéder à la collection "preferences" dans la base "ecoride"
         $collection = $client->ecoride->preferences;
