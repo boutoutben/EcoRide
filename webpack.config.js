@@ -26,6 +26,7 @@ Encore
     .addEntry("opinion", "./assets/js/opinion.js")
     .addEntry("suspend", "./assets/js/suspend.js")
     .addEntry("filter", "./assets/js/filter.js")
+    .addEntry("homeRedirection", "./assets/js/homeRedirection.js")
 
     // Enable splitting for better optimization
     .splitEntryChunks()
