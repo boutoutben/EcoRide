@@ -69,7 +69,7 @@ class ConnexionController extends AbstractController
                 $user->setPassword($hashedPassword);
                 $entityManager->persist($user);
                 $entityManager->flush();
-                $client = new Client("mongodb://localhost:27017");
+                $client = new Client($_ENV["MONGODB_URI"]);
 
                 // Accéder à la collection "preferences" dans la base "ecoride"
                 $collection = $client->ecoride->preferences;
