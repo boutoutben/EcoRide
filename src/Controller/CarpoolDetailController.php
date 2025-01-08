@@ -25,8 +25,6 @@ class CarpoolDetailController extends AbstractController
         $carpool = $this->carpoolRepository->findOneBy(["id"=> $detail]);
         $formattedDate = $carpool->getStartDate()->format('l d F Y');
         $client = new Client($_ENV["MONGODB_URL"]);
-    }
-);
 
         // Accéder à la collection "preferences" dans la base "ecoride"
         $collection = $client->ecoride->preferences;
