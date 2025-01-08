@@ -129,11 +129,12 @@ a{
     #off-screen-menu nav>ul{
         list-style: none;
     }
+    
     #off-screen-menu nav>ul>li{
-        margin: 7vh;
+        margin: 7vh auto;
         font-size: 2em;
-        justify-content: center;
     }
+    
     #off-screen-menu nav>ul>li>img{
         width: 5vw;
         height: 5vw;
@@ -150,7 +151,7 @@ footer{
 footer>section{
     display: flex;
     flex-direction: row;
-    margin: 1vw 5vw;
+    margin: 1vw 5vw 0;
 }
 
 footer img{
@@ -177,7 +178,15 @@ footer>section.info>div{
     display: flex;
     flex-direction: column;
     width: 100vw;
-    align-content: space-around;   
+    align-content: space-around;  
+}
+footer>section.info>:nth-child(3)>div>div{
+    justify-content: center;
+    align-items: center;
+}
+footer>section.info>:nth-child(3)>div img{
+    width: 2.5vw;
+    height: 2.5vw;
 }
 footer>section.info>div>div>p{
     margin: 0.5vw 0;
@@ -308,8 +317,11 @@ button:hover{
 .inputBackground img{
     width: 2vw;
 }
-.inputBackground img:last-child {
+.inputBackground img:last-child{
     cursor: pointer;
+}
+#search-bar .allInput>form>:nth-child(3){
+    margin: auto 0;
 }
 .input-place{
     font-weight: 900;
@@ -322,6 +334,7 @@ button:hover{
     border: none;
     cursor: pointer;
 }
+
 #passwordInput{
     width: 85%;
 }
@@ -335,13 +348,13 @@ button:hover{
     }
 
     .inputBackground{
-    padding: 2vw 1vw;
-    border-radius: 5vw;
-    margin: 0.5vw 0;
-}
-.inputBackground img {
-    width: 3vw;
-}
+        padding: 2vw 1vw;
+        border-radius: 5vw;
+        margin: 0.5vw 0;
+    }
+    .inputBackground img {
+        width: 3.5vw;
+    }
 }
 /*carpool*/
 #filter-btn{
@@ -421,16 +434,20 @@ input[type='checkbox']:checked{
 #filter p{
     text-align: center;
 }
-#filter input[type="text"]{
-    width: 7%;
+#filter input[type="number"]{
+    width: 50%;
     font-size: 1.2em;
     cursor: pointer;
 }
-#filter>div{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+#filter input[type="time"]
+{
+    width: fit-content;
 }
+#filter input[type="number"]:first-child{
+    -moz-appearance: textfield;
+    width: 5%;
+}
+
 #filter{
     display: flex;
     width: 25%;
@@ -635,6 +652,9 @@ input[type='checkbox']:checked{
     color: #004b70;
     text-decoration: underline;
 }
+.allInput .inputBackground{
+    margin: 1vw auto;
+}
 
 /*connexion*/
 
@@ -704,11 +724,11 @@ input[type='checkbox']:checked{
 
 .file-input {
     width: 0.1px;
-        height: 0.1px;
-        opacity: 0;
-        overflow: hidden;
-        position: absolute;
-        z-index: -1;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
 }
 .file-input+label {
     font-size: 1.25em;
@@ -750,18 +770,24 @@ input[type='radio']{
     td:first-child{
     font-size: 1.2em;
     text-align: center;
-}
-#profile{
-    width: 80%;
-}
-#profile>div.flex-row:first-child {
-    align-self: flex-end;
-    width: 60vw;
-    align-items: center;
-}
-#profile>div.flex-row:nth-child(2) {
-    width: 50vw;
-}
+    }
+    #profile{
+        width: 80%;
+    }
+    #profile>div:first-child>div>div>img:first-child{
+        width: 15vw;
+    }
+    #profile>div:first-child>div>div>img:last-child{
+        width: 7vw;
+    }
+    #profile>div.flex-row:first-child {
+        align-self: flex-end;
+        width: 60vw;
+        align-items: center;
+    }
+    #profile>div.flex-row:nth-child(2) {
+        width: 50vw;
+    }
     .wrap{
         flex-wrap: wrap;
     }
@@ -836,6 +862,12 @@ input[type='radio']{
     }
     #carpoolInfo{
         width: 70%;
+    }
+    #carpoolInfo>div:nth-child(2) img {
+        width: 10vw;
+    }
+    #carpoolInfo>div>div:last-child div:first-child>.flex-row:first-child{
+        flex-wrap: wrap;
     }
 }
 
@@ -931,6 +963,13 @@ select{
     select{
         font-size: .8em;
     }
+    #travelOutpute .allInput>:nth-child(5){
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    #travelOutpute .allInput>:nth-child(5)>div{
+        width: 60%;
+    }
 }
 #autreChoiceCar{
     display: none;
@@ -974,6 +1013,7 @@ select{
         width: 5vw;
         height: 5vw;
     }
+
 }
 /*opinion*/ 
 

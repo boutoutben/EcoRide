@@ -104,9 +104,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: "json")]
     private $roles = [];
 
-    #[ORM\Column(type: 'json')]
-    private $preference = [];
-
     /**
      * @var Collection<int, CarpoolParticipation>
      */
@@ -131,19 +128,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?bool $isSuspend = false;
 
+    #[ORM\Column]
+    private ?float $mark =null;
+
 
     public function __construct()
     {
         $this->Car = new ArrayCollection();
         $this->carpool = new ArrayCollection();
         $this->roles = new ArrayCollection();
-        $this->preference = [
-            ["Non-fumeur", false],
-            ["Sans animaux", false],
-        ];
         $this->carpoolParticipation = new ArrayCollection();
         $this->Opinion = new ArrayCollection();
         $this->driver = new ArrayCollection();
+        $this->mark = 5;
     }
     public function getId(): ?int
     {
@@ -375,31 +372,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getPreference(): array
-    {
-        return $this->preference;
-    }
-
-    public function setPreference(array $preference): self
-    {
-        $this->preference = $preference;
-        return $this;
-    }
-
-    public function addPreference(string $preference): self
-    {
-        foreach ($this->preference as $item) {
-            if ($item[0] === $preference) {
-                return $this; // Preference already exists
-            }
-        }
-
-        // Add the new preference with a default value of `false`
-        $this->preference[] = [$preference, false];
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, CarpoolParticipation>
      */
@@ -507,6 +479,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setSuspend(bool $isSuspend): static
     {
         $this->isSuspend = $isSuspend;
+
+        return $this;
+    }
+
+    public function getMark(): ?float
+    {
+        return $this->mark;
+    }
+
+    public function setMark(float $mark): static
+    {
+        $this->mark = $mark;
 
         return $this;
     }

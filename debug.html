@@ -65,7 +65,8 @@
 					</ul>
 				</nav></div>
 			</header>
-			<main class="flex-row" id="carpoolPage">
+			
+<main class="flex-row" id="carpoolPage">
     <section id="search-show">
         <section class="block" id="search-bar">
             <h1>Itinéraire</h1>
@@ -81,12 +82,12 @@
                     </div>
                                         <div class="inputBackground date">
                         <img src="img/calendar.png" alt="canlendrier">
-                        <input type="datetime-local" id="search_travel_startDate" name="search_travel[startDate]" required="required" class="input-place">
+                        <input type="datetime-local" id="search_travel_startDate" name="search_travel[startDate]" required="required" class="input-place" value="2025-01-05T20:22">
                     </div>
                                         <div><button type="submit" id="search_travel_submit" name="search_travel[submit]" class="standard-btn">Rechercher</button></div>
                 </form></div>
                 
-            <input type="hidden" id="search_travel__token" name="search_travel[_token]" value="ac0a24103de11c45d57eb8c429666.HC0Jo7EMhOkgyI_hNpLV2f7fhiT-5een7o-szsHebGc.dGQ6k-t1xrtaqvrZDt3skpPtshS8jKTPpOTYg4a0DSUsQ0Dv9nbss0e9-A">
+            <input type="hidden" id="search_travel__token" name="search_travel[_token]" value="db308eea23451.7MX-dzo9_ajJwML2EDke7mHJv6XlSD0LstxSdIimObw.uryUOEJXl_6mqLWeX3J4gTag7vbXBGh59J8BHePXXdeNl89ACViz46aJhw">
         </section>
                     <h3 style="text-align:center;">Vous d'avait soit pas saisi de voyage ou soit que votre voyage n'existe pas, veuillez réessayer.</h3>
             </section>
@@ -125,8 +126,14 @@
 									<p>notification du voyage</p>
 									<p></p>
 									<p>plus facile d'accès</p>
-									<p><img src="img/app-store.png">Apple store</p>
-									<p><img src="img/google-play.png">Google play</p>
+									<div class="flex-row">
+										<img src="img/app-store.png">
+										<p>Apple store</p>
+									</div>
+									<div class="flex-row">
+										<img src="img/google-play.png">
+										<p>Google play</p>
+									</div>
 								</div>
 							</div>
 							<div>

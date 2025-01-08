@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -14,9 +15,11 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
  */
 class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
-    public function __construct(ManagerRegistry $registry)
+    private OpinionRepository $opinionRepository;
+    public function __construct(ManagerRegistry $registry, OpinionRepository $opinionRepository)
     {
         parent::__construct($registry, User::class);
+        $this->opinionRepository = $opinionRepository;
     }
 
     /**
@@ -42,6 +45,14 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
         return $query->getQuery()->getArrayResult();
     }
+
+    /*public function updateUserMark(User $user)
+    {
+        $em = self::getContainer()->get(EntityManagerInterface::class);
+        $this->opinionRepository->getAVGMark($user);
+        $em->persist($this);
+
+    }*/
 
     //    /**
     //     * @return User2[] Returns an array of User2 objects

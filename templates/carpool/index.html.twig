@@ -11,6 +11,7 @@
 {% endblock %}
 
 {% block body %}
+
 <main class='flex-row' id='carpoolPage'>
     <section id='search-show'>
         <section class='block' id='search-bar'>
@@ -49,32 +50,34 @@
                     <button class="standard-btn" id="filter-btn">Filtre</button>
                 </div>
             </section>
+            
             {% for search in search %}
                 {% if (search in carpoolParticipation) == false %}
+                
                     <section class='block' id="show-carpool">
                         <div>
                             <div class='flex-row'>
-                                <h2>{{search[0].user.username}}</h2>  
-                                <img src='img/{{search[0].user.img ??"user.png"}}' alt="phote de profil"/>
+                                <h2>{{search.user.username}}</h2>  
+                                <img src='img/{{search.user.img ??"user.png"}}' alt="phote de profil"/>
                                 <div>
                                     <div class="flex-row">
-                                        <p>{{search[1]}}</p>
+                                        <p>{{search.user.mark|round(1)}}</p>
                                         <h3>/5</h3>
                                     </div>
                                 </div>
                             </div>
                             <div class='flex-row'>
-                                <h2>{{search[0].price}}€</h2>
-                                <p>{{search[0].placeLeft}} places restantes</p>
+                                <h2>{{search.price}}€</h2>
+                                <p>{{search.placeLeft}} places restantes</p>
                             </div>
                             <div class='flex-row'>
                                 <div>
-                                    <p>Départ: {{search[0].startDate|date('d/m/Y H:i')}}</p>
-                                    <p>Arrivée: {{search[0].endDate|date('d/m/Y H:i')}}</p>
+                                    <p>Départ: {{search.startDate|date('d/m/Y H:i')}}</p>
+                                    <p>Arrivée: {{search.endDate|date('d/m/Y H:i')}}</p>
                                 </div>
-                                <p>Ecologique: {% if search[0].isEcologique %}oui {% else %}non{% endif %}</p>
+                                <p>Ecologique: {% if search.isEcologique %}oui {% else %}non{% endif %}</p>
                             </div>
-                            <button class='standard-btn' id="detail-btn-{{search[0].id}}">Détails</button>
+                            <button class='standard-btn' id="detail-btn-{{search.id}}">Détails</button>
                         </div>
                     </section>
                 {% endif %}
@@ -86,21 +89,43 @@
     {% if search != null %}
         <section class="block none" id='filter'>
             <h1>Filter</h1>
-            <div>
-                <div class='flex-row'>
-                    <input type="checkbox" id="ecologie"  value="ecologie"/>
-                    <label for="ecologie"><p>Ecologique</p></label>
+            {{ form_start(filterForm) }}
+                <div>
+                    <div class='flex-row' id="isEcologique">
+                        {% for choice in filterForm.isEcologique %}
+                            {{ form_widget(choice) }}
+                            <p>{{ form_label(choice) }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="flex-column">
+                        <label for='maxPrices'><p>Prix maximum (crédits):</p></label>
+                        {{ form_widget(filterForm.maxPrice) }}
+                    </div>
+                    <div>
+                        {% for error in filterForm.maxPrice.vars.errors %}
+                            <div class="form_error">{{ error.message }}</div>
+                        {% endfor %}
+                    </div>
+                    <div class="flex-column">
+                        <label for='maxTimes'><p>Durée maximum:</p></label>
+                        {{ form_widget(filterForm.maxTime) }}
+                    </div>
+                    <div>
+                        <p>Note minimal:</p>
+                        <div class='flex-row'>
+                            {{ form_widget(filterForm.minMark) }}
+                            <p>/5</p>
+                        </div>
+                    </div>
+                    <div>
+                        {% for error in filterForm.minMark.vars.errors %}
+                            <div class="form_error">{{ error.message }}</div>
+                        {% endfor %}
+                    </div>
                 </div>
-                <label for='maxPrices'><p>Prix maximum (crédits):</p></label>
-                <input type='number' placeholder='100' id='maxPrices'/>
-                <label for='maxTimes'><p>Durée maximum:</p></label>
-                <input type='time' id='maxTimes'/>
-                <p>Note minimal:</p>
-                <div class='flex-row'>
-                    <input type='text' placeholder='2'>
-                    <p>/5</p>
-                </div>
-            </div>
+                {{ form_row(filterForm.submit) }}
+            {{ form_end(filterForm) }}
+            
         </section>
     {% endif %}
 </main>

@@ -16,6 +16,7 @@ use App\Form\UserProfileType;
 use App\Repository\CarpoolParticipationRepository;
 use App\Repository\CarpoolRepository;
 use App\Repository\CarRepository;
+use App\Repository\OpinionRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,6 +32,8 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\RouterInterface;
 use UnexpectedValueException;
+use MongoDB\Client;
+use MongoDB\BSON\ObjectId;
 
 class UserSpaceController extends AbstractController
 {
@@ -39,14 +42,16 @@ class UserSpaceController extends AbstractController
     private CarpoolParticipationRepository $carpoolParticipationRepository;
     private RouterInterface $route;
     private CarpoolRepository $carpoolRepository;
+    private OpinionRepository $opinionRepository;
     private $formFactory;
-    public function __construct(UserRepository $userRepository, private UserPasswordHasherInterface $passwordHasher, RouterInterface $route,CarRepository $carRepository, FormFactoryInterface $formFactory,CarpoolParticipationRepository $carpoolParticipationRepository, CarpoolRepository $carpoolRepository) {
+    public function __construct(UserRepository $userRepository, private UserPasswordHasherInterface $passwordHasher, RouterInterface $route,CarRepository $carRepository, FormFactoryInterface $formFactory,CarpoolParticipationRepository $carpoolParticipationRepository, CarpoolRepository $carpoolRepository, OpinionRepository $opinionRepository) {
         $this->userRepository = $userRepository;
         $this->carRepository = $carRepository;
         $this->route = $route;
         $this->formFactory = $formFactory;
         $this->carpoolParticipationRepository = $carpoolParticipationRepository;
         $this->carpoolRepository = $carpoolRepository;
+        $this->opinionRepository = $opinionRepository;
     }
 
     public function verifyPassword($user, $plainPassword)
@@ -73,7 +78,7 @@ class UserSpaceController extends AbstractController
             'default_choice' => $userInfo->getUserType()
         ]);
         $form->handleRequest($request);
-        if($form->isSubmitted()&& $form->isValid()){
+        if($form->isSubmitted()&& $form->isValid() ){
             $data = $form->getData();
             $user->setUserType($data["userType"]);
             $user->setName($data["name"]);
@@ -154,54 +159,56 @@ class UserSpaceController extends AbstractController
             // Store the form view for the car
             $carAndCarEditForm[$index][1] = $formEdit->createView();
         }
-        $preferences = $user->getPreference();
-
-        // Extract pre-selected preferences where the second value is true
-        $selectedPreferences = [];
-        foreach ($preferences as $preference) {
-            if ($preference[1] === true) {
-                $selectedPreferences[] = $preference[0]; // Collect names of preferences with true status
-            }
-        }
 
         $preferenceForm = $this->createForm(UserPreferencesType::class, null, [
-            "data_preference" => $this->getUser(),
-            'selectedPreferences' => $selectedPreferences,
+            "action" => "/userSpace#preferences",
+            "usernamePreference" => $user->getUsername()
         ]);
         $preferenceForm->handleRequest($request);
-        $preferences = $this->getUser()->getPreference();
-        if($preferenceForm->isSubmitted()&&$preferenceForm->isValid()){
+        $client = new Client("mongodb://localhost:27017");
+
+        // Accéder à la collection "preferences" dans la base "ecoride"
+        $collection = $client->ecoride->preferences;
+
+        // Requête pour récupérer tous les documents de l'utilisateur
+        $preferences =$collection->find(
+            ['user' => $user->getUsername()], // Critère de recherche
+        );
+        
+        if($preferenceForm->isSubmitted()&& $preferenceForm->isValid()){
             $data = $preferenceForm->getData();
-            foreach ($preferences as &$storedPreference) {
-                $storedPreference[1] = false;
+            foreach ($preferences as $pref) {
+                $collection->updateOne(
+                    ["_id" => $pref["_id"]], // Critère de recherche
+                    ['$set' => ["isValid" => false]] // Mise à jour avec l'opérateur $set
+                );
             }
             if (!empty($data['choicePreferences'])) {
                 foreach ($data['choicePreferences'] as $submittedPreference) {
-                    foreach ($preferences as &$storedPreference) {
-                        if ($storedPreference[0] === $submittedPreference) {
-                            $storedPreference[1] = true;
-                        }
-                    }
+                    $collection->updateOne(
+                        ["_id" => new ObjectId($submittedPreference)], // Critère de recherche
+                        ['$set' => ["isValid" => true]] // Mise à jour avec l'opérateur $set
+                    );
                 }
             }
-            $user->setPreference($preferences);
-            $entityManager->persist($user);
-            $entityManager->flush();
 
             return $this->redirectToRoute('app_user_space');
         }
-        $addPreferenceForm = $this->createForm(AddPreferenceType::class);
+        $addPreferenceForm = $this->createForm(AddPreferenceType::class,null,[
+            "action" => "/userSpace#preferences"
+        ]);
         $user = $this->getUser();
         $addPreferenceForm->handleRequest($request);
         if($addPreferenceForm->isSubmitted()&&$addPreferenceForm->isValid()){
             $data = $addPreferenceForm->getData();
             if(isset($data["newPreference"])){
-                $user->addPreference($data["newPreference"]);
-                $entityManager->persist($user);
-                $entityManager->flush();
-                return $this->redirectToRoute('app_user_space');
+                $collection->insertOne(
+                    ["user"=>$user->getUsername(),
+                    "preference"=>$data["newPreference"],
+                    "isValid"=> false
+                ]);
             }
-            
+            return $this->redirectToRoute('app_user_space');
         }
         $car = $this->carRepository->findBy(['user' => $this->getUser()->getId()]);
         $carpool = new Carpool();
@@ -261,20 +268,30 @@ class UserSpaceController extends AbstractController
             $opinion = new Opinion();
             $carpoolToMark = $this->carpoolParticipationRepository->findOneBy(["user"=>$user, "hasToValidate"=>true]);
             $data = $carpoolOpinion->getData();
+            $driver = $carpoolToMark->getCarpool()->getUser();
             $opinion->setGrade($data["mark"])
                     ->setUser($user)
                     ->setGreat($data["satisfied"])
-                    ->setDriver($carpoolToMark->getCarpool()->getUser())
+                    ->setDriver($driver)
                     ->setValid(false)
                     ->setCarpool($carpoolToMark->getCarpool());
             if($data["opinion"]!== null)
             {
                 $opinion->setOpinion($data["opinion"]);
             }
+            if($data["satisfied"])
+            {
+                $carpoolToMark->getCarpool()->getUser()->setNbCredit($carpoolToMark->getCarpool()->getUser()->getNbCredit()+ $carpoolToMark->getCarpool()->getPrice()-2);
+                $entityManager->persist($carpoolToMark->getCarpool()->getUser());
+            }
             $carpoolToMark->setHasToValidate(false);
             $entityManager->persist($carpoolToMark);
             $entityManager->persist($opinion);
             $entityManager->persist($carpoolToMark->getCarpool());
+            $entityManager->flush();
+            
+            $driver->setMark($this->opinionRepository->getAVGMark($driver));
+            $entityManager->persist($driver);
             $entityManager->flush();
         }
 

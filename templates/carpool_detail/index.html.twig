@@ -21,7 +21,7 @@
 				<img src='img/{{carpool.user.img ??"user.png"}}' alt="phote de profil"/>
 				<div>
 					<div class="flex-row">
-						<p>{{mark}}</p>
+						<p>{{carpool.user.mark|round(1)}}</p>
 						<h3>/5</h3>
 					</div>
 					<h3 class="underline" id="opinion_{{carpool.user.id}}">avis</h3>
@@ -62,30 +62,24 @@
 		</div>
 		<div>
 		   <h3>Préférence</h3>
-		   {% for preference in carpool.user.preference %}
-			   {% if preference[1] %}
-				   <p>{{preference[0]}}</p>
-			   {% endif %}
+		   {% for preference in preferences %}
+			   <p>{{preference["preference"]}}</p>
 		   {% endfor %}
 		<div>
-		    {% for preference in carpool.user.preference %}
-			    {% if preference[0] == "Non-fumeur" %}
-                    {% if preference[1] %}
-                        <img src="img/no-smoking.png" alt="Interdit de fumer"/>
-                    {% else %}
-                        <img src="img/smoking.png" alt="Trajet fumeur"/>
-                    {% endif %}
-               {% endif %}
-		   {% endfor %}
-		   {% for preference in carpool.user.preference %}
-			    {% if preference[0] == "Sans animaux" %}
-                    {% if preference[1] %}
-                        <img src="img/no-animals.png" alt="Sans animaux"/>
-                    {% else %}
-                        <img src="img/pets-allowed.png" alt="Animaux autorisé"/>
-                    {% endif %}
-               {% endif %}
-		   {% endfor %}
+			{% set canSmockImg = "smoking.png" %}
+			{% for preference in preferences %}
+				{% if preference["preference"] == "Non-fummer" %}
+					{% set canSmockImg = "no-smoking.png" %}
+				{% endif %}
+			{% endfor %}
+			<img src="img/{{canSmockImg}}"/>
+			{% set AllowPetImg = "pets-allowed.png" %}
+			{% for preference in preferences %}
+				{% if preference["preference"] == "Sans animaux" %}
+					{% set AllowPetImg = "no-animals.png" %}
+				{% endif %}
+			{% endfor %}
+			<img src="img/{{AllowPetImg}}"/>
 		</div>
         <button id="participation-{{carpool.id}}" class='standard-btn'>participer</button>
 	</section>

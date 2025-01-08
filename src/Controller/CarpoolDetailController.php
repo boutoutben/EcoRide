@@ -7,6 +7,7 @@ use App\Repository\OpinionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use MongoDB\Client;
 
 class CarpoolDetailController extends AbstractController
 {
@@ -22,13 +23,21 @@ class CarpoolDetailController extends AbstractController
     {
         $detail = $_GET["detail"];
         $carpool = $this->carpoolRepository->findOneBy(["id"=> $detail]);
-        $mark = $this->opinionRepository->getAVGMark($carpool->getUser());
         $formattedDate = $carpool->getStartDate()->format('l d F Y');
+        $client = new Client("mongodb://localhost:27017");
+
+        // Accéder à la collection "preferences" dans la base "ecoride"
+        $collection = $client->ecoride->preferences;
+
+        // Requête pour récupérer tous les documents de l'utilisateur
+        $preferences = $collection->find(
+            ['user' => $carpool->getUser()->getUsername(), "isValid"=> true],
+        )->toArray();
         return $this->render('carpool_detail/index.html.twig', [
             'controller_name' => 'CarpoopDetailController',
             'formattedDate' => $formattedDate,
             "carpool" => $carpool,
-            "mark" => $mark
+            "preferences" => $preferences
         ]);
     }
 }

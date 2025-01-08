@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use MongoDB\Client;
 
 class ConnexionController extends AbstractController
 {
@@ -68,6 +69,23 @@ class ConnexionController extends AbstractController
                 $user->setPassword($hashedPassword);
                 $entityManager->persist($user);
                 $entityManager->flush();
+                $client = new Client("mongodb://localhost:27017");
+
+                // Accéder à la collection "preferences" dans la base "ecoride"
+                $collection = $client->ecoride->preferences;
+                $collection->insertMany([
+                    [
+                        "user" => $data["pseudo"],
+                        "preference" => "Non-fumeur",
+                        "isValid" => false
+                    ],
+                    [
+                        "user" => $data["pseudo"],
+                        "preference" => "Sans animaux",
+                        "isValid" => false
+                    ]
+                ]);
+
 
                 // Redirect after successful registration
                 return $this->redirectToRoute('app_connexion', [], Response::HTTP_SEE_OTHER);

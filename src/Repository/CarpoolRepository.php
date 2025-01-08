@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Entity\Carpool;
 use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -28,6 +30,53 @@ class CarpoolRepository extends ServiceEntityRepository
         ->setParameter("end", $formattedDate . ' 23:59:59');
 
         return (int) $query->getQuery()->getSingleScalarResult();
+    }
+
+    public function searchCarpool($data,$filter)
+    {
+        $date = new DateTime();
+        if(key_exists("startDate",$data))
+        {
+            $date = $data["startDate"];
+        }
+        $query = $this->createQueryBuilder('c')
+            ->select('c', 'u') // Select fields from both Carpool (c) and User (u)
+            ->join('c.user', 'u') // Adjust this to your actual relationship
+            ->where('c.startPlace = :start_place')
+            ->andWhere('c.endPlace = :end_place')
+            ->andWhere("c.startDate >= :startDate")
+            ->andWhere("c.isFinish = false")
+            ->andWhere("c.placeLeft > 0")
+            ->setParameters(new ArrayCollection([
+                new Parameter('start_place', $data["startPlace"]),
+                new Parameter('end_place', $data["endPlace"]),
+                new Parameter("startDate",$date)
+            ]));
+        if(isset($filter["isEcologique"])&& $filter["isEcologique"]!= [])
+        {
+            $query->andWhere("c.isEcologique = true");
+        }
+        if (isset($filter["maxPrice"]))
+        {
+            $query->andWhere("c.price <= {$filter['maxPrice']}");
+        }
+        if(isset($filter["maxTime"]))
+        {
+            $hour = $filter["maxTime"]->format('H');
+            $minute = $filter["maxTime"]->format('i');
+
+            $query->andWhere('c.endDate <= DATE_ADD(DATE_ADD(c.startDate, :hour, \'HOUR\'), :minute, \'MINUTE\')')
+            ->setParameter("hour", $hour)
+            ->setParameter("minute", $minute);
+
+            
+        }
+        if(isset($filter["minMark"]))
+        {
+            $query->andWhere("u.mark >= {$filter['minMark']}");
+        }
+        return $query->getQuery()->getResult();
+        
     }
 
 //    /**

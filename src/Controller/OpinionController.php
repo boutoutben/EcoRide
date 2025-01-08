@@ -23,20 +23,11 @@ class OpinionController extends AbstractController
     {
         $id = $_GET["id"];
         $user = $this->userRepository->findOneBy(['id'=>$id]);
-        $opinion = $this->opinionRepository->findBy(["driver" => $user,"isValid"=> true]);
-        $querry = $this->opinionRepository->createQueryBuilder("c")
-            ->select("AVG(c.grade)")
-            ->where("c.driver = :user")
-            ->setParameters(new ArrayCollection([
-                new Parameter('user', $user)
-            ]));
-
-        $mark = (float)$querry->getQuery()->getSingleScalarResult();
+        $opinion = $this->opinionRepository->findBy(["driver" => $user,"isValid"=> true],["id"=>"DESC"]);
         return $this->render('opinion/index.html.twig', [
             'controller_name' => 'OpinionController',
             "user" => $user,
             "opinion" => $opinion,
-            "mark" => $mark
         ]);
     }
 }

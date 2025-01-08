@@ -1,4 +1,16 @@
 document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll('input[name="carpool_opinion[satisfied]"]').forEach(input => {
+    input.addEventListener("change", (e) => {
+        const opinion = document.querySelector("#carpool_opinion_opinion");
+        if(e.target.value === 0)
+        {
+            opinion.setAttribute("required",true);
+        }
+        else{
+            opinion.setAttribute("required",false);
+        }
+    });
+});
     const radios = document.querySelectorAll('input[name="carpool_opinion[mark]"]');
 
     // Function to get the selected value

@@ -25,6 +25,7 @@ Encore
     .addEntry("validOpinion", "./assets/js/validOpinion.js")
     .addEntry("opinion", "./assets/js/opinion.js")
     .addEntry("suspend", "./assets/js/suspend.js")
+    .addEntry("filter", "./assets/js/filter.js")
 
     // Enable splitting for better optimization
     .splitEntryChunks()
