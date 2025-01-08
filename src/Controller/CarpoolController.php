@@ -70,14 +70,18 @@ class CarpoolController extends AbstractController
         
         $filterForm = $this->createForm(FilterType::class);
         $filterForm->handleRequest($request);
-        if($filterForm->isSubmitted() && $filterForm->isValid())
+        if($filterForm->isSubmitted())
         {
-            $filter = $filterForm->getData();
-            $allSearch = $this->searchCarpoolWithFilterOrNot($_SESSION["searchData"],$filter);
+            if($filterForm->isValid())
+            {
+              $filter = $filterForm->getData();
+            $allSearch = $this->searchCarpoolWithFilterOrNot($_SESSION["searchData"],$filter);  
+            }
+            else{
+                $allSearch = $this->searchCarpoolWithFilterOrNot($_SESSION["searchData"], null);
+            }
         }
-        else{
-            $allSearch = $this->searchCarpoolWithFilterOrNot($_SESSION["searchData"], null);
-        }
+       
         return $this->render('carpool/index.html.twig', [
             "form" => $form->createView(),
             "search" => $allSearch,
