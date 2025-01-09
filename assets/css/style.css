@@ -824,9 +824,8 @@ input[type='radio']{
         width: 90%;
     }
     .overlay {
-        width: 50%;
+        width: 80%;
         /* Reduce width on larger screens */
-        max-width: 600px;
         /* Allow a larger max size */
     }
 }
