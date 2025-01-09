@@ -365,6 +365,14 @@ button:hover{
         width: 90%;
         margin-bottom: 1vw;
     }
+    .input-place{
+        width: fit-content;
+    }
+    input[type="datetime-local"]{
+        width: fit-content;
+        font-size: 2.5vw;
+    }
+
 }
 /*carpool*/
 #filter-btn{
@@ -973,12 +981,12 @@ select{
     select{
         font-size: .8em;
     }
-    #travelOutpute .allInput>:nth-child(5){
+    #travelOutpute .allInput>.flex-row{
         flex-direction: column;
-        align-items: flex-start;
     }
-    #travelOutpute .allInput>:nth-child(5)>div{
-        width: 60%;
+    #travelOutpute .allInput>.flex-row>div{
+        width: fit-content;
+        margin-left: 0;
     }
 }
 #autreChoiceCar{
