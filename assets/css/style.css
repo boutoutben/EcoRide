@@ -879,7 +879,7 @@ input[type='radio']{
     margin: auto;
     }
     #carpoolInfo{
-        width: 70%;
+        width: 85%;
     }
     #carpoolInfo>div:nth-child(2) img {
         width: 10vw;
