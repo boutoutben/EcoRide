@@ -39,6 +39,16 @@ class ValidParticipationController extends AbstractController
         }
         $carpool = $this->carpoolRepository->findOneBy(["id" => $detail]);
         $user = $this->getUser();
+        if ($carpool->isFinish()) {
+            $this->addFlash('error', 'Le covoiturage est déja terminier, vous ne pouvais pas y participer');
+            return new RedirectResponse("carpoolDetail?detail=${detail}");
+        }
+        if($carpool->getUser() == $user)
+        {
+            $this->addFlash('error', "Vous ne pouvez pas participer à ce covoiturage, vous l'avait créer");
+            return new RedirectResponse("carpoolDetail?detail=${detail}");
+        }
+        
         $carpoolParticipation = $this->carpoolParticipationRepository->findBy(["user"=>$user]);
         if($carpoolParticipation!=null)
         {
