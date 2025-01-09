@@ -282,6 +282,10 @@ button:hover{
     #presentation img{
         display: none;
     }
+    .block {
+        width: 90%;
+        border-radius: 1.2vw;
+    }
 }
 
 /*home-search-bar*/
@@ -344,7 +348,7 @@ button:hover{
 
 @media screen and (max-width: 945px){
     #search-show .block{
-        width: 80vw;
+        width: 90vw;
     }
 
     .inputBackground{
@@ -354,6 +358,10 @@ button:hover{
     }
     .inputBackground img {
         width: 3.5vw;
+    }
+    .allInput{
+        width: 90%;
+        margin-bottom: 1vw;
     }
 }
 /*carpool*/

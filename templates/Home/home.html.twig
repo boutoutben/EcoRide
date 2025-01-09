@@ -45,8 +45,8 @@
                     {% for error in form.startDate.vars.errors %}
                             <div class="form_error">{{ error.message }}</div>
                     {% endfor %}
-                    {{form_row(form.submit)}}
-                </div>             
+                </div>    
+                {{form_row(form.submit)}}         
             {{ form_end(form) }}          
         </section>
     </main>
