@@ -275,6 +275,8 @@ button:hover{
 @media screen and (max-width: 945px){
     button{
         font-size: 1.2em;
+        padding: 1.5vw 3vw;
+        background-color: red;
     }
     #presentation p{
         text-align: center;
