@@ -613,6 +613,9 @@ input[type='checkbox']:checked{
         width: 1.3vw;
         height: 1.3vw;
     }
+    .backgrandError{
+        width: 80vw;
+    }
 }
 
 /*Valid participation*/ 
@@ -828,6 +831,11 @@ input[type='radio']{
         /* Reduce width on larger screens */
         /* Allow a larger max size */
     }
+    #overlay.overlay {
+        top: 10vw;
+        left: 2vw;
+        width: 30vw;
+    }
 }
 
 
@@ -947,6 +955,11 @@ input[type='radio']{
     #histori>div>.flex-row:first-child {
         flex-direction: column;
         text-align: center;
+    }
+    #histori .overlay {
+        width: 50vw;
+        top: 10vw;
+        left: 20vw;
     }
 }
 .relative{
