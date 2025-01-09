@@ -335,7 +335,7 @@ button:hover{
     padding: 0 1vw;
     color: #000000;
     font-size: 1.2em;
-    width: 90%;
+    width: 100%;
     outline: none;
     border: none;
     cursor: pointer;
@@ -364,9 +364,6 @@ button:hover{
     .allInput{
         width: 90%;
         margin-bottom: 1vw;
-    }
-    .input-place{
-        width: fit-content;
     }
     input[type="datetime-local"]{
         width: fit-content;
@@ -714,17 +711,31 @@ input[type='checkbox']:checked{
     display: block;
 }
 .overlay {
-    position: absolute;
+    position: fixed;
+    /* Positioned relative to the container */
     display: none;
+    /* Hidden by default */
     background-color: #004b70;
-    justify-content: center;
-    align-items: center;
     border-radius: 8px;
-    z-index: 1000;
+    z-index: 20;
+    color: white;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    top: 50%;
+    /* Center vertically */
+    left: 50%;
+    /* Center horizontally */
+    transform: translate(-50%, -50%);
+    /* Center within the container */
+    width: 90%;
+    /* Default width */
+    max-width: 400px;
+    /* Restrict maximum size */
 }
 #overlay.overlay{
-   top: 2vw;
-    left: -10vw;
+    position: absolute;
+    top: 8vw;
+    left: 8vw;
     width: 25vw; 
 }
 
@@ -811,6 +822,12 @@ input[type='radio']{
     }
     #profile .allInput{      
         width: 90%;
+    }
+    .overlay {
+        width: 50%;
+        /* Reduce width on larger screens */
+        max-width: 600px;
+        /* Allow a larger max size */
     }
 }
 
@@ -918,10 +935,11 @@ input[type='radio']{
     margin-top: -2vw;
 }
 #histori .overlay{
+    position: absolute;
     background-color: #1e829b;
     width: 40vw;
-    top: -5vw;
-    left: -5vw;
+    top: 6vw;
+    left: 10vw;
 }
 #histori .overlay .flex-row{
     justify-content: center;

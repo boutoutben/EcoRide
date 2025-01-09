@@ -29,6 +29,8 @@ editBtn(nbTotalCar);
 
 
 document.querySelector("#plus-btn").addEventListener("click", () =>{
+    const body = document.querySelector("body");
+    body.classList.add('freeze-scroll');
     overlay("#overlayNewCar");
 })
 document.addEventListener("click", (e) => {
